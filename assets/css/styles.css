@@ -465,7 +465,7 @@ h4 {
 
 .hero-copy h1 {
   max-width: 560px;
-  font-size: clamp(2.8rem, 4.6vw, 4.8rem);
+  font-size: clamp(3rem, 4.8vw, 5rem);
   line-height: 0.98;
   margin-bottom: 18px;
   overflow-wrap: break-word;
@@ -478,7 +478,7 @@ h4 {
   max-width: 500px;
   overflow-wrap: break-word;
   color: rgba(255, 248, 242, 0.78);
-  font-size: 1.08rem;
+  font-size: 1.12rem;
   margin-bottom: 30px;
 }
 
@@ -695,9 +695,37 @@ h4 {
 }
 
 .category-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 22px;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 34px;
+}
+
+.category-grid .swiper-wrapper {
+  align-items: stretch;
+}
+
+.category-grid .category-card {
+  height: auto;
+}
+
+.category-pagination {
+  bottom: 0 !important;
+}
+
+.category-pagination .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: var(--taupe);
+  opacity: 0.35;
+  transition:
+    width 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.category-pagination .swiper-pagination-bullet-active {
+  width: 28px;
+  border-radius: 999px;
+  opacity: 1;
 }
 
 .category-card {
@@ -1020,9 +1048,13 @@ h4 {
 }
 
 .testimonials-carousel {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 30px;
+}
+
+.testimonials-carousel .swiper-wrapper {
+  align-items: stretch;
 }
 
 .testimonial-card {
@@ -1031,6 +1063,7 @@ h4 {
   border-radius: 26px;
   padding: 28px 22px;
   min-height: 260px;
+  height: auto;
 }
 
 .stars {
@@ -1074,6 +1107,27 @@ h4 {
   justify-content: center;
   gap: 18px;
   margin-top: 30px;
+}
+
+.testimonial-pagination {
+  position: static !important;
+  width: auto !important;
+}
+
+.testimonial-pagination .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: var(--taupe);
+  opacity: 0.35;
+  transition:
+    width 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.testimonial-pagination .swiper-pagination-bullet-active {
+  width: 28px;
+  border-radius: 999px;
+  opacity: 1;
 }
 
 .carousel-arrow {

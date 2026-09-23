@@ -242,8 +242,9 @@
             <h2>Curated for your beauty story</h2>
           </div>
 
-          <div class="category-grid">
-            <article class="category-card category-skincare">
+          <div class="category-grid swiper">
+            <div class="swiper-wrapper">
+            <article class="category-card category-skincare swiper-slide">
               <div class="category-image-wrap">
                 <img
                   src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=900&q=80"
@@ -256,7 +257,7 @@
               </div>
             </article>
 
-            <article class="category-card category-makeup">
+            <article class="category-card category-makeup swiper-slide">
               <div class="category-image-wrap">
                 <img
                   src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80"
@@ -269,7 +270,7 @@
               </div>
             </article>
 
-            <article class="category-card category-haircare">
+            <article class="category-card category-haircare swiper-slide">
               <div class="category-image-wrap">
                 <img
                   src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80"
@@ -282,7 +283,7 @@
               </div>
             </article>
 
-            <article class="category-card category-new">
+            <article class="category-card category-new swiper-slide">
               <div class="category-image-wrap">
                 <img
                   src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80"
@@ -294,6 +295,34 @@
                 <a href="#">Explore Collection</a>
               </div>
             </article>
+
+            <article class="category-card category-body swiper-slide">
+              <div class="category-image-wrap">
+                <img
+                  src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&w=900&q=80"
+                  alt="Body care collection"
+                />
+              </div>
+              <div class="category-copy">
+                <span>Body Care</span>
+                <a href="#">Explore Collection</a>
+              </div>
+            </article>
+
+            <article class="category-card category-tools swiper-slide">
+              <div class="category-image-wrap">
+                <img
+                  src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80"
+                  alt="Beauty tools collection"
+                />
+              </div>
+              <div class="category-copy">
+                <span>Beauty Tools</span>
+                <a href="#">Explore Collection</a>
+              </div>
+            </article>
+            </div>
+            <div class="category-pagination swiper-pagination" aria-label="Beauty categories"></div>
           </div>
         </div>
       </section>
@@ -605,8 +634,9 @@
             <h2>Loved by Our Customers</h2>
           </div>
 
-          <div class="testimonials-carousel">
-            <article class="testimonial-card">
+          <div class="testimonials-carousel swiper">
+            <div class="swiper-wrapper">
+            <article class="testimonial-card swiper-slide">
               <div class="stars" aria-label="Five star review">
                 <i class="fa-solid fa-star"></i>
                 <i class="fa-solid fa-star"></i>
@@ -624,7 +654,7 @@
               </div>
             </article>
 
-            <article class="testimonial-card">
+            <article class="testimonial-card swiper-slide">
               <div class="stars" aria-label="Five star review">
                 <i class="fa-solid fa-star"></i>
                 <i class="fa-solid fa-star"></i>
@@ -642,7 +672,7 @@
               </div>
             </article>
 
-            <article class="testimonial-card">
+            <article class="testimonial-card swiper-slide">
               <div class="stars" aria-label="Five star review">
                 <i class="fa-solid fa-star"></i>
                 <i class="fa-solid fa-star"></i>
@@ -659,18 +689,69 @@
                 <span>Verified Customer</span>
               </div>
             </article>
+
+            <article class="testimonial-card swiper-slide">
+              <div class="stars" aria-label="Five star review">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p>
+                “My morning routine feels calmer and more luxurious now. The
+                products are beautiful, gentle, and genuinely effective.”
+              </p>
+              <div class="testimonial-user">
+                <strong>Clara J.</strong>
+                <span>Verified Customer</span>
+              </div>
+            </article>
+
+            <article class="testimonial-card swiper-slide">
+              <div class="stars" aria-label="Five star review">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p>
+                “The finish is radiant without feeling heavy. Kinboni has
+                become my favorite place to discover everyday essentials.”
+              </p>
+              <div class="testimonial-user">
+                <strong>Maya L.</strong>
+                <span>Verified Customer</span>
+              </div>
+            </article>
+
+            <article class="testimonial-card swiper-slide">
+              <div class="stars" aria-label="Five star review">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p>
+                “Beautifully curated from start to finish. Everything arrived
+                quickly and felt like a thoughtful little ritual.”
+              </p>
+              <div class="testimonial-user">
+                <strong>Elena P.</strong>
+                <span>Verified Customer</span>
+              </div>
+            </article>
+            </div>
           </div>
 
           <div class="carousel-controls">
-            <button class="carousel-arrow" aria-label="Previous testimonial">
+            <button class="carousel-arrow testimonial-prev" aria-label="Previous testimonial">
               <i class="fa-solid fa-arrow-left"></i>
             </button>
-            <div class="carousel-dots">
-              <button class="dot is-active"></button>
-              <button class="dot"></button>
-              <button class="dot"></button>
-            </div>
-            <button class="carousel-arrow" aria-label="Next testimonial">
+            <div class="carousel-dots testimonial-pagination swiper-pagination" aria-label="Customer testimonials"></div>
+            <button class="carousel-arrow testimonial-next" aria-label="Next testimonial">
               <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>

@@ -1,8 +1,6 @@
 const header = document.getElementById("site-header");
 const revealItems = document.querySelectorAll(".reveal-up, .reveal-scale");
 const wishlistButtons = document.querySelectorAll(".wishlist-button");
-const testimonialCards = document.querySelectorAll(".testimonial-card");
-const testimonialDots = document.querySelectorAll(".carousel-dots .dot");
 const heroVideo = document.querySelector(".hero-video");
 const videoToggle = document.querySelector(".video-toggle");
 
@@ -61,6 +59,69 @@ if (window.Swiper && heroSlider) {
   heroSlider.classList.add("swiper-init-failed");
 }
 
+const categorySlider = document.querySelector(".category-grid");
+if (window.Swiper && categorySlider) {
+  new window.Swiper(categorySlider, {
+    slidesPerView: 1,
+    spaceBetween: 16,
+    speed: 700,
+    grabCursor: true,
+    watchOverflow: true,
+    autoplay: {
+      delay: 4500,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true,
+    },
+    pagination: {
+      el: ".category-pagination",
+      clickable: true,
+    },
+    breakpoints: {
+      761: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      1100: {
+        slidesPerView: 4,
+        spaceBetween: 22,
+      },
+    },
+  });
+}
+
+const testimonialSlider = document.querySelector(".testimonials-carousel");
+if (window.Swiper && testimonialSlider) {
+  new window.Swiper(testimonialSlider, {
+    slidesPerView: 1,
+    spaceBetween: 18,
+    speed: 650,
+    grabCursor: true,
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true,
+    },
+    pagination: {
+      el: ".testimonial-pagination",
+      clickable: true,
+    },
+    navigation: {
+      prevEl: ".testimonial-prev",
+      nextEl: ".testimonial-next",
+    },
+    breakpoints: {
+      761: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      1100: {
+        slidesPerView: 3,
+        spaceBetween: 24,
+      },
+    },
+  });
+}
+
 if (heroVideo && videoToggle) {
   videoToggle.addEventListener("click", () => {
     const icon = videoToggle.querySelector("i");
@@ -95,57 +156,6 @@ wishlistButtons.forEach((button) => {
       icon.classList.add("fa-regular");
     }
   });
-});
-
-let activeTestimonialIndex = 0;
-const showTestimonial = (index) => {
-  if (!testimonialCards.length) return;
-
-  const nextIndex = (index + testimonialCards.length) % testimonialCards.length;
-  activeTestimonialIndex = nextIndex;
-
-  testimonialCards.forEach((card, cardIndex) => {
-    card.style.display = cardIndex === nextIndex ? "block" : "none";
-  });
-
-  testimonialDots.forEach((dot, dotIndex) => {
-    dot.classList.toggle("is-active", dotIndex === nextIndex);
-  });
-};
-
-const nextTestimonial = () => showTestimonial(activeTestimonialIndex + 1);
-const prevTestimonial = () => showTestimonial(activeTestimonialIndex - 1);
-
-const testimonialControls = document.querySelectorAll(".carousel-arrow");
-if (testimonialControls[0]) {
-  testimonialControls[0].addEventListener("click", () => {
-    prevTestimonial();
-  });
-}
-if (testimonialControls[1]) {
-  testimonialControls[1].addEventListener("click", () => {
-    nextTestimonial();
-  });
-}
-
-testimonialDots.forEach((dot, index) => {
-  dot.addEventListener("click", () => showTestimonial(index));
-});
-
-if (window.innerWidth <= 760) {
-  testimonialCards.forEach((card, index) => {
-    card.style.display = index === 0 ? "block" : "none";
-  });
-}
-
-window.addEventListener("resize", () => {
-  if (window.innerWidth > 760) {
-    testimonialCards.forEach((card) => {
-      card.style.display = "block";
-    });
-  } else {
-    showTestimonial(activeTestimonialIndex);
-  }
 });
 
 const newsletterForm = document.querySelector(".newsletter-form");
