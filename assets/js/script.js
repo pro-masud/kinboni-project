@@ -1,7 +1,5 @@
 const header = document.getElementById("site-header");
 const revealItems = document.querySelectorAll(".reveal-up, .reveal-scale");
-const slides = Array.from(document.querySelectorAll(".slide"));
-const dots = Array.from(document.querySelectorAll(".hero-pagination .dot"));
 const wishlistButtons = document.querySelectorAll(".wishlist-button");
 const testimonialCards = document.querySelectorAll(".testimonial-card");
 const testimonialDots = document.querySelectorAll(".carousel-dots .dot");
@@ -32,50 +30,36 @@ if ("IntersectionObserver" in window) {
 updateHeaderState();
 window.addEventListener("scroll", updateHeaderState, { passive: true });
 
-let activeSlideIndex = 0;
-let heroTimer = null;
-
-const showSlide = (index) => {
-  if (!slides.length) return;
-
-  const nextIndex = (index + slides.length) % slides.length;
-  activeSlideIndex = nextIndex;
-
-  slides.forEach((slide, slideIndex) => {
-    slide.classList.toggle("is-active", slideIndex === nextIndex);
-  });
-
-  dots.forEach((dot, dotIndex) => {
-    dot.classList.toggle("is-active", dotIndex === nextIndex);
-  });
-};
-
-const startHeroAutoplay = () => {
-  if (slides.length <= 1) return;
-
-  stopHeroAutoplay();
-  heroTimer = window.setInterval(() => {
-    showSlide(activeSlideIndex + 1);
-  }, 4200);
-};
-
-const stopHeroAutoplay = () => {
-  if (heroTimer) window.clearInterval(heroTimer);
-};
-
-dots.forEach((dot, index) => {
-  dot.addEventListener("click", () => {
-    showSlide(index);
-    startHeroAutoplay();
-  });
-});
-
-const heroSection = document.querySelector(".hero");
-if (heroSection) {
-  heroSection.addEventListener("mouseenter", stopHeroAutoplay);
-  heroSection.addEventListener("mouseleave", startHeroAutoplay);
+const heroSlider = document.querySelector(".hero-slider");
+if (window.Swiper && heroSlider) {
+  try {
+    new window.Swiper(heroSlider, {
+      loop: true,
+      effect: "fade",
+      fadeEffect: { crossFade: true },
+      speed: 850,
+      autoplay: {
+        delay: 10000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      },
+      pagination: {
+        el: ".hero-pagination",
+        clickable: true,
+      },
+      keyboard: {
+        enabled: true,
+      },
+      a11y: {
+        enabled: true,
+      },
+    });
+  } catch (error) {
+    heroSlider.classList.add("swiper-init-failed");
+  }
+} else if (heroSlider) {
+  heroSlider.classList.add("swiper-init-failed");
 }
-startHeroAutoplay();
 
 if (heroVideo && videoToggle) {
   videoToggle.addEventListener("click", () => {

@@ -385,17 +385,51 @@ h4 {
 
 .hero-slider {
   position: relative;
+  z-index: 1;
   width: 100%;
   min-width: 0;
+  min-height: 750px;
+  overflow: hidden;
 }
 
-.slide {
-  display: none;
+.hero-slider .swiper-wrapper {
+  display: flex;
   min-height: 750px;
 }
 
-.slide.is-active {
-  display: block;
+.slide {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  width: 100%;
+  height: auto;
+  min-height: 750px;
+  visibility: visible;
+}
+
+.hero-slider.swiper-init-failed:not(.swiper-initialized) .swiper-slide {
+  display: none;
+}
+
+.hero-slider.swiper-init-failed:not(.swiper-initialized)
+  .swiper-slide:first-child {
+  display: flex;
+}
+
+.swiper-slide-active {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+@keyframes hero-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .hero-layout {
@@ -409,10 +443,20 @@ h4 {
 }
 
 .hero-copy {
+  position: relative;
+  z-index: 2;
   width: min(100%, 530px);
   min-width: 0;
   max-width: 530px;
   margin-left: 0;
+  opacity: 1;
+  visibility: visible;
+}
+
+.hero-slider .swiper-slide .hero-copy {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
 }
 
 .hero-copy .eyebrow {
@@ -569,15 +613,19 @@ h4 {
   gap: 10px;
 }
 
-.dot {
+.hero-pagination .swiper-pagination-bullet {
   width: 10px;
   height: 10px;
+  margin: 0 !important;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.42);
-  transition: all 0.3s ease;
+  opacity: 1;
+  transition:
+    width 0.3s ease,
+    background 0.3s ease;
 }
 
-.dot.is-active {
+.hero-pagination .swiper-pagination-bullet-active {
   width: 34px;
   border-radius: 999px;
   background: #fffaf6;
@@ -1354,6 +1402,11 @@ h4 {
 
   .hero,
   .slide {
+    min-height: 680px;
+  }
+
+  .hero-slider,
+  .hero-slider .swiper-wrapper {
     min-height: 680px;
   }
 
