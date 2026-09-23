@@ -10,6 +10,12 @@ const cartCount = document.querySelector(".cart-count");
 const searchPanel = document.querySelector(".search-panel");
 const searchForm = document.querySelector(".search-form");
 const quickViewModal = document.querySelector(".quick-view-modal");
+const quizModal = document.querySelector(".quiz-modal");
+const cartDrawer = document.querySelector(".cart-drawer");
+const cartItemsElement = document.querySelector(".cart-items");
+const cartEmpty = document.querySelector(".cart-empty");
+const cartItems = [];
+let quickViewCard = null;
 
 const updateHeaderState = () => {
   if (!header) return;
@@ -56,8 +62,72 @@ searchPanel
   ?.addEventListener("click", closeSearch);
 searchForm?.addEventListener("submit", (event) => {
   event.preventDefault();
-  closeSearch();
+  const query = searchForm.querySelector("input")?.value.trim().toLowerCase();
+  const status = searchForm.querySelector(".search-status");
+  const products = Array.from(document.querySelectorAll(".product-card"));
+  if (!query) {
+    products.forEach((product) => product.removeAttribute("hidden"));
+    if (status) status.textContent = "Showing all products.";
+    return;
+  }
+  const matches = products.filter((product) => {
+    const searchableText = product.textContent.toLowerCase();
+    const matchesQuery = searchableText.includes(query);
+    product.toggleAttribute("hidden", !matchesQuery);
+    return matchesQuery;
+  });
+  if (status)
+    status.textContent = matches.length
+      ? `${matches.length} product${matches.length === 1 ? "" : "s"} found.`
+      : "No products found. Try skincare, glow or hair care.";
 });
+
+const renderCart = () => {
+  if (!cartItemsElement || !cartEmpty) return;
+  cartItemsElement.innerHTML = cartItems
+    .map(
+      (item) => `
+    <div class="cart-item">
+      <img src="${item.image}" alt="${item.title}" />
+      <div><strong>${item.title}</strong><span>${item.price} · Qty ${item.quantity}</span></div>
+    </div>
+  `,
+    )
+    .join("");
+  cartEmpty.hidden = cartItems.length > 0;
+};
+
+const openCart = () => {
+  cartDrawer?.classList.add("is-open");
+  cartDrawer?.setAttribute("aria-hidden", "false");
+  renderCart();
+};
+
+const closeCart = () => {
+  cartDrawer?.classList.remove("is-open");
+  cartDrawer?.setAttribute("aria-hidden", "true");
+};
+
+document.querySelector(".cart-button")?.addEventListener("click", openCart);
+document.querySelector(".cart-close")?.addEventListener("click", closeCart);
+
+const addToCart = (card) => {
+  const title =
+    card.querySelector("h3")?.textContent.trim() || "Kinboni product";
+  const price = card.querySelector(".price")?.textContent.trim() || "$0";
+  const image = card.querySelector(".product-media img")?.src || "";
+  const existingItem = cartItems.find((item) => item.title === title);
+  if (existingItem) existingItem.quantity += 1;
+  else cartItems.push({ title, price, image, quantity: 1 });
+  if (cartCount)
+    cartCount.textContent = String(
+      cartItems.reduce((total, item) => total + item.quantity, 0) + 2,
+    );
+  if (stickyCart) {
+    stickyCart.classList.add("is-visible");
+    window.setTimeout(() => stickyCart.classList.remove("is-visible"), 3200);
+  }
+};
 
 if (menuToggle && mobileMenu) {
   menuToggle.addEventListener("click", () => {
@@ -208,6 +278,15 @@ if (heroVideo && videoToggle) {
 }
 
 wishlistButtons.forEach((button) => {
+  const productCard = button.closest(".product-card");
+  const productKey = productCard?.querySelector("h3")?.textContent.trim();
+  if (
+    productKey &&
+    localStorage.getItem(`kinboni-wishlist-${productKey}`) === "true"
+  ) {
+    button.classList.add("is-active");
+    button.querySelector("i")?.classList.replace("fa-regular", "fa-solid");
+  }
   button.addEventListener("click", () => {
     button.classList.toggle("is-active");
     const icon = button.querySelector("i");
@@ -219,6 +298,11 @@ wishlistButtons.forEach((button) => {
       icon.classList.remove("fa-solid");
       icon.classList.add("fa-regular");
     }
+    if (productKey)
+      localStorage.setItem(
+        `kinboni-wishlist-${productKey}`,
+        String(button.classList.contains("is-active")),
+      );
   });
 });
 
@@ -248,6 +332,7 @@ document.querySelectorAll(".product-card").forEach((card) => {
     const modalTitle = quickViewModal?.querySelector("#quick-view-title");
     if (!image || !title || !modalImage || !modalTitle || !quickViewModal)
       return;
+    quickViewCard = card;
     modalImage.src = image.src;
     modalImage.alt = image.alt;
     modalTitle.textContent = title.textContent;
@@ -259,12 +344,7 @@ document.querySelectorAll(".product-card").forEach((card) => {
   if (rating) rating.insertAdjacentText("beforeend", " (128)");
 
   quickAdd.addEventListener("click", () => {
-    const currentCount = Number.parseInt(cartCount?.textContent || "0", 10);
-    if (cartCount) cartCount.textContent = String(currentCount + 1);
-    if (stickyCart) {
-      stickyCart.classList.add("is-visible");
-      window.setTimeout(() => stickyCart.classList.remove("is-visible"), 3200);
-    }
+    addToCart(card);
   });
 });
 
@@ -281,6 +361,32 @@ quickViewModal
   ?.addEventListener("click", closeQuickView);
 quickViewModal?.addEventListener("click", (event) => {
   if (event.target === quickViewModal) closeQuickView();
+});
+quickViewModal
+  ?.querySelector(".quick-view-add")
+  ?.addEventListener("click", () => {
+    if (quickViewCard) addToCart(quickViewCard);
+    closeQuickView();
+  });
+
+document.querySelectorAll(".quiz-open").forEach((button) => {
+  button.addEventListener("click", () => {
+    quizModal?.classList.add("is-open");
+    quizModal?.setAttribute("aria-hidden", "false");
+  });
+});
+
+const closeQuiz = () => {
+  quizModal?.classList.remove("is-open");
+  quizModal?.setAttribute("aria-hidden", "true");
+};
+quizModal?.querySelector(".quiz-close")?.addEventListener("click", closeQuiz);
+quizModal?.querySelectorAll("[data-concern]").forEach((option) => {
+  option.addEventListener("click", () => {
+    const result = quizModal.querySelector(".quiz-result");
+    if (result)
+      result.textContent = `Your starting point: ${option.textContent}. Explore the routine below.`;
+  });
 });
 
 const newsletterForm = document.querySelector(".newsletter-form");
