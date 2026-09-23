@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kinboni Beauty</title>
+    <meta
+      name="description"
+      content="Luxury beauty, skincare, makeup and haircare essentials crafted for everyday rituals."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="announcement-bar">
+      <p>Free shipping on orders over $75 • New arrivals now live</p>
+    </div>
+
+    <header class="site-header" id="site-header">
+      <div class="container header-inner">
+        <a href="#" class="brand" aria-label="Kinboni home">
+          <span class="brand-mark">K</span>
+          <span class="brand-name">KINBONI</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="#">Shop All</a>
+          <a href="#">Makeup</a>
+          <a href="#">Skin Care</a>
+          <a href="#">Hair Care</a>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="icon-button" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+          <button class="icon-button" aria-label="Account">
+            <i class="fa-regular fa-user"></i>
+          </button>
+          <button class="icon-button cart-button" aria-label="Shopping bag">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="cart-count">2</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <video
+          class="hero-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          aria-hidden="true"
+        >
+          <source src="handbags-motion.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-video-overlay" aria-hidden="true"></div>
+
+        <div class="hero-slider">
+          <article class="slide is-active" data-theme="blush">
+            <div class="container hero-layout">
+              <div class="hero-copy reveal-up">
+                <span class="eyebrow">Curated rituals</span>
+                <h1>Refined Beauty.</h1>
+                <p>
+                  Discover carefully selected beauty essentials designed to
+                  elevate your everyday ritual.
+                </p>
+                <div class="hero-actions">
+                  <a href="#" class="button button-primary">Shop Collection</a>
+                  <a href="#" class="button button-secondary">Explore Beauty</a>
+                </div>
+                <ul class="hero-metrics">
+                  <li><strong>12k+</strong><span>happy clients</span></li>
+                  <li><strong>4.9/5</strong><span>average rating</span></li>
+                  <li><strong>100%</strong><span>cruelty free</span></li>
+                </ul>
+              </div>
+
+              <div class="hero-visual reveal-scale">
+                <div class="image-frame frame-large">
+                  <img
+                    src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80"
+                    alt="Luxury skincare arrangement"
+                  />
+                </div>
+                <div class="product-badge badge-top">
+                  <span>New</span>
+                  <strong>Glow Ritual</strong>
+                </div>
+                <div class="product-badge badge-bottom">
+                  <span>Best Seller</span>
+                  <strong>Rose Serum</strong>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="slide" data-theme="ivory">
+            <div class="container hero-layout">
+              <div class="hero-copy reveal-up">
+                <span class="eyebrow">Editorial essentials</span>
+                <h1>Soft Glow.</h1>
+                <p>
+                  Clean formulas, refined textures, and luminous finishes
+                  crafted for effortless confidence.
+                </p>
+                <div class="hero-actions">
+                  <a href="#" class="button button-primary">Shop Glow</a>
+                  <a href="#" class="button button-secondary">View Routine</a>
+                </div>
+                <ul class="hero-metrics">
+                  <li>
+                    <strong>Clinically</strong><span>backed formulas</span>
+                  </li>
+                  <li><strong>48h</strong><span>hydration</span></li>
+                  <li><strong>Vegan</strong><span>ingredients</span></li>
+                </ul>
+              </div>
+
+              <div class="hero-visual reveal-scale">
+                <div class="image-frame frame-arch">
+                  <img
+                    src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=900&q=80"
+                    alt="Beauty products and skincare"
+                  />
+                </div>
+                <div class="product-badge badge-top">
+                  <span>Limited</span>
+                  <strong>Rosé Edit</strong>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="slide" data-theme="peach">
+            <div class="container hero-layout">
+              <div class="hero-copy reveal-up">
+                <span class="eyebrow">For every ritual</span>
+                <h1>Simply Radiant.</h1>
+                <p>
+                  Thoughtful skincare, radiant makeup, and nourishing haircare
+                  for your most confident days.
+                </p>
+                <div class="hero-actions">
+                  <a href="#" class="button button-primary">Discover Now</a>
+                  <a href="#" class="button button-secondary"
+                    >See Best Sellers</a
+                  >
+                </div>
+                <ul class="hero-metrics">
+                  <li><strong>Derm</strong><span>tested</span></li>
+                  <li><strong>Free</strong><span>returns</span></li>
+                  <li><strong>24h</strong><span>dispatch</span></li>
+                </ul>
+              </div>
+
+              <div class="hero-visual reveal-scale">
+                <div class="image-frame frame-circle">
+                  <img
+                    src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=900&q=80"
+                    alt="Woman with beauty products"
+                  />
+                </div>
+                <div class="product-badge badge-bottom">
+                  <span>Editor’s pick</span>
+                  <strong>Velvet Veil</strong>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="container hero-nav-wrap">
+          <div class="hero-pagination" aria-label="Hero slides">
+            <button class="dot is-active" aria-label="Go to slide 1"></button>
+            <button class="dot" aria-label="Go to slide 2"></button>
+            <button class="dot" aria-label="Go to slide 3"></button>
+          </div>
+          <button
+            class="video-toggle"
+            type="button"
+            aria-label="Pause background video"
+          >
+            <i class="fa-solid fa-pause"></i>
+            <span>Pause motion</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="trust-section section-spacing reveal-up">
+        <div class="container trust-inner">
+          <div class="trust-item">
+            <i class="fa-solid fa-shield-heart"></i>
+            <span>Premium Quality</span>
+          </div>
+          <div class="trust-item">
+            <i class="fa-solid fa-paw"></i>
+            <span>Cruelty Free</span>
+          </div>
+          <div class="trust-item">
+            <i class="fa-solid fa-stethoscope"></i>
+            <span>Dermatologist Tested</span>
+          </div>
+          <div class="trust-item">
+            <i class="fa-solid fa-lock"></i>
+            <span>Secure Checkout</span>
+          </div>
+          <div class="trust-item">
+            <i class="fa-solid fa-truck-fast"></i>
+            <span>Fast Delivery</span>
+          </div>
+          <div class="trust-item">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span>Easy Returns</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="featured-categories section-spacing reveal-up">
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow">Shop by ritual</span>
+            <h2>Curated for your beauty story</h2>
+          </div>
+
+          <div class="category-grid">
+            <article class="category-card category-skincare">
+              <div class="category-image-wrap">
+                <img
+                  src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=900&q=80"
+                  alt="Skincare collection"
+                />
+              </div>
+              <div class="category-copy">
+                <span>Skincare</span>
+                <a href="#">Explore Collection</a>
+              </div>
+            </article>
+
+            <article class="category-card category-makeup">
+              <div class="category-image-wrap">
+                <img
+                  src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80"
+                  alt="Makeup collection"
+                />
+              </div>
+              <div class="category-copy">
+                <span>Makeup</span>
+                <a href="#">Explore Collection</a>
+              </div>
+            </article>
+
+            <article class="category-card category-haircare">
+              <div class="category-image-wrap">
+                <img
+                  src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80"
+                  alt="Hair care collection"
+                />
+              </div>
+              <div class="category-copy">
+                <span>Hair Care</span>
+                <a href="#">Explore Collection</a>
+              </div>
+            </article>
+
+            <article class="category-card category-new">
+              <div class="category-image-wrap">
+                <img
+                  src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80"
+                  alt="New arrivals"
+                />
+              </div>
+              <div class="category-copy">
+                <span>New Arrivals</span>
+                <a href="#">Explore Collection</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="products section-spacing reveal-up">
+        <div class="container">
+          <div class="section-heading split-heading">
+            <div>
+              <span class="eyebrow">Trending now</span>
+              <h2>Trending Now</h2>
+            </div>
+            <a href="#" class="text-link">View all</a>
+          </div>
+
+          <div class="product-grid">
+            <article class="product-card">
+              <div class="product-media">
+                <span class="badge badge-new">New</span>
+                <button class="wishlist-button" aria-label="Add to wishlist">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=900&q=80"
+                  alt="Plum serum bottle"
+                />
+              </div>
+              <div class="product-info">
+                <div class="product-meta">
+                  <span class="category">Skin Care</span>
+                  <span class="rating"
+                    ><i class="fa-solid fa-star"></i> 4.9</span
+                  >
+                </div>
+                <h3>Plum Dew Serum</h3>
+                <div class="price-row">
+                  <div class="price-group">
+                    <span class="price">$42</span>
+                    <span class="old-price">$58</span>
+                  </div>
+                  <button class="mini-button">Quick Add</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="product-media">
+                <span class="badge badge-sale">Sale</span>
+                <button class="wishlist-button" aria-label="Add to wishlist">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80"
+                  alt="Rose cream jar"
+                />
+              </div>
+              <div class="product-info">
+                <div class="product-meta">
+                  <span class="category">Makeup</span>
+                  <span class="rating"
+                    ><i class="fa-solid fa-star"></i> 4.8</span
+                  >
+                </div>
+                <h3>Rose Veil Tint</h3>
+                <div class="price-row">
+                  <div class="price-group">
+                    <span class="price">$36</span>
+                    <span class="old-price">$48</span>
+                  </div>
+                  <button class="mini-button">Quick Add</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="product-media">
+                <button class="wishlist-button" aria-label="Add to wishlist">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=900&q=80"
+                  alt="Amber hair mask"
+                />
+              </div>
+              <div class="product-info">
+                <div class="product-meta">
+                  <span class="category">Hair Care</span>
+                  <span class="rating"
+                    ><i class="fa-solid fa-star"></i> 5.0</span
+                  >
+                </div>
+                <h3>Amber Silk Mask</h3>
+                <div class="price-row">
+                  <div class="price-group">
+                    <span class="price">$54</span>
+                  </div>
+                  <button class="mini-button">Quick Add</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="product-media">
+                <span class="badge badge-new">New</span>
+                <button class="wishlist-button" aria-label="Add to wishlist">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=900&q=80"
+                  alt="Soft velvet face cream packaging"
+                />
+              </div>
+              <div class="product-info">
+                <div class="product-meta">
+                  <span class="category">Skin Care</span>
+                  <span class="rating"
+                    ><i class="fa-solid fa-star"></i> 4.9</span
+                  >
+                </div>
+                <h3>Velvet Cloud Cream</h3>
+                <div class="price-row">
+                  <div class="price-group">
+                    <span class="price">$39</span>
+                  </div>
+                  <button class="mini-button">Quick Add</button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="editorial-banner section-spacing reveal-up">
+        <div class="container banner-shell">
+          <div class="banner-image-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1200&q=80"
+              alt="Luxury cosmetic skincare campaign"
+            />
+          </div>
+          <div class="banner-copy">
+            <span class="eyebrow">Curated by kinboni</span>
+            <h2>The Art of Everyday Beauty</h2>
+            <p>
+              Thoughtful formulas and elevated textures designed to bring
+              clarity, softness, and confidence to your ritual.
+            </p>
+            <a href="#" class="button button-primary"
+              >Discover the Collection</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="products section-spacing reveal-up">
+        <div class="container">
+          <div class="section-heading split-heading">
+            <div>
+              <span class="eyebrow">Best sellers</span>
+              <h2>Best Sellers</h2>
+            </div>
+            <a href="#" class="button button-secondary small-button"
+              >View All Products</a
+            >
+          </div>
+
+          <div class="product-grid bestsellers-grid">
+            <article class="product-card">
+              <div class="product-media">
+                <button class="wishlist-button" aria-label="Add to wishlist">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=900&q=80"
+                  alt="Serum bottle"
+                />
+              </div>
+              <div class="product-info">
+                <div class="product-meta">
+                  <span class="category">Skin Care</span>
+                  <span class="rating"
+                    ><i class="fa-solid fa-star"></i> 4.9</span
+                  >
+                </div>
+                <h3>Golden Dew Essence</h3>
+                <div class="price-row">
+                  <div class="price-group">
+                    <span class="price">$58</span>
+                  </div>
+                  <button class="mini-button">Quick Add</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="product-media">
+                <button class="wishlist-button" aria-label="Add to wishlist">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80"
+                  alt="Makeup palette"
+                />
+              </div>
+              <div class="product-info">
+                <div class="product-meta">
+                  <span class="category">Makeup</span>
+                  <span class="rating"
+                    ><i class="fa-solid fa-star"></i> 4.8</span
+                  >
+                </div>
+                <h3>Soft Focus Palette</h3>
+                <div class="price-row">
+                  <div class="price-group">
+                    <span class="price">$68</span>
+                  </div>
+                  <button class="mini-button">Quick Add</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="product-media">
+                <button class="wishlist-button" aria-label="Add to wishlist">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80"
+                  alt="Hair oil bottle"
+                />
+              </div>
+              <div class="product-info">
+                <div class="product-meta">
+                  <span class="category">Hair Care</span>
+                  <span class="rating"
+                    ><i class="fa-solid fa-star"></i> 5.0</span
+                  >
+                </div>
+                <h3>Silk Renewal Oil</h3>
+                <div class="price-row">
+                  <div class="price-group">
+                    <span class="price">$46</span>
+                  </div>
+                  <button class="mini-button">Quick Add</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="product-media">
+                <button class="wishlist-button" aria-label="Add to wishlist">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=900&q=80"
+                  alt="Glow cream product"
+                />
+              </div>
+              <div class="product-info">
+                <div class="product-meta">
+                  <span class="category">Skin Care</span>
+                  <span class="rating"
+                    ><i class="fa-solid fa-star"></i> 4.9</span
+                  >
+                </div>
+                <h3>Petal Recovery Cream</h3>
+                <div class="price-row">
+                  <div class="price-group">
+                    <span class="price">$51</span>
+                  </div>
+                  <button class="mini-button">Quick Add</button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="brand-story section-spacing reveal-up">
+        <div class="container story-layout">
+          <div class="story-image-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=80"
+              alt="Beauty lifestyle portrait"
+            />
+          </div>
+          <div class="story-copy">
+            <span class="eyebrow">Our philosophy</span>
+            <h2>Beauty rituals, made beautifully.</h2>
+            <p>
+              At Kinboni, we believe beautiful routines should feel luxurious,
+              effective, and deeply personal. We partner with innovators and
+              dermatology-led formulators to bring thoughtful essentials to
+              everyday rituals.
+            </p>
+            <p>
+              From soft skincare foundations to radiant, high-performance color,
+              each product is crafted to support a calmer, more confident
+              self-care ritual.
+            </p>
+            <a href="#" class="button button-primary">Discover Our Story</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="testimonials section-spacing reveal-up">
+        <div class="container">
+          <div class="section-heading centered">
+            <span class="eyebrow">Reviews</span>
+            <h2>Loved by Our Customers</h2>
+          </div>
+
+          <div class="testimonials-carousel">
+            <article class="testimonial-card">
+              <div class="stars" aria-label="Five star review">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p>
+                “The texture is incredibly refined and my skin looks brighter
+                within days. It feels premium from the first use.”
+              </p>
+              <div class="testimonial-user">
+                <strong>Sofia M.</strong>
+                <span>Verified Customer</span>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="stars" aria-label="Five star review">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p>
+                “Elegant formulas, gorgeous packaging, and a routine that
+                actually feels effortless. I keep coming back.”
+              </p>
+              <div class="testimonial-user">
+                <strong>Amelia R.</strong>
+                <span>Verified Customer</span>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="stars" aria-label="Five star review">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p>
+                “Every product feels considered and luxurious. My hair and skin
+                look healthier, and the shipping was seamless.”
+              </p>
+              <div class="testimonial-user">
+                <strong>Naomi T.</strong>
+                <span>Verified Customer</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="carousel-controls">
+            <button class="carousel-arrow" aria-label="Previous testimonial">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <div class="carousel-dots">
+              <button class="dot is-active"></button>
+              <button class="dot"></button>
+              <button class="dot"></button>
+            </div>
+            <button class="carousel-arrow" aria-label="Next testimonial">
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="collections section-spacing reveal-up">
+        <div class="container collection-grid">
+          <article class="promo-block promo-makeup">
+            <div class="promo-copy">
+              <span class="eyebrow">Makeup</span>
+              <h3>Soft focus, glow with intention.</h3>
+              <p>
+                Finish your routine with luminous textures and skin-loving
+                color.
+              </p>
+              <a href="#">Shop Now</a>
+            </div>
+          </article>
+
+          <article class="promo-block promo-skincare">
+            <div class="promo-copy">
+              <span class="eyebrow">Skincare</span>
+              <h3>Hydration designed for daily ritual.</h3>
+              <p>
+                Calm, clarify, and replenish with formulas that feel as good as
+                they look.
+              </p>
+              <a href="#">Shop Now</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="benefits section-spacing reveal-up">
+        <div class="container benefits-grid">
+          <article class="benefit-item">
+            <i class="fa-solid fa-truck-fast"></i>
+            <div>
+              <h4>Free Shipping</h4>
+              <p>On all orders over $75</p>
+            </div>
+          </article>
+          <article class="benefit-item">
+            <i class="fa-solid fa-gift"></i>
+            <div>
+              <h4>Fast Delivery</h4>
+              <p>Beautifully packed in 24–48 hours</p>
+            </div>
+          </article>
+          <article class="benefit-item">
+            <i class="fa-solid fa-credit-card"></i>
+            <div>
+              <h4>Secure Payment</h4>
+              <p>Protected checkout experience</p>
+            </div>
+          </article>
+          <article class="benefit-item">
+            <i class="fa-solid fa-arrow-rotate-left"></i>
+            <div>
+              <h4>Easy Returns</h4>
+              <p>Simple exchanges and returns</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="newsletter section-spacing reveal-up">
+        <div class="container newsletter-shell">
+          <div>
+            <span class="eyebrow">Beauty notes</span>
+            <h2>Your beauty, delivered to your inbox.</h2>
+          </div>
+          <div class="newsletter-form-wrap">
+            <form class="newsletter-form">
+              <label class="sr-only" for="email">Email address</label>
+              <input id="email" type="email" placeholder="Email address" />
+              <button type="submit" class="button button-primary">
+                Subscribe
+              </button>
+            </form>
+            <p>
+              Discover new arrivals, beauty inspiration and exclusive offers.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="brand" aria-label="Kinboni home">
+            <span class="brand-mark">K</span>
+            <span class="brand-name">KINBONI</span>
+          </a>
+          <p>
+            Thoughtful beauty essentials designed to bring ease, glow, and
+            confidence to your everyday ritual.
+          </p>
+          <div class="socials" aria-label="Social media links">
+            <a href="#" aria-label="Instagram"
+              ><i class="fa-brands fa-instagram"></i
+            ></a>
+            <a href="#" aria-label="Pinterest"
+              ><i class="fa-brands fa-pinterest-p"></i
+            ></a>
+            <a href="#" aria-label="TikTok"
+              ><i class="fa-brands fa-tiktok"></i
+            ></a>
+            <a href="#" aria-label="Facebook"
+              ><i class="fa-brands fa-facebook-f"></i
+            ></a>
+          </div>
+        </div>
+
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="#">Shop All</a></li>
+            <li><a href="#">Makeup</a></li>
+            <li><a href="#">Skin Care</a></li>
+            <li><a href="#">Hair Care</a></li>
+            <li><a href="#">New Arrivals</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Customer Care</h4>
+          <ul>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Returns</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>About</h4>
+          <ul>
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms &amp; Conditions</a></li>
+            <li><a href="#">Refund Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="container footer-bottom">
+        <p>© 2026 Kinboni. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms</a>
+          <a href="#">Refund Policy</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
