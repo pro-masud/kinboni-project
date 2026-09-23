@@ -39,12 +39,14 @@
         </a>
 
         <nav class="main-nav" aria-label="Main navigation">
-          <a href="#">Shop All</a>
-          <a href="#">Makeup</a>
-          <a href="#">Skin Care</a>
-          <a href="#">Hair Care</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
+          <a href="#categories">Shop</a>
+          <a href="#categories">Skincare</a>
+          <a href="#categories">Makeup</a>
+          <a href="#categories">Hair Care</a>
+          <a href="#categories">Body Care</a>
+          <a href="#categories">Beauty Tools</a>
+          <a href="#new-arrivals">New Arrivals</a>
+          <a href="#story">About</a>
         </nav>
 
         <div class="header-actions">
@@ -64,17 +66,11 @@
 
     <main>
       <section class="hero">
-        <video
-          class="hero-video"
-          autoplay
-          muted
-          loop
-          playsinline
-          preload="metadata"
-          aria-hidden="true"
-        >
-          <source src="assets/video/handbags-motion.mp4" type="video/mp4" />
-        </video>
+        <img
+          class="hero-image"
+          src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=1800&q=85"
+          alt="Luxury skincare products arranged for a daily ritual"
+        />
         <div class="hero-video-overlay" aria-hidden="true"></div>
 
         <div class="hero-slider swiper">
@@ -82,20 +78,20 @@
           <article class="slide swiper-slide" data-theme="blush">
             <div class="container hero-layout">
               <div class="hero-copy">
-                <span class="eyebrow">Curated rituals</span>
-                <h1>Refined Beauty.</h1>
+                <span class="eyebrow">Kinboni skincare edit</span>
+                <h1>Soft Glow, Made for You.</h1>
                 <p>
-                  Discover carefully selected beauty essentials designed to
-                  elevate your everyday ritual.
+                  Premium skincare, makeup and beauty essentials crafted for
+                  your everyday ritual.
                 </p>
                 <div class="hero-actions">
-                  <a href="#" class="button button-primary">Shop Collection</a>
-                  <a href="#" class="button button-secondary">Explore Beauty</a>
+                  <a href="#trending" class="button button-primary">Shop Now</a>
+                  <a href="#routine" class="button button-secondary">View Routine</a>
                 </div>
                 <ul class="hero-metrics">
-                  <li><strong>12k+</strong><span>happy clients</span></li>
-                  <li><strong>4.9/5</strong><span>average rating</span></li>
-                  <li><strong>100%</strong><span>cruelty free</span></li>
+                  <li><strong>Cruelty Free</strong><span>beauty without compromise</span></li>
+                  <li><strong>Vegan</strong><span>thoughtful formulas</span></li>
+                  <li><strong>Derm Tested</strong><span>made with confidence</span></li>
                 </ul>
               </div>
 
@@ -122,7 +118,7 @@
             <div class="container hero-layout">
               <div class="hero-copy">
                 <span class="eyebrow">Editorial essentials</span>
-                <h1>Soft Glow.</h1>
+                <h1>Glow With Intention.</h1>
                 <p>
                   Clean formulas, refined textures, and luminous finishes
                   crafted for effortless confidence.
@@ -159,7 +155,7 @@
             <div class="container hero-layout">
               <div class="hero-copy">
                 <span class="eyebrow">For every ritual</span>
-                <h1>Simply Radiant.</h1>
+                <h1>Your Ritual, Refined.</h1>
                 <p>
                   Thoughtful skincare, radiant makeup, and nourishing haircare
                   for your most confident days.
@@ -235,7 +231,7 @@
         </div>
       </section>
 
-      <section class="featured-categories section-spacing reveal-up">
+      <section class="featured-categories section-spacing reveal-up" id="categories">
         <div class="container">
           <div class="section-heading">
             <span class="eyebrow">Shop by ritual</span>
@@ -327,7 +323,7 @@
         </div>
       </section>
 
-      <section class="products section-spacing reveal-up">
+      <section class="products section-spacing reveal-up" id="trending">
         <div class="container">
           <div class="section-heading split-heading">
             <div>
@@ -454,6 +450,26 @@
         </div>
       </section>
 
+      <section class="concerns section-spacing reveal-up" id="concerns">
+        <div class="container">
+          <div class="section-heading split-heading">
+            <div>
+              <span class="eyebrow">Shop by concern</span>
+              <h2>Find What Your Skin Needs</h2>
+            </div>
+            <a href="#categories" class="text-link">Find Your Match</a>
+          </div>
+          <div class="concern-grid">
+            <a class="concern-card" href="#trending"><strong>Dry Skin</strong><span>Comforting moisture</span></a>
+            <a class="concern-card" href="#trending"><strong>Acne &amp; Blemishes</strong><span>Clearer-looking skin</span></a>
+            <a class="concern-card" href="#trending"><strong>Dullness</strong><span>Bring back the glow</span></a>
+            <a class="concern-card" href="#trending"><strong>Sensitive Skin</strong><span>Calm daily care</span></a>
+            <a class="concern-card" href="#trending"><strong>Fine Lines</strong><span>Firming essentials</span></a>
+            <a class="concern-card" href="#trending"><strong>Hydration</strong><span>Deeply replenishing</span></a>
+          </div>
+        </div>
+      </section>
+
       <section class="editorial-banner section-spacing reveal-up">
         <div class="container banner-shell">
           <div class="banner-image-wrap">
@@ -464,27 +480,27 @@
           </div>
           <div class="banner-copy">
             <span class="eyebrow">Curated by kinboni</span>
-            <h2>The Art of Everyday Beauty</h2>
+            <h2>Soft Focus, Glow With Intention.</h2>
             <p>
               Thoughtful formulas and elevated textures designed to bring
               clarity, softness, and confidence to your ritual.
             </p>
             <a href="#" class="button button-primary"
-              >Discover the Collection</a
+              >Shop the Edit</a
             >
           </div>
         </div>
       </section>
 
-      <section class="products section-spacing reveal-up">
+      <section class="products section-spacing reveal-up" id="new-arrivals">
         <div class="container">
           <div class="section-heading split-heading">
             <div>
-              <span class="eyebrow">Best sellers</span>
-              <h2>Best Sellers</h2>
+              <span class="eyebrow">Latest additions</span>
+              <h2>See What's New</h2>
             </div>
             <a href="#" class="button button-secondary small-button"
-              >View All Products</a
+              >See What's New</a
             >
           </div>
 
@@ -600,7 +616,39 @@
         </div>
       </section>
 
-      <section class="brand-story section-spacing reveal-up">
+      <section class="ingredients section-spacing reveal-up" id="ingredients">
+        <div class="container">
+          <div class="section-heading centered">
+            <span class="eyebrow">Ingredient spotlight</span>
+            <h2>What's Inside Matters</h2>
+          </div>
+          <div class="ingredient-grid">
+            <article><span class="ingredient-number">01</span><h3>Hyaluronic Acid</h3><p>Deep hydration</p></article>
+            <article><span class="ingredient-number">02</span><h3>Vitamin C</h3><p>Brightening care</p></article>
+            <article><span class="ingredient-number">03</span><h3>Niacinamide</h3><p>Balanced-looking skin</p></article>
+            <article><span class="ingredient-number">04</span><h3>Peptides</h3><p>Firm and smooth appearance</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="routine section-spacing reveal-up" id="routine">
+        <div class="container routine-shell">
+          <div class="routine-intro">
+            <span class="eyebrow">Your daily ritual</span>
+            <h2>Build Your Beauty Ritual</h2>
+            <p>Four considered steps for a calmer, more luminous routine.</p>
+            <a href="#trending" class="button button-primary">Build Your Routine</a>
+          </div>
+          <div class="routine-steps">
+            <div><span>01</span><strong>Cleanse</strong><small>Reset and refresh</small></div>
+            <div><span>02</span><strong>Treat</strong><small>Target what you need</small></div>
+            <div><span>03</span><strong>Hydrate</strong><small>Lock in softness</small></div>
+            <div><span>04</span><strong>Protect</strong><small>Finish with confidence</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="brand-story section-spacing reveal-up" id="story">
         <div class="container story-layout">
           <div class="story-image-wrap">
             <img
@@ -632,6 +680,7 @@
           <div class="section-heading centered">
             <span class="eyebrow">Reviews</span>
             <h2>Loved by Our Customers</h2>
+            <div class="review-summary"><strong>★★★★★</strong><span>4.8/5 · From 2,340 verified reviews</span></div>
           </div>
 
           <div class="testimonials-carousel swiper">
@@ -816,6 +865,37 @@
               <p>Simple exchanges and returns</p>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section class="ugc section-spacing reveal-up">
+        <div class="container">
+          <div class="section-heading split-heading">
+            <div><span class="eyebrow">@kinboni</span><h2>Beauty in Real Life</h2></div>
+            <a href="#" class="text-link">Follow Us</a>
+          </div>
+          <p class="ugc-lede">See how our community styles their everyday beauty rituals.</p>
+          <div class="ugc-grid">
+            <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=700&q=80" alt="Skincare products in a warm bathroom" />
+            <img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=700&q=80" alt="A calm skincare ritual" />
+            <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=700&q=80" alt="Serum and skincare products" />
+            <img src="https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=700&q=80" alt="Beauty cream and botanical care" />
+            <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=700&q=80" alt="Haircare ritual" />
+            <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=700&q=80" alt="Soft beauty ritual details" />
+          </div>
+        </div>
+      </section>
+
+      <section class="faq section-spacing reveal-up">
+        <div class="container faq-shell">
+          <div><span class="eyebrow">Need to know</span><h2>Frequently Asked Questions</h2></div>
+          <div class="faq-list">
+            <details><summary>Are your products cruelty-free?</summary><p>Yes. Kinboni selects cruelty-free formulas and thoughtful suppliers.</p></details>
+            <details><summary>Do you offer international shipping?</summary><p>We are expanding delivery destinations. Shipping options appear at checkout.</p></details>
+            <details><summary>How long does delivery take?</summary><p>Orders typically leave our studio within 24–48 hours.</p></details>
+            <details><summary>What is your return policy?</summary><p>Enjoy easy 30-day returns on eligible unopened products.</p></details>
+            <details><summary>How do I choose the right product?</summary><p>Start with Shop by Concern or build a simple routine with our ritual guide.</p></details>
+          </div>
         </div>
       </section>
 

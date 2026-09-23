@@ -284,14 +284,14 @@ h4 {
 .main-nav {
   display: flex;
   align-items: center;
-  gap: clamp(12px, 2vw, 26px);
+  gap: clamp(8px, 1.2vw, 16px);
 }
 
 .main-nav a {
   position: relative;
   padding: 10px 0 12px;
-  font-size: 0.72rem;
-  letter-spacing: 0.12rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.09rem;
   text-transform: uppercase;
   color: var(--ink);
 }
@@ -351,7 +351,7 @@ h4 {
   background: #372522;
 }
 
-.hero-video,
+.hero-image,
 .hero-video-overlay {
   position: absolute;
   inset: 0;
@@ -359,10 +359,18 @@ h4 {
   height: 100%;
 }
 
-.hero-video {
+.hero-image {
   z-index: -2;
   object-fit: cover;
   object-position: center;
+  filter: saturate(0.78) contrast(1.05);
+}
+
+.hero-video {
+  display: none;
+}
+
+.hero-image {
   filter: saturate(0.82) contrast(1.04);
 }
 
@@ -639,6 +647,7 @@ h4 {
   font-size: 0.68rem;
   letter-spacing: 0.13rem;
   text-transform: uppercase;
+  display: none;
 }
 
 .video-toggle i {
@@ -728,6 +737,10 @@ h4 {
   opacity: 1;
 }
 
+.hero-pagination {
+  margin-right: auto;
+}
+
 .category-card {
   position: relative;
   min-height: 480px;
@@ -805,6 +818,143 @@ h4 {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
+}
+
+.concerns {
+  padding-top: 40px;
+}
+
+.concern-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.concern-card {
+  min-height: 142px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  gap: 6px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #f4e9e2, #eee2dc);
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
+}
+
+.concern-card:nth-child(2n) {
+  background: linear-gradient(135deg, #e9e6dc, #f3eee7);
+}
+
+.concern-card:hover {
+  transform: translateY(-4px);
+  background: #fffaf6;
+}
+
+.concern-card strong {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.concern-card span,
+.ugc-lede {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.ingredients {
+  padding-top: 45px;
+}
+
+.ingredient-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.ingredient-grid article {
+  padding: 28px 22px;
+  border-right: 1px solid var(--line);
+}
+
+.ingredient-grid article:last-child {
+  border-right: 0;
+}
+
+.ingredient-number {
+  color: var(--rose-deep);
+  font-size: 0.72rem;
+  letter-spacing: 0.14rem;
+}
+
+.ingredient-grid h3 {
+  margin: 30px 0 8px;
+  font-size: 1.8rem;
+}
+
+.ingredient-grid p {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.routine {
+  padding-top: 30px;
+}
+
+.routine-shell {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 54px;
+  align-items: center;
+  padding: 44px;
+  border-radius: var(--radius-lg);
+  background: #eee3dc;
+}
+
+.routine-intro h2 {
+  margin-bottom: 14px;
+}
+
+.routine-intro p {
+  max-width: 330px;
+  margin-bottom: 24px;
+  color: var(--muted);
+}
+
+.routine-steps {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.routine-steps div {
+  display: grid;
+  gap: 6px;
+  min-height: 132px;
+  padding: 20px;
+  border: 1px solid rgba(31, 26, 26, 0.1);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 253, 251, 0.44);
+}
+
+.routine-steps span {
+  color: var(--rose-deep);
+  font-size: 0.72rem;
+  letter-spacing: 0.14rem;
+}
+
+.routine-steps strong {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.8rem;
+}
+
+.routine-steps small {
+  color: var(--muted);
 }
 
 .product-card {
@@ -1047,6 +1197,21 @@ h4 {
   background: rgba(255, 255, 255, 0.18);
 }
 
+.review-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.review-summary strong {
+  color: #c6924d;
+  letter-spacing: 0.12rem;
+}
+
 .testimonials-carousel {
   position: relative;
   overflow: hidden;
@@ -1246,6 +1411,88 @@ h4 {
   font-size: 0.9rem;
 }
 
+.ugc {
+  padding-top: 50px;
+}
+
+.ugc-lede {
+  margin: -16px 0 24px;
+}
+
+.ugc-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ugc-grid img {
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  filter: saturate(0.82);
+  transition:
+    transform 0.4s ease,
+    filter 0.4s ease;
+}
+
+.ugc-grid img:hover {
+  transform: translateY(-4px);
+  filter: saturate(1);
+}
+
+.faq {
+  padding-top: 42px;
+}
+
+.faq-shell {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.faq-list {
+  border-top: 1px solid var(--line);
+}
+
+.faq-list details {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq-list summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  cursor: pointer;
+  font-size: 0.92rem;
+  font-weight: 700;
+  list-style: none;
+}
+
+.faq-list summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-list summary::after {
+  content: "+";
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+.faq-list details[open] summary::after {
+  content: "-";
+}
+
+.faq-list details p {
+  max-width: 620px;
+  padding: 0 30px 18px 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
 .newsletter {
   padding-top: 36px;
 }
@@ -1428,6 +1675,20 @@ h4 {
   .slide {
     min-height: 680px;
   }
+
+  .concern-grid,
+  .ingredient-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .routine-shell,
+  .faq-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .ugc-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 760px) {
@@ -1466,6 +1727,10 @@ h4 {
 
   .hero-video {
     object-position: 62% center;
+  }
+
+  .hero-image {
+    object-position: 64% center;
   }
 
   .hero-video-overlay {
@@ -1511,6 +1776,31 @@ h4 {
   .testimonials-carousel,
   .collection-grid {
     grid-template-columns: 1fr;
+  }
+
+  .concern-grid,
+  .ingredient-grid,
+  .routine-shell,
+  .faq-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .ingredient-grid article {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ingredient-grid article:last-child {
+    border-bottom: 0;
+  }
+
+  .routine-shell {
+    gap: 28px;
+    padding: 26px 20px;
+  }
+
+  .ugc-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .section-heading {
