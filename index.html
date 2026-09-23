@@ -49,12 +49,19 @@
           <a href="#story">About</a>
         </nav>
 
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
         <div class="header-actions">
           <button class="icon-button" aria-label="Search">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
           <button class="icon-button" aria-label="Account">
             <i class="fa-regular fa-user"></i>
+          </button>
+          <button class="icon-button" aria-label="Wishlist">
+            <i class="fa-regular fa-heart"></i>
           </button>
           <button class="icon-button cart-button" aria-label="Shopping bag">
             <i class="fa-solid fa-bag-shopping"></i>
@@ -63,6 +70,25 @@
         </div>
       </div>
     </header>
+
+    <nav class="mobile-menu" aria-label="Mobile navigation" aria-hidden="true">
+      <a href="#categories">Shop</a>
+      <a href="#categories">Skincare</a>
+      <a href="#categories">Makeup</a>
+      <a href="#categories">Hair Care</a>
+      <a href="#categories">Body Care</a>
+      <a href="#categories">Beauty Tools</a>
+      <a href="#new-arrivals">New Arrivals</a>
+      <a href="#story">About</a>
+    </nav>
+
+    <div class="search-panel" aria-hidden="true">
+      <form class="search-form">
+        <label for="site-search">Search Kinboni</label>
+        <div><input id="site-search" type="search" placeholder="Search skincare, makeup, rituals..." /><button type="submit" aria-label="Submit search"><i class="fa-solid fa-arrow-right"></i></button></div>
+      </form>
+      <button class="search-close" type="button" aria-label="Close search"><i class="fa-solid fa-xmark"></i></button>
+    </div>
 
     <main>
       <section class="hero">
@@ -460,12 +486,12 @@
             <a href="#categories" class="text-link">Find Your Match</a>
           </div>
           <div class="concern-grid">
-            <a class="concern-card" href="#trending"><strong>Dry Skin</strong><span>Comforting moisture</span></a>
-            <a class="concern-card" href="#trending"><strong>Acne &amp; Blemishes</strong><span>Clearer-looking skin</span></a>
-            <a class="concern-card" href="#trending"><strong>Dullness</strong><span>Bring back the glow</span></a>
-            <a class="concern-card" href="#trending"><strong>Sensitive Skin</strong><span>Calm daily care</span></a>
-            <a class="concern-card" href="#trending"><strong>Fine Lines</strong><span>Firming essentials</span></a>
-            <a class="concern-card" href="#trending"><strong>Hydration</strong><span>Deeply replenishing</span></a>
+            <a class="concern-card concern-dry" href="#trending"><strong>Dry Skin</strong><span>Comforting moisture · 12 products →</span></a>
+            <a class="concern-card concern-acne" href="#trending"><strong>Acne &amp; Blemishes</strong><span>Clearer-looking skin · 8 products →</span></a>
+            <a class="concern-card concern-dull" href="#trending"><strong>Dullness</strong><span>Bring back the glow · 10 products →</span></a>
+            <a class="concern-card concern-sensitive" href="#trending"><strong>Sensitive Skin</strong><span>Calm daily care · 9 products →</span></a>
+            <a class="concern-card concern-lines" href="#trending"><strong>Fine Lines</strong><span>Firming essentials · 7 products →</span></a>
+            <a class="concern-card concern-hydration" href="#trending"><strong>Hydration</strong><span>Deeply replenishing · 14 products →</span></a>
           </div>
         </div>
       </section>
@@ -616,6 +642,21 @@
         </div>
       </section>
 
+      <section class="products best-sellers-section section-spacing reveal-up" id="best-sellers">
+        <div class="container">
+          <div class="section-heading split-heading">
+            <div><span class="eyebrow">Loved for a reason</span><h2>Best Sellers</h2></div>
+            <a href="#best-sellers" class="text-link">Shop All Best Sellers</a>
+          </div>
+          <div class="product-grid bestsellers-grid">
+            <article class="product-card"><div class="product-media"><span class="badge badge-sale">Sale</span><button class="wishlist-button" aria-label="Add to wishlist"><i class="fa-regular fa-heart"></i></button><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=900&q=80" alt="Golden hair oil bottle" /></div><div class="product-info"><div class="product-meta"><span class="category">Hair Care</span><span class="rating"><i class="fa-solid fa-star"></i> 4.9</span></div><h3>Silk Renewal Oil</h3><div class="price-row"><div class="price-group"><span class="price">$46</span><span class="old-price">$58</span></div><button class="mini-button">Quick Add</button></div></div></article>
+            <article class="product-card"><div class="product-media"><button class="wishlist-button" aria-label="Add to wishlist"><i class="fa-regular fa-heart"></i></button><img src="https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=900&q=80" alt="Rich body cream" /></div><div class="product-info"><div class="product-meta"><span class="category">Body Care</span><span class="rating"><i class="fa-solid fa-star"></i> 4.8</span></div><h3>Cloud Body Souffle</h3><div class="price-row"><div class="price-group"><span class="price">$34</span></div><button class="mini-button">Quick Add</button></div></div></article>
+            <article class="product-card"><div class="product-media"><button class="wishlist-button" aria-label="Add to wishlist"><i class="fa-regular fa-heart"></i></button><img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=900&q=80" alt="Gentle skincare cleanser" /></div><div class="product-info"><div class="product-meta"><span class="category">Skin Care</span><span class="rating"><i class="fa-solid fa-star"></i> 4.9</span></div><h3>Milk Veil Cleanser</h3><div class="price-row"><div class="price-group"><span class="price">$28</span></div><button class="mini-button">Quick Add</button></div></div></article>
+            <article class="product-card"><div class="product-media"><span class="badge badge-new">New</span><button class="wishlist-button" aria-label="Add to wishlist"><i class="fa-regular fa-heart"></i></button><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=900&q=80" alt="Vitamin C skincare serum" /></div><div class="product-info"><div class="product-meta"><span class="category">Skin Care</span><span class="rating"><i class="fa-solid fa-star"></i> 5.0</span></div><h3>Vitamin C Veil</h3><div class="price-row"><div class="price-group"><span class="price">$49</span></div><button class="mini-button">Quick Add</button></div></div></article>
+          </div>
+        </div>
+      </section>
+
       <section class="ingredients section-spacing reveal-up" id="ingredients">
         <div class="container">
           <div class="section-heading centered">
@@ -644,6 +685,19 @@
             <div><span>02</span><strong>Treat</strong><small>Target what you need</small></div>
             <div><span>03</span><strong>Hydrate</strong><small>Lock in softness</small></div>
             <div><span>04</span><strong>Protect</strong><small>Finish with confidence</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="quiz-prompt section-spacing reveal-up">
+        <div class="container quiz-shell">
+          <div>
+            <span class="eyebrow">Personalized discovery</span>
+            <h2>Not Sure What Your Skin Needs?</h2>
+          </div>
+          <div>
+            <p>Find a simple routine based on your skin concerns and everyday rhythm.</p>
+            <a href="#concerns" class="button button-secondary">Take the Skin Quiz</a>
           </div>
         </div>
       </section>
@@ -845,10 +899,10 @@
             </div>
           </article>
           <article class="benefit-item">
-            <i class="fa-solid fa-gift"></i>
+            <i class="fa-solid fa-headset"></i>
             <div>
-              <h4>Fast Delivery</h4>
-              <p>Beautifully packed in 24–48 hours</p>
+              <h4>Customer Support</h4>
+              <p>Here when you need us</p>
             </div>
           </article>
           <article class="benefit-item">
@@ -895,6 +949,7 @@
             <details><summary>How long does delivery take?</summary><p>Orders typically leave our studio within 24–48 hours.</p></details>
             <details><summary>What is your return policy?</summary><p>Enjoy easy 30-day returns on eligible unopened products.</p></details>
             <details><summary>How do I choose the right product?</summary><p>Start with Shop by Concern or build a simple routine with our ritual guide.</p></details>
+            <details><summary>Are your ingredients safe for sensitive skin?</summary><p>Always check each product page for its full ingredient list and patch-test new formulas.</p></details>
           </div>
         </div>
       </section>
@@ -903,7 +958,7 @@
         <div class="container newsletter-shell">
           <div>
             <span class="eyebrow">Beauty notes</span>
-            <h2>Your beauty, delivered to your inbox.</h2>
+            <h2>Your Beauty, Delivered.</h2>
           </div>
           <div class="newsletter-form-wrap">
             <form class="newsletter-form">
@@ -914,7 +969,7 @@
               </button>
             </form>
             <p>
-              Discover new arrivals, beauty inspiration and exclusive offers.
+              Get beauty tips, new launches and exclusive offers delivered to your inbox.
             </p>
           </div>
         </div>
@@ -951,11 +1006,12 @@
         <div>
           <h4>Shop</h4>
           <ul>
-            <li><a href="#">Shop All</a></li>
-            <li><a href="#">Makeup</a></li>
-            <li><a href="#">Skin Care</a></li>
+            <li><a href="#new-arrivals">New Arrivals</a></li>
+            <li><a href="#categories">Skincare</a></li>
+            <li><a href="#categories">Makeup</a></li>
             <li><a href="#">Hair Care</a></li>
-            <li><a href="#">New Arrivals</a></li>
+            <li><a href="#">Body Care</a></li>
+            <li><a href="#">Beauty Tools</a></li>
           </ul>
         </div>
 
@@ -966,6 +1022,7 @@
             <li><a href="#">FAQ</a></li>
             <li><a href="#">Shipping</a></li>
             <li><a href="#">Returns</a></li>
+            <li><a href="#">Track Order</a></li>
           </ul>
         </div>
 
@@ -973,6 +1030,8 @@
           <h4>About</h4>
           <ul>
             <li><a href="#">Our Story</a></li>
+            <li><a href="#ingredients">Our Ingredients</a></li>
+            <li><a href="#">Journal</a></li>
             <li><a href="#">Privacy Policy</a></li>
             <li><a href="#">Terms &amp; Conditions</a></li>
             <li><a href="#">Refund Policy</a></li>
@@ -983,12 +1042,26 @@
       <div class="container footer-bottom">
         <p>© 2026 Kinboni. All rights reserved.</p>
         <div class="footer-legal">
+          <span class="payment-note">Visa · Mastercard · Amex · PayPal</span>
           <a href="#">Privacy Policy</a>
           <a href="#">Terms</a>
           <a href="#">Refund Policy</a>
         </div>
       </div>
     </footer>
+
+    <div class="sticky-cart" aria-hidden="true">
+      <div><strong>Kinboni edit</strong><span>Choose a product to add it to your bag</span></div>
+      <button class="button button-primary" type="button">Add to Bag</button>
+    </div>
+
+    <div class="quick-view-modal" aria-hidden="true">
+      <div class="quick-view-dialog" role="dialog" aria-modal="true" aria-labelledby="quick-view-title">
+        <button class="quick-view-close" type="button" aria-label="Close quick view"><i class="fa-solid fa-xmark"></i></button>
+        <img class="quick-view-image" src="" alt="" />
+        <div><span class="eyebrow">Kinboni edit</span><h2 id="quick-view-title"></h2><p>Thoughtfully selected for a refined everyday ritual.</p><button class="button button-primary quick-view-add" type="button">Add to Bag</button></div>
+      </div>
+    </div>
 
     <script
       src="https://code.jquery.com/jquery-3.7.1.min.js"

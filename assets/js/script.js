@@ -3,6 +3,13 @@ const revealItems = document.querySelectorAll(".reveal-up, .reveal-scale");
 const wishlistButtons = document.querySelectorAll(".wishlist-button");
 const heroVideo = document.querySelector(".hero-video");
 const videoToggle = document.querySelector(".video-toggle");
+const menuToggle = document.querySelector(".menu-toggle");
+const mobileMenu = document.querySelector(".mobile-menu");
+const stickyCart = document.querySelector(".sticky-cart");
+const cartCount = document.querySelector(".cart-count");
+const searchPanel = document.querySelector(".search-panel");
+const searchForm = document.querySelector(".search-form");
+const quickViewModal = document.querySelector(".quick-view-modal");
 
 const updateHeaderState = () => {
   if (!header) return;
@@ -27,6 +34,51 @@ if ("IntersectionObserver" in window) {
 }
 updateHeaderState();
 window.addEventListener("scroll", updateHeaderState, { passive: true });
+
+const closeSearch = () => {
+  if (!searchPanel) return;
+  searchPanel.classList.remove("is-open");
+  searchPanel.setAttribute("aria-hidden", "true");
+};
+
+document.querySelectorAll(".header-actions .icon-button").forEach((button) => {
+  if (button.getAttribute("aria-label") === "Search") {
+    button.addEventListener("click", () => {
+      searchPanel?.classList.add("is-open");
+      searchPanel?.setAttribute("aria-hidden", "false");
+      searchPanel?.querySelector("input")?.focus();
+    });
+  }
+});
+
+searchPanel
+  ?.querySelector(".search-close")
+  ?.addEventListener("click", closeSearch);
+searchForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  closeSearch();
+});
+
+if (menuToggle && mobileMenu) {
+  menuToggle.addEventListener("click", () => {
+    const isOpen = mobileMenu.classList.toggle("is-open");
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+    menuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+    mobileMenu.setAttribute("aria-hidden", String(!isOpen));
+    menuToggle.querySelector("i").className = isOpen
+      ? "fa-solid fa-xmark"
+      : "fa-solid fa-bars";
+  });
+
+  mobileMenu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileMenu.classList.remove("is-open");
+      menuToggle.setAttribute("aria-expanded", "false");
+      mobileMenu.setAttribute("aria-hidden", "true");
+      menuToggle.querySelector("i").className = "fa-solid fa-bars";
+    });
+  });
+}
 
 const heroSlider = document.querySelector(".hero-slider");
 if (window.Swiper && heroSlider) {
@@ -61,65 +113,77 @@ if (window.Swiper && heroSlider) {
 
 const categorySlider = document.querySelector(".category-grid");
 if (window.Swiper && categorySlider) {
-  new window.Swiper(categorySlider, {
-    slidesPerView: 1,
-    spaceBetween: 16,
-    speed: 700,
-    grabCursor: true,
-    watchOverflow: true,
-    autoplay: {
-      delay: 4500,
-      disableOnInteraction: false,
-      pauseOnMouseEnter: true,
-    },
-    pagination: {
-      el: ".category-pagination",
-      clickable: true,
-    },
-    breakpoints: {
-      761: {
-        slidesPerView: 2,
-        spaceBetween: 20,
+  try {
+    new window.Swiper(categorySlider, {
+      slidesPerView: 1,
+      spaceBetween: 16,
+      speed: 700,
+      grabCursor: true,
+      watchOverflow: true,
+      autoplay: {
+        delay: 4500,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
       },
-      1100: {
-        slidesPerView: 4,
-        spaceBetween: 22,
+      pagination: {
+        el: ".category-pagination",
+        clickable: true,
       },
-    },
-  });
+      breakpoints: {
+        761: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        1100: {
+          slidesPerView: 4,
+          spaceBetween: 22,
+        },
+      },
+    });
+  } catch (error) {
+    categorySlider.classList.add("swiper-init-failed");
+  }
+} else if (categorySlider) {
+  categorySlider.classList.add("swiper-init-failed");
 }
 
 const testimonialSlider = document.querySelector(".testimonials-carousel");
 if (window.Swiper && testimonialSlider) {
-  new window.Swiper(testimonialSlider, {
-    slidesPerView: 1,
-    spaceBetween: 18,
-    speed: 650,
-    grabCursor: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-      pauseOnMouseEnter: true,
-    },
-    pagination: {
-      el: ".testimonial-pagination",
-      clickable: true,
-    },
-    navigation: {
-      prevEl: ".testimonial-prev",
-      nextEl: ".testimonial-next",
-    },
-    breakpoints: {
-      761: {
-        slidesPerView: 2,
-        spaceBetween: 20,
+  try {
+    new window.Swiper(testimonialSlider, {
+      slidesPerView: 1,
+      spaceBetween: 18,
+      speed: 650,
+      grabCursor: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
       },
-      1100: {
-        slidesPerView: 3,
-        spaceBetween: 24,
+      pagination: {
+        el: ".testimonial-pagination",
+        clickable: true,
       },
-    },
-  });
+      navigation: {
+        prevEl: ".testimonial-prev",
+        nextEl: ".testimonial-next",
+      },
+      breakpoints: {
+        761: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        1100: {
+          slidesPerView: 3,
+          spaceBetween: 24,
+        },
+      },
+    });
+  } catch (error) {
+    testimonialSlider.classList.add("swiper-init-failed");
+  }
+} else if (testimonialSlider) {
+  testimonialSlider.classList.add("swiper-init-failed");
 }
 
 if (heroVideo && videoToggle) {
@@ -156,6 +220,67 @@ wishlistButtons.forEach((button) => {
       icon.classList.add("fa-regular");
     }
   });
+});
+
+document.querySelectorAll(".product-card").forEach((card) => {
+  const actions = card.querySelector(".price-row");
+  const quickAdd = card.querySelector(".mini-button");
+  if (!actions || !quickAdd || actions.querySelector(".quick-view-button"))
+    return;
+
+  quickAdd.textContent = "Add to Bag";
+  quickAdd.setAttribute("aria-label", "Add product to bag");
+  const quickView = document.createElement("button");
+  quickView.className = "quick-view-button";
+  quickView.type = "button";
+  quickView.textContent = "Quick View";
+  quickView.setAttribute("aria-label", "Quick view product");
+
+  const actionGroup = document.createElement("div");
+  actionGroup.className = "product-actions";
+  actions.replaceChild(actionGroup, quickAdd);
+  actionGroup.append(quickView, quickAdd);
+
+  quickView.addEventListener("click", () => {
+    const image = card.querySelector(".product-media img");
+    const title = card.querySelector("h3");
+    const modalImage = quickViewModal?.querySelector(".quick-view-image");
+    const modalTitle = quickViewModal?.querySelector("#quick-view-title");
+    if (!image || !title || !modalImage || !modalTitle || !quickViewModal)
+      return;
+    modalImage.src = image.src;
+    modalImage.alt = image.alt;
+    modalTitle.textContent = title.textContent;
+    quickViewModal.classList.add("is-open");
+    quickViewModal.setAttribute("aria-hidden", "false");
+  });
+
+  const rating = card.querySelector(".rating");
+  if (rating) rating.insertAdjacentText("beforeend", " (128)");
+
+  quickAdd.addEventListener("click", () => {
+    const currentCount = Number.parseInt(cartCount?.textContent || "0", 10);
+    if (cartCount) cartCount.textContent = String(currentCount + 1);
+    if (stickyCart) {
+      stickyCart.classList.add("is-visible");
+      window.setTimeout(() => stickyCart.classList.remove("is-visible"), 3200);
+    }
+  });
+});
+
+document.querySelectorAll(".badge-sale").forEach((badge) => {
+  badge.textContent = "SALE -25%";
+});
+
+const closeQuickView = () => {
+  quickViewModal?.classList.remove("is-open");
+  quickViewModal?.setAttribute("aria-hidden", "true");
+};
+quickViewModal
+  ?.querySelector(".quick-view-close")
+  ?.addEventListener("click", closeQuickView);
+quickViewModal?.addEventListener("click", (event) => {
+  if (event.target === quickViewModal) closeQuickView();
 });
 
 const newsletterForm = document.querySelector(".newsletter-form");
