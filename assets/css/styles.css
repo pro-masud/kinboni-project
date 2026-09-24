@@ -593,14 +593,22 @@ h4 {
 }
 
 .hero-image {
-  z-index: -2;
+  z-index: -3;
   object-fit: cover;
   object-position: center;
   filter: saturate(0.78) contrast(1.05);
 }
 
 .hero-video {
-  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(0.82) contrast(1.04);
 }
 
 .hero-image {
@@ -1392,7 +1400,10 @@ h4 {
 }
 
 .product-info h3 {
-  font-size: clamp(1.9rem, 2vw, 2.5rem);
+  min-height: 3.8rem;
+  font-size: clamp(1.55rem, 1.65vw, 1.9rem);
+  line-height: 0.98;
+  text-wrap: balance;
   margin-bottom: 14px;
 }
 
@@ -1400,7 +1411,7 @@ h4 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
 }
 
 .price-group {
@@ -1421,26 +1432,30 @@ h4 {
 }
 
 .mini-button {
-  padding: 9px 12px;
+  min-width: 0;
+  padding: 10px 8px;
   background: var(--ink);
   color: #fff;
   border-radius: 999px;
-  font-size: 0.68rem;
-  letter-spacing: 0.12rem;
+  font-size: 0.57rem;
+  letter-spacing: 0.08rem;
   text-transform: uppercase;
+  white-space: nowrap;
   transition:
     transform 0.3s ease,
     background 0.3s ease;
 }
 
 .quick-view-button {
-  padding: 9px 12px;
+  min-width: 0;
+  padding: 10px 8px;
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--ink);
-  font-size: 0.68rem;
-  letter-spacing: 0.08rem;
+  font-size: 0.57rem;
+  letter-spacing: 0.06rem;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .quick-view-modal {
@@ -1572,8 +1587,15 @@ h4 {
 
 .product-actions {
   display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
   align-items: center;
   gap: 8px;
+}
+
+.product-actions button {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .mini-button:hover {
