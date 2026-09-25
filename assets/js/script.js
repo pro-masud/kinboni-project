@@ -9,37 +9,135 @@ const stickyCart = document.querySelector(".sticky-cart");
 const cartCount = document.querySelector(".cart-count");
 const searchPanel = document.querySelector(".search-panel");
 const searchForm = document.querySelector(".search-form");
-const quickViewModal = document.querySelector(".quick-view-modal");
 const quizModal = document.querySelector(".quiz-modal");
 const cartDrawer = document.querySelector(".cart-drawer");
 const cartItemsElement = document.querySelector(".cart-items");
 const cartEmpty = document.querySelector(".cart-empty");
 const cartItems = [];
-let quickViewCard = null;
 
 const updateHeaderState = () => {
   if (!header) return;
   header.classList.toggle("is-scrolled", window.scrollY > 24);
 };
 
-if ("IntersectionObserver" in window) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-        }
-      });
-    },
-    { threshold: 0.2 },
-  );
-
-  revealItems.forEach((item) => observer.observe(item));
-} else {
-  revealItems.forEach((item) => item.classList.add("is-visible"));
-}
 updateHeaderState();
 window.addEventListener("scroll", updateHeaderState, { passive: true });
+
+const prefersReducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+).matches;
+
+const setupPageAnimations = () => {
+  if (!window.gsap || prefersReducedMotion) {
+    revealItems.forEach((item) => item.classList.add("is-visible"));
+    return;
+  }
+
+  if (window.ScrollTrigger) window.gsap.registerPlugin(window.ScrollTrigger);
+
+  const sectionItems = document.querySelectorAll(
+    ".trust-item, .category-card, .product-card, .concern-card, .ingredient-card, .routine-step, .testimonial-card, .collection-card, .benefit-card, .ugc-card, .faq-item",
+  );
+
+  revealItems.forEach((section) => {
+    const headingItems = section.querySelectorAll(
+      ".section-heading > *, .banner-copy > *, .story-copy > *, .newsletter-shell > *",
+    );
+    const cards = Array.from(sectionItems).filter((item) =>
+      section.contains(item),
+    );
+
+    window.gsap.fromTo(
+      section,
+      {
+        opacity: 0,
+        y: 34,
+        scale: section.classList.contains("reveal-scale") ? 0.98 : 1,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: window.ScrollTrigger
+          ? { trigger: section, start: "top 86%", once: true }
+          : undefined,
+      },
+    );
+
+    if (headingItems.length) {
+      window.gsap.from(headingItems, {
+        opacity: 0,
+        y: 20,
+        duration: 0.55,
+        stagger: 0.08,
+        ease: "power2.out",
+        scrollTrigger: window.ScrollTrigger
+          ? { trigger: section, start: "top 82%", once: true }
+          : undefined,
+      });
+    }
+
+    if (cards.length) {
+      window.gsap.from(cards, {
+        opacity: 0,
+        y: 28,
+        duration: 0.65,
+        stagger: 0.09,
+        ease: "power2.out",
+        scrollTrigger: window.ScrollTrigger
+          ? { trigger: section, start: "top 78%", once: true }
+          : undefined,
+      });
+    }
+  });
+
+  window.gsap.from(".site-header", {
+    y: -24,
+    opacity: 0,
+    duration: 0.7,
+    ease: "power3.out",
+  });
+};
+
+setupPageAnimations();
+
+const animateHeroSlide = (slide) => {
+  if (!window.gsap || prefersReducedMotion || !slide) return;
+
+  const copy = slide.querySelector(".hero-copy");
+  const visual = slide.querySelector(".hero-visual");
+  const eyebrow = slide.querySelector(".eyebrow");
+  const heading = slide.querySelector("h1");
+  const paragraph = slide.querySelector(".hero-copy p");
+  const actions = slide.querySelector(".hero-actions");
+  const metrics = slide.querySelector(".hero-metrics");
+  const frame = slide.querySelector(".image-frame");
+  const badges = slide.querySelectorAll(".product-badge");
+
+  window.gsap.killTweensOf([copy, visual, frame, badges]);
+  window.gsap.set([copy, visual], { clearProps: "transform" });
+  window.gsap.set([eyebrow, heading, paragraph, actions, metrics], {
+    opacity: 0,
+    y: 24,
+  });
+  window.gsap.set([frame, badges], { opacity: 0, scale: 0.94 });
+
+  const timeline = window.gsap.timeline({ defaults: { ease: "power3.out" } });
+  timeline
+    .to(eyebrow, { opacity: 1, y: 0, duration: 0.45 })
+    .to(heading, { opacity: 1, y: 0, duration: 0.7 }, "-=0.2")
+    .to(paragraph, { opacity: 1, y: 0, duration: 0.5 }, "-=0.35")
+    .to(actions, { opacity: 1, y: 0, duration: 0.5 }, "-=0.25")
+    .to(metrics, { opacity: 1, y: 0, duration: 0.5 }, "-=0.25")
+    .to(frame, { opacity: 1, scale: 1, duration: 0.9 }, "-=0.75")
+    .to(
+      badges,
+      { opacity: 1, scale: 1, duration: 0.55, stagger: 0.12 },
+      "-=0.5",
+    );
+};
 
 const closeSearch = () => {
   if (!searchPanel) return;
@@ -79,7 +177,7 @@ searchForm?.addEventListener("submit", (event) => {
   if (status)
     status.textContent = matches.length
       ? `${matches.length} product${matches.length === 1 ? "" : "s"} found.`
-      : "No products found. Try skincare, glow or hair care.";
+      : "No bags found. Try tote, crossbody or shoulder bag.";
 });
 
 const renderCart = () => {
@@ -153,7 +251,7 @@ if (menuToggle && mobileMenu) {
 const heroSlider = document.querySelector(".hero-slider");
 if (window.Swiper && heroSlider) {
   try {
-    new window.Swiper(heroSlider, {
+    const heroSwiper = new window.Swiper(heroSlider, {
       loop: true,
       effect: "fade",
       fadeEffect: { crossFade: true },
@@ -173,7 +271,17 @@ if (window.Swiper && heroSlider) {
       a11y: {
         enabled: true,
       },
+      on: {
+        init(swiper) {
+          animateHeroSlide(swiper.slides[swiper.activeIndex]);
+        },
+        slideChangeTransitionStart(swiper) {
+          animateHeroSlide(swiper.slides[swiper.activeIndex]);
+        },
+      },
     });
+    if (!prefersReducedMotion)
+      animateHeroSlide(heroSwiper.slides[heroSwiper.activeIndex]);
   } catch (error) {
     heroSlider.classList.add("swiper-init-failed");
   }
@@ -309,36 +417,10 @@ wishlistButtons.forEach((button) => {
 document.querySelectorAll(".product-card").forEach((card) => {
   const actions = card.querySelector(".price-row");
   const quickAdd = card.querySelector(".mini-button");
-  if (!actions || !quickAdd || actions.querySelector(".quick-view-button"))
-    return;
+  if (!actions || !quickAdd) return;
 
   quickAdd.textContent = "Add to Bag";
   quickAdd.setAttribute("aria-label", "Add product to bag");
-  const quickView = document.createElement("button");
-  quickView.className = "quick-view-button";
-  quickView.type = "button";
-  quickView.textContent = "Quick View";
-  quickView.setAttribute("aria-label", "Quick view product");
-
-  const actionGroup = document.createElement("div");
-  actionGroup.className = "product-actions";
-  actions.replaceChild(actionGroup, quickAdd);
-  actionGroup.append(quickView, quickAdd);
-
-  quickView.addEventListener("click", () => {
-    const image = card.querySelector(".product-media img");
-    const title = card.querySelector("h3");
-    const modalImage = quickViewModal?.querySelector(".quick-view-image");
-    const modalTitle = quickViewModal?.querySelector("#quick-view-title");
-    if (!image || !title || !modalImage || !modalTitle || !quickViewModal)
-      return;
-    quickViewCard = card;
-    modalImage.src = image.src;
-    modalImage.alt = image.alt;
-    modalTitle.textContent = title.textContent;
-    quickViewModal.classList.add("is-open");
-    quickViewModal.setAttribute("aria-hidden", "false");
-  });
 
   const rating = card.querySelector(".rating");
   if (rating) rating.insertAdjacentText("beforeend", " (128)");
@@ -351,23 +433,6 @@ document.querySelectorAll(".product-card").forEach((card) => {
 document.querySelectorAll(".badge-sale").forEach((badge) => {
   badge.textContent = "SALE -25%";
 });
-
-const closeQuickView = () => {
-  quickViewModal?.classList.remove("is-open");
-  quickViewModal?.setAttribute("aria-hidden", "true");
-};
-quickViewModal
-  ?.querySelector(".quick-view-close")
-  ?.addEventListener("click", closeQuickView);
-quickViewModal?.addEventListener("click", (event) => {
-  if (event.target === quickViewModal) closeQuickView();
-});
-quickViewModal
-  ?.querySelector(".quick-view-add")
-  ?.addEventListener("click", () => {
-    if (quickViewCard) addToCart(quickViewCard);
-    closeQuickView();
-  });
 
 document.querySelectorAll(".quiz-open").forEach((button) => {
   button.addEventListener("click", () => {
@@ -399,3 +464,35 @@ if (newsletterForm) {
     button.style.opacity = "0.8";
   });
 }
+
+const galleryLightbox = document.querySelector(".gallery-lightbox");
+const galleryPreview = galleryLightbox?.querySelector(".gallery-preview");
+const galleryCaption = galleryLightbox?.querySelector(".gallery-caption");
+
+const closeGallery = () => {
+  galleryLightbox?.classList.remove("is-open");
+  galleryLightbox?.setAttribute("aria-hidden", "true");
+};
+
+document.querySelectorAll(".ugc-item").forEach((item) => {
+  item.addEventListener("click", () => {
+    const image = item.querySelector("img");
+    if (!image || !galleryLightbox || !galleryPreview || !galleryCaption)
+      return;
+    galleryPreview.src = image.src;
+    galleryPreview.alt = image.alt;
+    galleryCaption.textContent = image.alt;
+    galleryLightbox.classList.add("is-open");
+    galleryLightbox.setAttribute("aria-hidden", "false");
+  });
+});
+
+galleryLightbox
+  ?.querySelector(".gallery-close")
+  ?.addEventListener("click", closeGallery);
+galleryLightbox?.addEventListener("click", (event) => {
+  if (event.target === galleryLightbox) closeGallery();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeGallery();
+});
