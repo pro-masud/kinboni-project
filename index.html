@@ -49,37 +49,70 @@
           <a href="#story">About</a>
         </nav>
 
-        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
-          <i class="fa-solid fa-bars"></i>
-        </button>
-
-        <div class="header-actions">
-          <button class="icon-button" aria-label="Search">
+        <div class="header-utilities">
+          <button class="icon-button search-toggle" type="button" aria-label="Search">
             <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-          <button class="icon-button" aria-label="Account">
-            <i class="fa-regular fa-user"></i>
           </button>
           <button class="icon-button" aria-label="Wishlist">
             <i class="fa-regular fa-heart"></i>
           </button>
-          <button class="icon-button cart-button" aria-label="Shopping bag">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <span class="cart-count">2</span>
+        </div>
+
+        <div class="header-right">
+          <div class="header-actions">
+            <button class="icon-button" type="button" aria-label="Account">
+              <i class="fa-regular fa-user"></i>
+            </button>
+            <button class="icon-button cart-button" type="button" aria-label="Shopping bag">
+              <i class="fa-solid fa-bag-shopping"></i>
+              <span class="cart-count">2</span>
+            </button>
+          </div>
+          <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
           </button>
         </div>
       </div>
     </header>
 
     <nav class="mobile-menu" aria-label="Mobile navigation" aria-hidden="true">
-      <a href="#categories">Shop</a>
-      <a href="#categories">Totes</a>
-      <a href="#categories">Shoulder Bags</a>
-      <a href="#categories">Crossbody</a>
-      <a href="#categories">Mini Bags</a>
-      <a href="#categories">Work Bags</a>
-      <a href="#new-arrivals">New Arrivals</a>
-      <a href="#story">About</a>
+      <div class="mobile-menu-panel">
+        <div class="mobile-menu-top">
+          <span>Explore Kinboni</span>
+          <button class="mobile-menu-close" type="button" aria-label="Close menu">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="mobile-menu-utilities">
+          <button class="mobile-menu-tool search-toggle" type="button" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+          </button>
+          <button class="mobile-menu-tool" type="button" aria-label="Wishlist">
+            <i class="fa-regular fa-heart"></i>
+            <span>Wishlist</span>
+          </button>
+        </div>
+        <div class="mobile-menu-links">
+          <a href="#categories">Shop</a>
+          <a href="#categories">Totes</a>
+          <a href="#categories">Shoulder Bags</a>
+          <a href="#categories">Crossbody</a>
+          <a href="#categories">Mini Bags</a>
+          <a href="#categories">Work Bags</a>
+          <a href="#new-arrivals">New Arrivals</a>
+          <a href="#story">About</a>
+        </div>
+        <div class="mobile-menu-social">
+          <span>Follow Kinboni</span>
+          <div class="socials" aria-label="Social media links">
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+            <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          </div>
+        </div>
+      </div>
     </nav>
 
     <div class="search-panel" aria-hidden="true">
@@ -113,7 +146,11 @@
 
         <div class="hero-slider swiper">
           <div class="swiper-wrapper">
-          <article class="slide swiper-slide" data-theme="blush">
+          <article
+            class="slide swiper-slide"
+            data-theme="blush"
+            data-video="assets/video/handbags-motion.mp4"
+          >
             <div class="container hero-layout">
               <div class="hero-copy">
                 <span class="eyebrow">Kinboni carry edit</span>
@@ -152,7 +189,11 @@
             </div>
           </article>
 
-          <article class="slide swiper-slide" data-theme="ivory">
+          <article
+            class="slide swiper-slide"
+            data-theme="ivory"
+            data-video="https://videos.pexels.com/video-files/8798394/8798394-uhd_4096_2160_25fps.mp4"
+          >
             <div class="container hero-layout">
               <div class="hero-copy">
                 <span class="eyebrow">The new season</span>
@@ -189,7 +230,11 @@
             </div>
           </article>
 
-          <article class="slide swiper-slide" data-theme="peach">
+          <article
+            class="slide swiper-slide"
+            data-theme="peach"
+            data-video="https://videos.pexels.com/video-files/8798149/8798149-uhd_2160_4096_25fps.mp4"
+          >
             <div class="container hero-layout">
               <div class="hero-copy">
                 <span class="eyebrow">For every destination</span>

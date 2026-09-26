@@ -80,6 +80,7 @@ The hero section contains multiple promotional slides. Each slide includes:
 - Brand promise metrics
 
 Swiper powers the hero slider with autoplay, fade transitions, clickable pagination, keyboard controls, and accessibility support.
+Each slide also selects its own background video. The first uses the local `assets/video/handbags-motion.mp4`; the other two use free Pexels clips, with the slide product image shown while a video loads.
 
 ### 5. Product Discovery Experience
 
@@ -180,6 +181,7 @@ The following resources are loaded from CDNs:
 - Font Awesome 6.5.2
 - Swiper 11
 - Unsplash product and editorial images
+- Pexels video backgrounds: [pink handbag](https://www.pexels.com/video/close-up-of-a-pink-bag-8798394/) and [orange handbag](https://www.pexels.com/video/a-video-of-an-orange-handbag-8798149/), under the [Pexels License](https://www.pexels.com/license/)
 
 An internet connection may be required when the page is loaded for the first time.
 
