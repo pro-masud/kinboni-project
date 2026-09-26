@@ -310,7 +310,7 @@ if (window.Swiper && heroSlider) {
       autoplay: {
         delay: 10000,
         disableOnInteraction: false,
-        pauseOnMouseEnter: true,
+        pauseOnMouseEnter: false,
       },
       pagination: {
         el: ".hero-pagination",
@@ -348,6 +348,7 @@ const categorySlider = document.querySelector(".category-grid");
 if (window.Swiper && categorySlider) {
   try {
     new window.Swiper(categorySlider, {
+      loop: true,
       slidesPerView: 1,
       spaceBetween: 16,
       speed: 700,
@@ -356,7 +357,7 @@ if (window.Swiper && categorySlider) {
       autoplay: {
         delay: 4500,
         disableOnInteraction: false,
-        pauseOnMouseEnter: true,
+        pauseOnMouseEnter: false,
       },
       pagination: {
         el: ".category-pagination",
@@ -384,6 +385,7 @@ const testimonialSlider = document.querySelector(".testimonials-carousel");
 if (window.Swiper && testimonialSlider) {
   try {
     new window.Swiper(testimonialSlider, {
+      loop: true,
       slidesPerView: 1,
       spaceBetween: 18,
       speed: 650,
@@ -391,7 +393,7 @@ if (window.Swiper && testimonialSlider) {
       autoplay: {
         delay: 5000,
         disableOnInteraction: false,
-        pauseOnMouseEnter: true,
+        pauseOnMouseEnter: false,
       },
       pagination: {
         el: ".testimonial-pagination",

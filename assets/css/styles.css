@@ -706,9 +706,9 @@ h4 {
 .hero-copy {
   position: relative;
   z-index: 2;
-  width: min(100%, 530px);
+  width: min(100%, 650px);
   min-width: 0;
-  max-width: 530px;
+  max-width: 650px;
   margin-left: 0;
   opacity: 1;
   visibility: visible;
@@ -724,7 +724,7 @@ h4 {
 }
 
 .hero-copy h1 {
-  max-width: 560px;
+  max-width: 650px;
   font-size: clamp(3rem, 4.8vw, 5rem);
   line-height: 0.98;
   margin-bottom: 18px;
