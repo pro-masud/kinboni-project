@@ -555,3 +555,149 @@ galleryLightbox?.addEventListener("click", (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeGallery();
 });
+
+const shopPage = document.querySelector(".shop-page");
+if (shopPage) {
+  const shopGrid = shopPage.querySelector(".shop-product-grid");
+  const shopCards = Array.from(shopPage.querySelectorAll(".shop-product-card"));
+  const shopFilters = shopPage.querySelector(".shop-filters");
+  const shopCount = shopPage.querySelector(".shop-product-count");
+  const shopEmpty = shopPage.querySelector(".shop-empty-state");
+  const shopSort = shopPage.querySelector(".shop-sort select");
+  const categoryLinks = shopPage.querySelectorAll(".shop-category-link");
+  const filterInputs = shopPage.querySelectorAll(".shop-filters input");
+
+  const priceMatches = (value, price) => {
+    if (value === "under-50") return price < 50;
+    if (value === "50-100") return price >= 50 && price <= 100;
+    if (value === "100-200") return price > 100 && price <= 200;
+    if (value === "200-plus") return price > 200;
+    return true;
+  };
+
+  const selectedFilters = () => {
+    const filters = {};
+    filterInputs.forEach((input) => {
+      if (input.checked) {
+        if (!filters[input.dataset.filter]) filters[input.dataset.filter] = [];
+        filters[input.dataset.filter].push(input.value);
+      }
+    });
+    return filters;
+  };
+
+  const matchesFilters = (card, filters) =>
+    Object.entries(filters).every(([filter, values]) => {
+      const cardValue = card.dataset[filter] || "";
+      return values.some((value) =>
+        filter === "price"
+          ? priceMatches(value, Number(card.dataset.priceValue))
+          : cardValue.split(" ").includes(value),
+      );
+    });
+
+  const updateShop = () => {
+    const filters = selectedFilters();
+    let visibleCards = shopCards.filter((card) => matchesFilters(card, filters));
+    shopCards.forEach((card) => card.toggleAttribute("hidden", !visibleCards.includes(card)));
+    shopEmpty.hidden = visibleCards.length > 0;
+    shopCount.textContent = `${visibleCards.length} Product${visibleCards.length === 1 ? "" : "s"}`;
+  };
+
+  const sortShop = (value) => {
+    const sortedCards = [...shopCards].sort((first, second) => {
+      if (value === "low") return Number(first.dataset.priceValue) - Number(second.dataset.priceValue);
+      if (value === "high") return Number(second.dataset.priceValue) - Number(first.dataset.priceValue);
+      if (value === "newest") return Number(second.dataset.date) - Number(first.dataset.date);
+      if (value === "best") return Number(second.dataset.sales) - Number(first.dataset.sales);
+      return shopCards.indexOf(first) - shopCards.indexOf(second);
+    });
+    sortedCards.forEach((card) => shopGrid.append(card));
+  };
+
+  categoryLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      categoryLinks.forEach((item) => item.classList.toggle("is-active", item === link));
+      filterInputs.forEach((input) => {
+        if (input.dataset.filter === "category") input.checked = link.dataset.category !== "all" && input.value === link.dataset.category;
+      });
+      updateShop();
+    });
+  });
+
+  filterInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+      const categoryValues = Array.from(shopPage.querySelectorAll('input[data-filter="category"]:checked')).map((item) => item.value);
+      categoryLinks.forEach((link) => link.classList.toggle("is-active", link.dataset.category === (categoryValues.length === 1 ? categoryValues[0] : "all")));
+      updateShop();
+    });
+  });
+
+  shopPage.querySelectorAll(".shop-clear-filters").forEach((button) => {
+    button.addEventListener("click", () => {
+      filterInputs.forEach((input) => { input.checked = false; });
+      categoryLinks.forEach((link) => link.classList.toggle("is-active", link.dataset.category === "all"));
+      updateShop();
+    });
+  });
+
+  shopSort?.addEventListener("change", () => sortShop(shopSort.value));
+  shopPage.querySelector(".shop-filter-toggle")?.addEventListener("click", (event) => {
+    const isOpen = shopFilters.classList.toggle("is-open");
+    event.currentTarget.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  shopPage.querySelector("[data-new-arrivals-link]")?.addEventListener("click", () => {
+    categoryLinks.forEach((link) => link.classList.toggle("is-active", link.dataset.category === "new"));
+    filterInputs.forEach((input) => { input.checked = input.dataset.filter === "availability" && input.value === "new"; });
+    updateShop();
+  });
+
+  shopCards.forEach((card) => {
+    const media = card.querySelector(".product-media");
+    const secondaryImage = media?.dataset.secondary;
+    if (media && secondaryImage) media.style.setProperty("--secondary-image", `url("${secondaryImage}")`);
+  });
+
+  const quickView = shopPage.querySelector(".shop-quick-view");
+  const quickImage = quickView?.querySelector(".shop-quick-image img");
+  const quickTitle = quickView?.querySelector("#quick-view-title");
+  const quickCategory = quickView?.querySelector(".shop-quick-category");
+  const quickPrice = quickView?.querySelector(".shop-quick-price");
+  const closeQuickView = () => {
+    if (quickView?.contains(document.activeElement)) document.activeElement.blur();
+    quickView?.classList.remove("is-open");
+    quickView?.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("shop-quick-open");
+  };
+
+  shopPage.querySelectorAll(".quick-view-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const card = button.closest(".shop-product-card");
+      const image = card?.querySelector(".product-media img");
+      if (!card || !image || !quickView || !quickImage || !quickTitle || !quickCategory || !quickPrice) return;
+      quickImage.src = image.src;
+      quickImage.alt = image.alt;
+      quickTitle.textContent = card.querySelector("h3")?.textContent || "Kinboni bag";
+      quickCategory.textContent = card.querySelector(".category")?.textContent || "Kinboni collection";
+      quickPrice.textContent = card.querySelector(".price")?.textContent || "";
+      quickView.classList.add("is-open");
+      quickView.setAttribute("aria-hidden", "false");
+      document.body.classList.add("shop-quick-open");
+    });
+  });
+
+  quickView?.querySelector(".shop-quick-close")?.addEventListener("click", closeQuickView);
+  quickView?.addEventListener("click", (event) => {
+    if (event.target === quickView) closeQuickView();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeQuickView();
+  });
+  quickView?.querySelector(".shop-quick-add")?.addEventListener("click", () => {
+    const title = quickTitle?.textContent;
+    const card = shopCards.find((item) => item.querySelector("h3")?.textContent.trim() === title);
+    if (card) addToCart(card);
+    closeQuickView();
+  });
+}
