@@ -598,18 +598,30 @@ if (shopPage) {
 
   const updateShop = () => {
     const filters = selectedFilters();
-    let visibleCards = shopCards.filter((card) => matchesFilters(card, filters));
-    shopCards.forEach((card) => card.toggleAttribute("hidden", !visibleCards.includes(card)));
+    let visibleCards = shopCards.filter((card) =>
+      matchesFilters(card, filters),
+    );
+    shopCards.forEach((card) =>
+      card.toggleAttribute("hidden", !visibleCards.includes(card)),
+    );
     shopEmpty.hidden = visibleCards.length > 0;
     shopCount.textContent = `${visibleCards.length} Product${visibleCards.length === 1 ? "" : "s"}`;
   };
 
   const sortShop = (value) => {
     const sortedCards = [...shopCards].sort((first, second) => {
-      if (value === "low") return Number(first.dataset.priceValue) - Number(second.dataset.priceValue);
-      if (value === "high") return Number(second.dataset.priceValue) - Number(first.dataset.priceValue);
-      if (value === "newest") return Number(second.dataset.date) - Number(first.dataset.date);
-      if (value === "best") return Number(second.dataset.sales) - Number(first.dataset.sales);
+      if (value === "low")
+        return (
+          Number(first.dataset.priceValue) - Number(second.dataset.priceValue)
+        );
+      if (value === "high")
+        return (
+          Number(second.dataset.priceValue) - Number(first.dataset.priceValue)
+        );
+      if (value === "newest")
+        return Number(second.dataset.date) - Number(first.dataset.date);
+      if (value === "best")
+        return Number(second.dataset.sales) - Number(first.dataset.sales);
       return shopCards.indexOf(first) - shopCards.indexOf(second);
     });
     sortedCards.forEach((card) => shopGrid.append(card));
@@ -617,9 +629,14 @@ if (shopPage) {
 
   categoryLinks.forEach((link) => {
     link.addEventListener("click", () => {
-      categoryLinks.forEach((item) => item.classList.toggle("is-active", item === link));
+      categoryLinks.forEach((item) =>
+        item.classList.toggle("is-active", item === link),
+      );
       filterInputs.forEach((input) => {
-        if (input.dataset.filter === "category") input.checked = link.dataset.category !== "all" && input.value === link.dataset.category;
+        if (input.dataset.filter === "category")
+          input.checked =
+            link.dataset.category !== "all" &&
+            input.value === link.dataset.category;
       });
       updateShop();
     });
@@ -627,36 +644,69 @@ if (shopPage) {
 
   filterInputs.forEach((input) => {
     input.addEventListener("change", () => {
-      const categoryValues = Array.from(shopPage.querySelectorAll('input[data-filter="category"]:checked')).map((item) => item.value);
-      categoryLinks.forEach((link) => link.classList.toggle("is-active", link.dataset.category === (categoryValues.length === 1 ? categoryValues[0] : "all")));
+      const categoryValues = Array.from(
+        shopPage.querySelectorAll('input[data-filter="category"]:checked'),
+      ).map((item) => item.value);
+      categoryLinks.forEach((link) =>
+        link.classList.toggle(
+          "is-active",
+          link.dataset.category ===
+            (categoryValues.length === 1 ? categoryValues[0] : "all"),
+        ),
+      );
       updateShop();
     });
   });
 
   shopPage.querySelectorAll(".shop-clear-filters").forEach((button) => {
     button.addEventListener("click", () => {
-      filterInputs.forEach((input) => { input.checked = false; });
-      categoryLinks.forEach((link) => link.classList.toggle("is-active", link.dataset.category === "all"));
+      filterInputs.forEach((input) => {
+        input.checked = false;
+      });
+      categoryLinks.forEach((link) =>
+        link.classList.toggle("is-active", link.dataset.category === "all"),
+      );
       updateShop();
     });
   });
 
   shopSort?.addEventListener("change", () => sortShop(shopSort.value));
-  shopPage.querySelector(".shop-filter-toggle")?.addEventListener("click", (event) => {
-    const isOpen = shopFilters.classList.toggle("is-open");
-    event.currentTarget.setAttribute("aria-expanded", String(isOpen));
-  });
+  shopPage
+    .querySelector(".shop-filter-toggle")
+    ?.addEventListener("click", (event) => {
+      const isOpen = shopFilters.classList.toggle("is-open");
+      event.currentTarget.setAttribute("aria-expanded", String(isOpen));
+    });
 
-  shopPage.querySelector("[data-new-arrivals-link]")?.addEventListener("click", () => {
-    categoryLinks.forEach((link) => link.classList.toggle("is-active", link.dataset.category === "new"));
-    filterInputs.forEach((input) => { input.checked = input.dataset.filter === "availability" && input.value === "new"; });
-    updateShop();
-  });
+  shopPage
+    .querySelector("[data-new-arrivals-link]")
+    ?.addEventListener("click", () => {
+      categoryLinks.forEach((link) =>
+        link.classList.toggle("is-active", link.dataset.category === "new"),
+      );
+      filterInputs.forEach((input) => {
+        input.checked =
+          input.dataset.filter === "availability" && input.value === "new";
+      });
+      updateShop();
+    });
 
   shopCards.forEach((card) => {
     const media = card.querySelector(".product-media");
     const secondaryImage = media?.dataset.secondary;
-    if (media && secondaryImage) media.style.setProperty("--secondary-image", `url("${secondaryImage}")`);
+    if (media && secondaryImage)
+      media.style.setProperty("--secondary-image", `url("${secondaryImage}")`);
+
+    const priceRow = card.querySelector(".price-row");
+    if (priceRow && !priceRow.querySelector(".shop-quick-add")) {
+      const quickAdd = document.createElement("button");
+      quickAdd.className = "mini-button shop-quick-add";
+      quickAdd.type = "button";
+      quickAdd.textContent = "Quick Add";
+      quickAdd.setAttribute("aria-label", "Add product to bag");
+      quickAdd.addEventListener("click", () => addToCart(card));
+      priceRow.append(quickAdd);
+    }
   });
 
   const quickView = shopPage.querySelector(".shop-quick-view");
@@ -665,7 +715,8 @@ if (shopPage) {
   const quickCategory = quickView?.querySelector(".shop-quick-category");
   const quickPrice = quickView?.querySelector(".shop-quick-price");
   const closeQuickView = () => {
-    if (quickView?.contains(document.activeElement)) document.activeElement.blur();
+    if (quickView?.contains(document.activeElement))
+      document.activeElement.blur();
     quickView?.classList.remove("is-open");
     quickView?.setAttribute("aria-hidden", "true");
     document.body.classList.remove("shop-quick-open");
@@ -675,11 +726,22 @@ if (shopPage) {
     button.addEventListener("click", () => {
       const card = button.closest(".shop-product-card");
       const image = card?.querySelector(".product-media img");
-      if (!card || !image || !quickView || !quickImage || !quickTitle || !quickCategory || !quickPrice) return;
+      if (
+        !card ||
+        !image ||
+        !quickView ||
+        !quickImage ||
+        !quickTitle ||
+        !quickCategory ||
+        !quickPrice
+      )
+        return;
       quickImage.src = image.src;
       quickImage.alt = image.alt;
-      quickTitle.textContent = card.querySelector("h3")?.textContent || "Kinboni bag";
-      quickCategory.textContent = card.querySelector(".category")?.textContent || "Kinboni collection";
+      quickTitle.textContent =
+        card.querySelector("h3")?.textContent || "Kinboni bag";
+      quickCategory.textContent =
+        card.querySelector(".category")?.textContent || "Kinboni collection";
       quickPrice.textContent = card.querySelector(".price")?.textContent || "";
       quickView.classList.add("is-open");
       quickView.setAttribute("aria-hidden", "false");
@@ -687,7 +749,9 @@ if (shopPage) {
     });
   });
 
-  quickView?.querySelector(".shop-quick-close")?.addEventListener("click", closeQuickView);
+  quickView
+    ?.querySelector(".shop-quick-close")
+    ?.addEventListener("click", closeQuickView);
   quickView?.addEventListener("click", (event) => {
     if (event.target === quickView) closeQuickView();
   });
@@ -696,7 +760,9 @@ if (shopPage) {
   });
   quickView?.querySelector(".shop-quick-add")?.addEventListener("click", () => {
     const title = quickTitle?.textContent;
-    const card = shopCards.find((item) => item.querySelector("h3")?.textContent.trim() === title);
+    const card = shopCards.find(
+      (item) => item.querySelector("h3")?.textContent.trim() === title,
+    );
     if (card) addToCart(card);
     closeQuickView();
   });

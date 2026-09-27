@@ -3924,7 +3924,9 @@ h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.45s ease, transform 0.7s ease;
+  transition:
+    opacity 0.45s ease,
+    transform 0.7s ease;
 }
 
 .shop-page .shop-product-card .product-media img + img {
@@ -4024,6 +4026,12 @@ h4 {
   margin-left: 5px;
 }
 
+.shop-page .shop-quick-add {
+  min-height: 34px;
+  padding: 9px 12px;
+  font-size: 0.57rem;
+}
+
 .product-hover-actions {
   position: absolute;
   z-index: 4;
@@ -4034,7 +4042,9 @@ h4 {
   gap: 7px;
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .shop-product-card:hover .product-hover-actions,
@@ -4058,6 +4068,14 @@ h4 {
 .product-hover-actions .mini-button {
   background: var(--ink);
   color: #fff;
+}
+
+.shop-page .product-hover-actions .mini-button {
+  display: none;
+}
+
+.shop-page .product-hover-actions .quick-view-button {
+  flex: 1;
 }
 
 .shop-grid-editorial {
@@ -4088,7 +4106,11 @@ h4 {
   position: absolute;
   z-index: 1;
   inset: 0;
-  background: linear-gradient(90deg, rgba(27, 18, 16, 0.72), rgba(27, 18, 16, 0.2));
+  background: linear-gradient(
+    90deg,
+    rgba(27, 18, 16, 0.72),
+    rgba(27, 18, 16, 0.2)
+  );
   content: "";
 }
 
@@ -4161,7 +4183,9 @@ h4 {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
 }
 
 .shop-quick-view.is-open {
