@@ -39,16 +39,40 @@
           <a href="index.html#categories">Totes</a>
           <a href="index.html#categories">Shoulder Bags</a>
           <a href="index.html#categories">Crossbody</a>
+          <a href="index.html#categories">Mini Bags</a>
+          <a href="index.html#categories">Work Bags</a>
           <a href="index.html#new-arrivals">New Arrivals</a>
           <a href="about.html" aria-current="page">About</a>
         </nav>
 
         <div class="header-right">
-          <a
-            href="index.html#categories"
-            class="button button-primary small-button about-header-cta"
-            >Shop Bags</a
-          >
+          <div class="header-actions">
+            <button
+              class="icon-button search-toggle"
+              type="button"
+              aria-label="Search"
+            >
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <button class="icon-button" type="button" aria-label="Account">
+              <i class="fa-regular fa-user"></i>
+            </button>
+            <button
+              class="icon-button wishlist-toggle"
+              type="button"
+              aria-label="Wishlist"
+            >
+              <i class="fa-regular fa-heart"></i>
+            </button>
+            <button
+              class="icon-button cart-button"
+              type="button"
+              aria-label="Shopping bag"
+            >
+              <i class="fa-solid fa-bag-shopping"></i>
+              <span class="cart-count">2</span>
+            </button>
+          </div>
           <button
             class="menu-toggle"
             type="button"
@@ -73,11 +97,27 @@
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
+        <div class="mobile-menu-utilities">
+          <button
+            class="mobile-menu-tool search-toggle"
+            type="button"
+            aria-label="Search"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+          </button>
+          <button class="mobile-menu-tool" type="button" aria-label="Wishlist">
+            <i class="fa-regular fa-heart"></i>
+            <span>Wishlist</span>
+          </button>
+        </div>
         <div class="mobile-menu-links">
           <a href="index.html#categories">Shop</a>
           <a href="index.html#categories">Totes</a>
           <a href="index.html#categories">Shoulder Bags</a>
           <a href="index.html#categories">Crossbody</a>
+          <a href="index.html#categories">Mini Bags</a>
+          <a href="index.html#categories">Work Bags</a>
           <a href="index.html#new-arrivals">New Arrivals</a>
           <a href="about.html" aria-current="page">About Kinboni</a>
           <a href="about.html#faq">Customer Care</a>
@@ -102,7 +142,27 @@
       </div>
     </nav>
 
+    <div class="search-panel" aria-hidden="true">
+      <form class="search-form">
+        <label for="site-search">Search Kinboni Bags</label>
+        <div>
+          <input
+            id="site-search"
+            type="search"
+            placeholder="Search totes, leather bags, crossbody..."
+          /><button type="submit" aria-label="Submit search">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+        <p class="search-status" aria-live="polite"></p>
+      </form>
+      <button class="search-close" type="button" aria-label="Close search">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
     <main>
+      <script src="assets/js/script.js"></script>
       <section class="about-hero" aria-labelledby="about-title">
         <img
           class="about-hero-image"
