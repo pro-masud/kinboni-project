@@ -35,7 +35,7 @@
         >
         <nav class="main-nav" aria-label="Main navigation">
           <a class="is-active" href="shop.html" aria-current="page">Shop</a>
-          <a href="shop.html#new-arrivals">New Arrivals</a>
+          <a href="shop.html#products">New Arrivals</a>
           <a href="shop.html#products">Handbags</a>
           <a href="shop.html#products">Shoulder Bags</a>
           <a href="shop.html#products">Crossbody</a>
@@ -109,7 +109,7 @@
         </div>
         <div class="mobile-menu-links">
           <a href="shop.html">Shop</a
-          ><a href="shop.html#new-arrivals">New Arrivals</a
+          ><a href="shop.html#products">New Arrivals</a
           ><a href="shop.html#products">Handbags</a
           ><a href="shop.html#products">Shoulder Bags</a
           ><a href="shop.html#products">Crossbody</a
@@ -156,64 +156,26 @@
     <main>
       <section class="shop-intro section-spacing">
         <div class="container shop-intro-inner">
-          <nav class="shop-breadcrumb" aria-label="Breadcrumb">
-            <a href="index.html">Home</a><span>/</span><span>Shop</span>
-          </nav>
-          <span class="eyebrow">The Kinboni collection</span>
-          <h1>Shop the Collection</h1>
-          <p>
-            Discover thoughtfully designed bags made to complement every moment,
-            from everyday essentials to statement occasions.
-          </p>
-        </div>
-      </section>
-
-      <section class="shop-category-rail" aria-label="Shop categories">
-        <div class="container shop-category-scroll">
-          <button
-            class="shop-category-link is-active"
-            type="button"
-            data-category="all"
-          >
-            All Bags
-          </button>
-          <button
-            class="shop-category-link"
-            type="button"
-            data-category="handbags"
-          >
-            Handbags
-          </button>
-          <button
-            class="shop-category-link"
-            type="button"
-            data-category="shoulder"
-          >
-            Shoulder Bags
-          </button>
-          <button
-            class="shop-category-link"
-            type="button"
-            data-category="crossbody"
-          >
-            Crossbody Bags
-          </button>
-          <button class="shop-category-link" type="button" data-category="tote">
-            Tote Bags
-          </button>
-          <button class="shop-category-link" type="button" data-category="mini">
-            Mini Bags
-          </button>
-          <button
-            class="shop-category-link"
-            type="button"
-            data-category="clutch"
-          >
-            Clutches
-          </button>
-          <button class="shop-category-link" type="button" data-category="new">
-            New Arrivals
-          </button>
+          <div class="shop-intro-copy">
+            <nav class="shop-breadcrumb" aria-label="Breadcrumb">
+              <a href="index.html">Home</a><span>/</span><span>Shop</span>
+            </nav>
+            <span class="eyebrow">The Kinboni collection</span>
+            <h1>Shop the Collection</h1>
+            <p>
+              Thoughtfully designed bags for everyday plans and special
+              occasions.
+            </p>
+            <a class="button button-primary" href="#products"
+              >Explore Collection</a
+            >
+          </div>
+          <div class="shop-intro-visual">
+            <img
+              src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=1600&q=90"
+              alt="A curated selection of handbags from the Kinboni collection"
+            />
+          </div>
         </div>
       </section>
 
@@ -1030,56 +992,6 @@
           </div>
         </div>
       </section>
-
-      <section class="shop-new-callout section-spacing" id="new-arrivals">
-        <div class="container shop-new-shell">
-          <div class="shop-new-copy">
-            <span class="eyebrow">Just in</span>
-            <h2>Meet the latest pieces added to the Kinboni collection.</h2>
-            <p>
-              Fresh silhouettes with the same thoughtful details, ready for
-              wherever the day takes you.
-            </p>
-            <a
-              class="button button-primary"
-              href="#products"
-              data-new-arrivals-link
-              >Shop New Arrivals</a
-            >
-          </div>
-          <div class="shop-new-image">
-            <img
-              src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=1400&q=85"
-              alt="Three Kinboni handbags styled together"
-            />
-          </div>
-        </div>
-      </section>
-
-      <section class="newsletter section-spacing">
-        <div class="container newsletter-shell">
-          <div>
-            <span class="eyebrow">Kinboni notes</span>
-            <h2>Stay in the Kinboni Edit.</h2>
-          </div>
-          <div class="newsletter-form-wrap">
-            <form class="newsletter-form">
-              <label class="sr-only" for="shop-email">Email address</label
-              ><input
-                id="shop-email"
-                type="email"
-                placeholder="Enter your email"
-              /><button type="submit" class="button button-primary">
-                Subscribe
-              </button>
-            </form>
-            <p>
-              Be the first to discover new collections, exclusive pieces and
-              seasonal edits.
-            </p>
-          </div>
-        </div>
-      </section>
     </main>
 
     <footer class="site-footer">
@@ -1109,7 +1021,7 @@
           <h4>Shop</h4>
           <ul>
             <li><a href="#products">All Bags</a></li>
-            <li><a href="#new-arrivals">New Arrivals</a></li>
+            <li><a href="#products">New Arrivals</a></li>
             <li><a href="#products">Handbags</a></li>
             <li><a href="#products">Shoulder Bags</a></li>
             <li><a href="#products">Crossbody Bags</a></li>

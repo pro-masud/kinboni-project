@@ -564,7 +564,6 @@ if (shopPage) {
   const shopCount = shopPage.querySelector(".shop-product-count");
   const shopEmpty = shopPage.querySelector(".shop-empty-state");
   const shopSort = shopPage.querySelector(".shop-sort select");
-  const categoryLinks = shopPage.querySelectorAll(".shop-category-link");
   const filterInputs = shopPage.querySelectorAll(".shop-filters input");
 
   const priceMatches = (value, price) => {
@@ -627,33 +626,8 @@ if (shopPage) {
     sortedCards.forEach((card) => shopGrid.append(card));
   };
 
-  categoryLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      categoryLinks.forEach((item) =>
-        item.classList.toggle("is-active", item === link),
-      );
-      filterInputs.forEach((input) => {
-        if (input.dataset.filter === "category")
-          input.checked =
-            link.dataset.category !== "all" &&
-            input.value === link.dataset.category;
-      });
-      updateShop();
-    });
-  });
-
   filterInputs.forEach((input) => {
     input.addEventListener("change", () => {
-      const categoryValues = Array.from(
-        shopPage.querySelectorAll('input[data-filter="category"]:checked'),
-      ).map((item) => item.value);
-      categoryLinks.forEach((link) =>
-        link.classList.toggle(
-          "is-active",
-          link.dataset.category ===
-            (categoryValues.length === 1 ? categoryValues[0] : "all"),
-        ),
-      );
       updateShop();
     });
   });
@@ -663,9 +637,6 @@ if (shopPage) {
       filterInputs.forEach((input) => {
         input.checked = false;
       });
-      categoryLinks.forEach((link) =>
-        link.classList.toggle("is-active", link.dataset.category === "all"),
-      );
       updateShop();
     });
   });
@@ -676,19 +647,6 @@ if (shopPage) {
     ?.addEventListener("click", (event) => {
       const isOpen = shopFilters.classList.toggle("is-open");
       event.currentTarget.setAttribute("aria-expanded", String(isOpen));
-    });
-
-  shopPage
-    .querySelector("[data-new-arrivals-link]")
-    ?.addEventListener("click", () => {
-      categoryLinks.forEach((link) =>
-        link.classList.toggle("is-active", link.dataset.category === "new"),
-      );
-      filterInputs.forEach((input) => {
-        input.checked =
-          input.dataset.filter === "availability" && input.value === "new";
-      });
-      updateShop();
     });
 
   shopCards.forEach((card) => {
