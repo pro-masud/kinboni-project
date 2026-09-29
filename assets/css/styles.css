@@ -3622,18 +3622,14 @@ h4 {
   background: var(--panel-strong);
 }
 
-.shop-intro::after {
+.shop-intro-slider {
   position: absolute;
-  z-index: 1;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.38) 0%,
-    rgba(0, 0, 0, 0.28) 38%,
-    rgba(0, 0, 0, 0.08) 74%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  content: "";
+}
+
+.shop-intro-slide {
+  position: relative;
+  height: 100%;
 }
 
 .shop-intro-inner {
@@ -3642,6 +3638,7 @@ h4 {
   display: flex;
   align-items: center;
   min-height: 440px;
+  height: 100%;
   max-width: 1200px;
 }
 
@@ -3656,20 +3653,34 @@ h4 {
 .shop-intro-visual {
   position: absolute;
   z-index: 0;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 100vw;
-  transform: translateX(-50%);
+  inset: 0;
   overflow: hidden;
   background: var(--sand);
+}
+
+.shop-intro-visual::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.48) 0%,
+    rgba(0, 0, 0, 0.34) 38%,
+    rgba(0, 0, 0, 0.1) 74%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  content: "";
 }
 
 .shop-intro-visual img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: right center;
+  object-position: center 45%;
+  transition: transform 6.5s ease;
+}
+
+.shop-intro-slide-active .shop-intro-visual img {
+  transform: scale(1.04);
 }
 
 .shop-breadcrumb {
@@ -3712,6 +3723,23 @@ h4 {
   color: #fff;
 }
 
+.shop-intro h2 {
+  max-width: 450px;
+  margin: 0 0 16px;
+  font-size: 4.25rem;
+  line-height: 0.96;
+  color: #fff;
+}
+
+.shop-intro-kicker {
+  display: block;
+  margin-bottom: 12px;
+  color: rgba(250, 241, 225, 0.88);
+  font-size: 0.7rem;
+  letter-spacing: 0.16rem;
+  text-transform: uppercase;
+}
+
 .shop-intro p {
   max-width: 420px;
   margin: 0 0 24px;
@@ -3730,6 +3758,60 @@ h4 {
 .shop-intro .shop-intro-cta:hover {
   background: #fff8eb;
   color: #292b1c;
+}
+
+.shop-intro-controls {
+  position: absolute;
+  z-index: 5;
+  right: max(calc((100% - 1200px) / 2), 24px);
+  bottom: 26px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: #fff;
+}
+
+.shop-intro-controls > button {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  border-radius: 50%;
+  color: inherit;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.shop-intro-controls > button:hover {
+  background: #fff;
+  color: var(--ink);
+}
+
+.shop-intro-pagination {
+  position: static;
+  display: flex;
+  width: auto !important;
+  align-items: center;
+  gap: 8px;
+}
+
+.shop-intro-pagination .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  margin: 0 !important;
+  background: rgba(255, 255, 255, 0.58);
+  opacity: 1;
+  transition:
+    width 0.25s ease,
+    background 0.25s ease;
+}
+
+.shop-intro-pagination .swiper-pagination-bullet-active {
+  width: 26px;
+  border-radius: 99px;
+  background: #fff;
 }
 
 .shop-category-rail {
@@ -4358,7 +4440,7 @@ body.shop-quick-open {
     min-height: 500px;
   }
 
-  .shop-intro::after {
+  .shop-intro-visual::after {
     background: rgba(0, 0, 0, 0.46);
   }
 
@@ -4380,8 +4462,18 @@ body.shop-quick-open {
     font-size: 3rem;
   }
 
+  .shop-intro h2 {
+    font-size: 3rem;
+  }
+
   .shop-intro p {
     font-size: 0.86rem;
+  }
+
+  .shop-intro-controls {
+    right: 24px;
+    bottom: 20px;
+    gap: 12px;
   }
 
   .shop-category-scroll {

@@ -344,6 +344,33 @@ if (window.Swiper && heroSlider) {
   heroSlider.classList.add("swiper-init-failed");
 }
 
+const shopIntroSlider = document.querySelector(".shop-intro-slider");
+if (window.Swiper && shopIntroSlider) {
+  new window.Swiper(shopIntroSlider, {
+    loop: true,
+    effect: "fade",
+    fadeEffect: { crossFade: true },
+    speed: 700,
+    autoplay: prefersReducedMotion
+      ? false
+      : {
+          delay: 6500,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        },
+    navigation: {
+      nextEl: ".shop-intro-next",
+      prevEl: ".shop-intro-prev",
+    },
+    pagination: {
+      el: ".shop-intro-pagination",
+      clickable: true,
+    },
+    keyboard: { enabled: true },
+    a11y: { enabled: true },
+  });
+}
+
 const categorySlider = document.querySelector(".category-grid");
 if (window.Swiper && categorySlider) {
   try {

@@ -20,6 +20,10 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
     <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
   <body class="shop-page">
@@ -155,29 +159,124 @@
 
     <main>
       <section class="shop-intro section-spacing">
-        <div class="container shop-intro-inner">
-          <div class="shop-intro-copy">
-            <nav class="shop-breadcrumb" aria-label="Breadcrumb">
-              <a href="index.html">Home</a>
-              <span class="shop-breadcrumb-separator" aria-hidden="true"
-                ><i class="fa-solid fa-chevron-right"></i
-              ></span>
-              <span aria-current="page">Shop the Kinboni Collection</span>
-            </nav>
-            <h1>Shop the Collection</h1>
-            <p>
-              Discover thoughtfully designed bags made to complement every
-              moment, from everyday essentials to statement occasions.
-            </p>
-            <a class="button button-primary shop-intro-cta" href="#products"
-              >Explore Collection</a
-            >
+        <div class="shop-intro-slider swiper" aria-label="Featured products">
+          <div class="swiper-wrapper">
+            <article class="shop-intro-slide swiper-slide">
+              <div class="container shop-intro-inner">
+                <div class="shop-intro-copy">
+                  <nav class="shop-breadcrumb" aria-label="Breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="shop-breadcrumb-separator" aria-hidden="true"
+                      ><i class="fa-solid fa-chevron-right"></i
+                    ></span>
+                    <span aria-current="page">Shop the Kinboni Collection</span>
+                  </nav>
+                  <span class="shop-intro-kicker"
+                    >Summer Edit · Featured 01</span
+                  >
+                  <h1>Aria Leather Tote</h1>
+                  <p>
+                    An everyday favorite with a refined silhouette, ready to go
+                    wherever the season takes you.
+                  </p>
+                  <a
+                    class="button button-primary shop-intro-cta"
+                    href="#aria-tote"
+                    >Shop Aria Tote</a
+                  >
+                </div>
+              </div>
+              <div class="shop-intro-visual">
+                <img
+                  src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1800&q=85"
+                  alt="Black leather Aria tote bag"
+                />
+              </div>
+            </article>
+            <article class="shop-intro-slide swiper-slide">
+              <div class="container shop-intro-inner">
+                <div class="shop-intro-copy">
+                  <nav class="shop-breadcrumb" aria-label="Breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="shop-breadcrumb-separator" aria-hidden="true"
+                      ><i class="fa-solid fa-chevron-right"></i
+                    ></span>
+                    <span aria-current="page">Shop the Kinboni Collection</span>
+                  </nav>
+                  <span class="shop-intro-kicker"
+                    >Summer Edit · Featured 02</span
+                  >
+                  <h2>Solene Shoulder Bag</h2>
+                  <p>
+                    A polished shape for sunlit days and easy evenings, with
+                    just the right touch of everyday elegance.
+                  </p>
+                  <a
+                    class="button button-primary shop-intro-cta"
+                    href="#solene-shoulder"
+                    >Shop Solene Bag</a
+                  >
+                </div>
+              </div>
+              <div class="shop-intro-visual">
+                <img
+                  src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1800&q=85"
+                  alt="Brown Solene shoulder bag"
+                />
+              </div>
+            </article>
+            <article class="shop-intro-slide swiper-slide">
+              <div class="container shop-intro-inner">
+                <div class="shop-intro-copy">
+                  <nav class="shop-breadcrumb" aria-label="Breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="shop-breadcrumb-separator" aria-hidden="true"
+                      ><i class="fa-solid fa-chevron-right"></i
+                    ></span>
+                    <span aria-current="page">Shop the Kinboni Collection</span>
+                  </nav>
+                  <span class="shop-intro-kicker"
+                    >Summer Edit · Featured 03</span
+                  >
+                  <h2>Riva Crossbody</h2>
+                  <p>
+                    Keep your plans light with a versatile crossbody made for
+                    spontaneous stops and long summer afternoons.
+                  </p>
+                  <a
+                    class="button button-primary shop-intro-cta"
+                    href="#riva-crossbody"
+                    >Shop Riva Bag</a
+                  >
+                </div>
+              </div>
+              <div class="shop-intro-visual">
+                <img
+                  src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=1800&q=85"
+                  alt="Tan Riva crossbody bag"
+                />
+              </div>
+            </article>
           </div>
-          <div class="shop-intro-visual">
-            <img
-              src="assets/img/breadcrumb/ChatGPT%20Image%20Sep%2028%2C%202026%2C%2011_34_00%20PM.png"
-              alt="Beige handbag against a dark olive backdrop"
-            />
+          <div class="shop-intro-controls">
+            <button
+              class="shop-intro-prev"
+              type="button"
+              aria-label="Previous featured product"
+            >
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <div
+              class="shop-intro-pagination swiper-pagination"
+              aria-label="Choose featured product"
+            ></div>
+            <button
+              class="shop-intro-next"
+              type="button"
+              aria-label="Next featured product"
+            >
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
           </div>
         </div>
       </section>
@@ -378,6 +477,7 @@
             <div class="shop-results">
               <div class="shop-product-grid">
                 <article
+                  id="aria-tote"
                   class="product-card shop-product-card"
                   data-category="tote"
                   data-color="black"
@@ -429,6 +529,7 @@
                   </div>
                 </article>
                 <article
+                  id="solene-shoulder"
                   class="product-card shop-product-card"
                   data-category="shoulder"
                   data-color="brown"
@@ -480,6 +581,7 @@
                   </div>
                 </article>
                 <article
+                  id="riva-crossbody"
                   class="product-card shop-product-card"
                   data-category="crossbody"
                   data-color="beige"
@@ -1107,6 +1209,7 @@
       </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="assets/js/script.js"></script>
   </body>
 </html>
