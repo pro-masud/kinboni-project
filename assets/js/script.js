@@ -371,6 +371,112 @@ if (window.Swiper && shopIntroSlider) {
   });
 }
 
+const aboutStorySlider = document.querySelector(".about-story-slider");
+if (window.Swiper && aboutStorySlider) {
+  const aboutStoryCount = aboutStorySlider.querySelector(".about-story-count");
+  new window.Swiper(aboutStorySlider, {
+    loop: true,
+    effect: "fade",
+    fadeEffect: { crossFade: true },
+    speed: 900,
+    autoplay: prefersReducedMotion
+      ? false
+      : {
+          delay: 6800,
+          disableOnInteraction: true,
+          pauseOnMouseEnter: true,
+        },
+    navigation: {
+      nextEl: ".about-story-next",
+      prevEl: ".about-story-prev",
+    },
+    pagination: {
+      el: ".about-story-pagination",
+      clickable: true,
+    },
+    keyboard: { enabled: true },
+    a11y: { enabled: true },
+    on: {
+      init(swiper) {
+        if (aboutStoryCount)
+          aboutStoryCount.textContent = `01 / ${String(swiper.slides.length).padStart(2, "0")}`;
+      },
+      slideChange(swiper) {
+        if (aboutStoryCount)
+          aboutStoryCount.textContent = `${String(swiper.realIndex + 1).padStart(2, "0")} / ${String(swiper.slides.length).padStart(2, "0")}`;
+      },
+    },
+  });
+}
+
+const aboutDetailCarousel = document.querySelector(".about-detail-carousel");
+if (aboutDetailCarousel) {
+  const detailTrack = aboutDetailCarousel.querySelector(".swiper-wrapper");
+  const detailSlides = Array.from(
+    aboutDetailCarousel.querySelectorAll(".about-detail-slide"),
+  );
+  const detailPagination = aboutDetailCarousel.querySelector(
+    ".about-detail-pagination",
+  );
+  const detailPrevious =
+    aboutDetailCarousel.querySelector(".about-detail-prev");
+  const detailNext = aboutDetailCarousel.querySelector(".about-detail-next");
+  let detailIndex = 0;
+  let detailTimer;
+
+  const updateDetailSlider = (index) => {
+    detailIndex = (index + detailSlides.length) % detailSlides.length;
+    if (detailTrack)
+      detailTrack.style.transform = `translate3d(-${detailIndex * 100}%, 0, 0)`;
+    detailSlides.forEach((slide, slideIndex) => {
+      slide.setAttribute("aria-hidden", String(slideIndex !== detailIndex));
+    });
+    detailPagination
+      ?.querySelectorAll("button")
+      .forEach((button, buttonIndex) => {
+        button.classList.toggle("is-active", buttonIndex === detailIndex);
+      });
+  };
+
+  detailSlides.forEach((slide, slideIndex) => {
+    slide.setAttribute("role", "group");
+    slide.setAttribute(
+      "aria-label",
+      `${slideIndex + 1} of ${detailSlides.length}`,
+    );
+    const bullet = document.createElement("button");
+    bullet.type = "button";
+    bullet.className = "about-detail-dot";
+    bullet.setAttribute("aria-label", `Show detail ${slideIndex + 1}`);
+    bullet.addEventListener("click", () => updateDetailSlider(slideIndex));
+    detailPagination?.append(bullet);
+  });
+
+  detailPrevious?.addEventListener("click", () =>
+    updateDetailSlider(detailIndex - 1),
+  );
+  detailNext?.addEventListener("click", () =>
+    updateDetailSlider(detailIndex + 1),
+  );
+  updateDetailSlider(0);
+
+  if (!prefersReducedMotion) {
+    detailTimer = window.setInterval(
+      () => updateDetailSlider(detailIndex + 1),
+      4800,
+    );
+    aboutDetailCarousel.addEventListener("mouseenter", () =>
+      window.clearInterval(detailTimer),
+    );
+    aboutDetailCarousel.addEventListener("mouseleave", () => {
+      detailTimer = window.setInterval(
+        () => updateDetailSlider(detailIndex + 1),
+        4800,
+      );
+    });
+  }
+}
+
 const categorySlider = document.querySelector(".category-grid");
 if (window.Swiper && categorySlider) {
   try {
