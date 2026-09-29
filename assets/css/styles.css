@@ -38,12 +38,14 @@ body {
 main > .featured-categories,
 main > .ingredients,
 main > .testimonials,
+main > .concerns,
+main > .products,
 main > .faq {
   background: var(--panel-strong);
 }
 
-main > .concerns,
 main > .routine,
+main > .products.best-sellers-section,
 main > .ugc {
   background: var(--bg-soft);
 }
