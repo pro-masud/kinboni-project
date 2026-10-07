@@ -1,215 +1,62 @@
-# Kinboni Beauty
+# Kinboni storefront
 
-A polished, responsive, and interactive beauty e-commerce landing page for skincare, makeup, hair care, and beauty essentials.
+Kinboni is a responsive static storefront built with HTML, CSS, and vanilla JavaScript. No build step is required.
 
-## Project Goal
+## Run locally
 
-Kinboni is presented as a modern beauty brand where visitors can:
+Open `index.html` through VS Code Live Server or another local HTTP server. Serving the site over HTTP is recommended for browser storage, product images, and page navigation.
 
-- Browse product categories
-- Search for products
-- Open a quick product view
-- Create a wishlist
-- Add products to a shopping bag
-- Get recommendations through a beauty quiz
-- Enjoy a smooth experience on mobile and desktop
+## Main pages
 
-## How The Project Was Built
+- `index.html` — storefront home
+- `shop.html` — catalog, filters, sorting, URL state, and 12-item pagination
+- `product.html?id=<product-id>` — catalog-driven product detail page
+- `shop-page-2.html` — compatibility redirect to Shop page 2
+- `totes.html`, `shoulder-bags.html`, `crossbody.html`, `mini-bags.html`, `work-bags.html`, and `new-arrivals.html` — collection pages
+- `coming-soon.html` — upcoming products
+- `checkout.html`, `order-success.html`, and the customer-care pages — order preparation and support information
 
-### 1. Project Structure
+## Catalog and business configuration
 
-The project is a lightweight static website. No build tool or framework is required, so the page can be opened directly through `index.html`.
+`assets/js/products.js` is the shared product catalog. Product cards, search, cart, wishlist, quick view, and product detail pages use product IDs from this catalog.
 
-```text
-kinboni/
-├── index.html
-├── README.md
-└── assets/
-    ├── css/
-    │   └── styles.css
-    ├── fonts/
-    ├── images/
-    ├── js/
-    │   └── script.js
-    └── video/
+`assets/js/config.js` is the shared brand and business configuration. Before launch, the business owner must provide:
+
+- Confirmed BDT prices, stock, colors, materials, dimensions, care, and product photography
+- Phone/WhatsApp, email, address, business hours, and social profiles
+- Delivery fees, delivery estimates, payment availability, and merchant details
+- Approved return, privacy, terms, warranty, and other customer-facing policies
+- Order and newsletter endpoints, if submissions should reach a business system
+
+Unconfirmed values remain blank or `null`. Prices and claims are not guessed; checkout will not submit an order while required commercial settings are missing.
+The New Arrivals page stays empty until products are explicitly marked with `status: "new"` or the `new-arrival` tag in the catalog.
+
+## Product photography
+
+The local `assets/img/products/product-image-pending.svg` is an intentional placeholder until approved product photos are supplied. Replace each product image `src` in `assets/js/products.js` with the corresponding local image path, and retain a valid fallback where appropriate. The placeholder and `assets/img/favicon.svg` are local assets.
+
+## Search, cart, and order behavior
+
+- Cart and wishlist items persist in browser `localStorage`.
+- Search covers the shared catalog.
+- The Shop page renders the 14 currently catalogued bags, shows 12 per page, and stores filter/sort/page state in the URL.
+- Product prices and operational policies are not yet confirmed. The cart can be explored, but checkout blocks orders until required settings are configured.
+- Contact and newsletter forms require configured endpoints or contact channels; no success state is shown when a submission cannot be sent.
+
+## Dependencies and validation
+
+The site uses CDN-hosted Google Fonts, Font Awesome, and Swiper. An internet connection is needed for those external resources.
+
+Useful checks:
+
+```powershell
+node --check assets\js\script.js
+node --check assets\js\shop-catalog.js
+node --check assets\js\product-page.js
+node --check assets\js\products.js
+git diff --check
 ```
 
-### 2. Semantic HTML Layout
+## Deployment note
 
-The page is divided into meaningful sections in `index.html`:
-
-- Announcement bar and sticky header
-- Desktop and mobile navigation
-- Hero banner and promotional slides
-- Trust badges
-- Featured categories
-- Trending products
-- Skin concerns
-- New arrivals and best sellers
-- Ingredients and daily routine sections
-- Beauty quiz
-- Brand story
-- Testimonials
-- Collections, benefits, and user-generated content
-- FAQ and newsletter form
-- Quick-view modal, quiz modal, and cart drawer
-
-### 3. Brand-Focused Visual Design
-
-The premium Kinboni beauty identity is defined in `styles.css` through:
-
-- A soft blush, ivory, rose, and sage colour palette
-- `Cormorant Garamond` for headings
-- `Manrope` for body text
-- Responsive spacing, typography, and layout
-- Reusable CSS variables
-- Rounded product cards and soft shadows
-- Hover states, reveal animations, and a scroll-based header state
-- Responsive breakpoints for desktop, tablet, and mobile
-
-### 4. Hero Section and Slider
-
-The hero section contains multiple promotional slides. Each slide includes:
-
-- Campaign eyebrow text
-- Large headline
-- Supporting copy
-- Primary and secondary CTAs
-- Product image
-- Product badge
-- Brand promise metrics
-
-Swiper powers the hero slider with autoplay, fade transitions, clickable pagination, keyboard controls, and accessibility support.
-Each slide also selects its own background video. The first uses the local `assets/video/handbags-motion.mp4`; the other two use free Pexels clips, with the slide product image shown while a video loads.
-
-### 5. Product Discovery Experience
-
-The product sections make browsing easier with:
-
-- Category-based product grouping
-- Product image, title, rating, and price
-- Wishlist button
-- Add to Bag action
-- Dynamically added Quick View button
-- Responsive product carousel
-
-Swiper is also used for category and testimonial carousels, providing mobile swipe support and multi-column desktop layouts.
-
-### 6. Search Functionality
-
-Clicking the search icon opens the search panel. On submit, JavaScript compares the query with the text content of every `.product-card` and:
-
-- Shows matching products
-- Hides non-matching products
-- Displays the result count
-- Shows a helpful message when no products match
-- Restores all products when the query is empty
-
-### 7. Mobile Navigation
-
-The mobile hamburger menu is controlled with JavaScript and:
-
-- Opens and closes the menu
-- Changes the bars icon to a close icon
-- Updates `aria-expanded` and `aria-hidden`
-- Closes the menu when a navigation link is selected
-
-### 8. Wishlist Functionality
-
-Clicking a product heart button toggles its wishlist state. The selection is stored in browser `localStorage`, so it remains available after a page refresh.
-
-### 9. Shopping Bag Interaction
-
-The cart system supports:
-
-- Adding an item from a product card
-- Increasing quantity when the same product is added again
-- Updating the cart count
-- Showing a sticky confirmation message
-- Opening a cart drawer with selected products
-- Rendering product image, title, price, and quantity
-- Showing an empty state when the cart has no items
-
-Cart data currently lives in frontend memory; a backend and checkout system have not been connected yet.
-
-### 10. Quick View and Beauty Quiz
-
-The Quick View modal dynamically loads the product image and title from the product card. Selecting an option in the Beauty Quiz modal displays a result message for the selected concern.
-
-### 11. Scroll Animations and Accessibility
-
-`IntersectionObserver` triggers reveal animations when sections enter the viewport. Interactive elements also include:
-
-- Accessible labels
-- `aria-expanded`
-- `aria-hidden`
-- `aria-live`
-- Keyboard-friendly slider controls
-
-## Technologies Used
-
-- HTML5
-- CSS3
-- Vanilla JavaScript
-- Swiper.js
-- Font Awesome
-- Google Fonts
-- Unsplash image URLs
-- Browser `localStorage`
-
-## How To Run
-
-### Option 1: Direct Browser
-
-1. Open the project folder.
-2. Double-click `index.html`.
-3. The Kinboni page will open in your browser.
-
-### Option 2: VS Code Live Server
-
-1. Install the **Live Server** extension in VS Code.
-2. Open `index.html`.
-3. Right-click and select **Open with Live Server**.
-
-Live Server makes responsive testing and external asset loading easier to verify.
-
-## External Dependencies
-
-The following resources are loaded from CDNs:
-
-- Google Fonts: Cormorant Garamond and Manrope
-- Font Awesome 6.5.2
-- Swiper 11
-- Unsplash product and editorial images
-- Pexels video backgrounds: [pink handbag](https://www.pexels.com/video/close-up-of-a-pink-bag-8798394/) and [orange handbag](https://www.pexels.com/video/a-video-of-an-orange-handbag-8798149/), under the [Pexels License](https://www.pexels.com/license/)
-
-An internet connection may be required when the page is loaded for the first time.
-
-## Testing Checklist
-
-- [ ] Verify the desktop layout
-- [ ] Verify the tablet layout
-- [ ] Verify the mobile menu open and close behaviour
-- [ ] Test matching and non-matching product searches
-- [ ] Confirm that wishlist state remains after refresh
-- [ ] Test Add to Bag and the cart drawer
-- [ ] Confirm that the Quick View modal can be closed
-- [ ] Test Beauty Quiz options and results
-- [ ] Verify hero, category, and testimonial sliders
-- [ ] Test keyboard navigation and visible focus states
-- [ ] Verify fallback behaviour without internet access
-
-## Future Improvements
-
-- Connect a backend API and real product database
-- Add user authentication and an account page
-- Add persistent cart storage
-- Add checkout and payment gateway integration
-- Add product filtering, sorting, and pagination
-- Connect a real newsletter subscription endpoint
-- Reduce CDN dependency with local image and video assets
-- Add automated accessibility and responsive browser testing
-
-## Current Status
-
-The responsive frontend and core shopping interactions are complete. Kinboni Beauty is currently a polished frontend prototype; backend, authentication, database, and payment integrations are the next steps for a production e-commerce experience.
+`assets/js/config.js` uses `https://kinboni.store` for canonical URLs, social metadata, and structured data. `sitemap.xml` lists the public storefront, collection, policy, and catalog product URLs; keep it in sync when those routes or product IDs change. Checkout and order-detail pages are excluded from search indexing.

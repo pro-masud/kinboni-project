@@ -25,10 +25,11 @@
       href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
     />
     <link rel="stylesheet" href="assets/css/styles.css" />
+      <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
   </head>
-  <body class="shop-page">
+  <body class="shop-page shop-page-dynamic">
     <div class="announcement-bar">
-      <p>Free shipping on orders over $75 • New arrivals now live</p>
+      <p>Kinboni Bangladesh · Delivery details are confirmed before order placement</p>
     </div>
 
     <header class="site-header" id="site-header">
@@ -310,7 +311,7 @@
           <div class="shop-toolbar">
             <div>
               <span class="shop-product-count" aria-live="polite"
-                >12 Products</span
+                >Loading products…</span
               ><span class="shop-results-note">Curated for your everyday</span>
             </div>
             <div class="shop-toolbar-actions">
@@ -325,9 +326,9 @@
                 ><select aria-label="Sort products">
                   <option value="featured">Featured</option>
                   <option value="newest">Newest</option>
-                  <option value="low">Price: Low to High</option>
-                  <option value="high">Price: High to Low</option>
-                  <option value="best">Best Selling</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="name">Name: A to Z</option>
                 </select></label
               >
             </div>
@@ -377,6 +378,16 @@
                     data-filter="category"
                   />
                   Clutches</label
+                ><label
+                  ><input type="checkbox" value="work" data-filter="category" />
+                  Work Bags</label
+                ><label
+                  ><input
+                    type="checkbox"
+                    value="travel"
+                    data-filter="category"
+                  />
+                  Travel Bags</label
                 >
               </fieldset>
               <fieldset>
@@ -406,28 +417,27 @@
                 >
               </fieldset>
               <fieldset>
-                <legend>Price</legend>
-                <label
-                  ><input
-                    type="checkbox"
-                    value="under-50"
-                    data-filter="price"
+                <legend>Price (BDT)</legend>
+                <div class="shop-price-range">
+                  <label for="shop-price-min">Min</label>
+                  <input
+                    id="shop-price-min"
+                    type="number"
+                    min="0"
+                    inputmode="numeric"
+                    placeholder="৳ Min"
+                    data-filter="price-min"
                   />
-                  Under $50</label
-                ><label
-                  ><input type="checkbox" value="50-100" data-filter="price" />
-                  $50–$100</label
-                ><label
-                  ><input type="checkbox" value="100-200" data-filter="price" />
-                  $100–$200</label
-                ><label
-                  ><input
-                    type="checkbox"
-                    value="200-plus"
-                    data-filter="price"
+                  <label for="shop-price-max">Max</label>
+                  <input
+                    id="shop-price-max"
+                    type="number"
+                    min="0"
+                    inputmode="numeric"
+                    placeholder="৳ Max"
+                    data-filter="price-max"
                   />
-                  $200+</label
-                >
+                </div>
               </fieldset>
               <fieldset>
                 <legend>Style</legend>
@@ -457,22 +467,6 @@
                 >
               </fieldset>
               <fieldset>
-                <legend>Size</legend>
-                <label
-                  ><input type="checkbox" value="mini" data-filter="size" />
-                  Mini</label
-                ><label
-                  ><input type="checkbox" value="small" data-filter="size" />
-                  Small</label
-                ><label
-                  ><input type="checkbox" value="medium" data-filter="size" />
-                  Medium</label
-                ><label
-                  ><input type="checkbox" value="large" data-filter="size" />
-                  Large</label
-                >
-              </fieldset>
-              <fieldset>
                 <legend>Availability</legend>
                 <label
                   ><input
@@ -484,653 +478,26 @@
                 ><label
                   ><input
                     type="checkbox"
-                    value="new"
+                    value="sale"
                     data-filter="availability"
                   />
-                  New Arrivals</label
-                ><label
-                  ><input
-                    type="checkbox"
-                    value="best"
-                    data-filter="availability"
-                  />
-                  Best Sellers</label
+                  On Sale</label
                 >
               </fieldset>
             </aside>
 
             <div class="shop-results">
-              <div class="shop-product-grid">
-                <article
-                  id="aria-tote"
-                  class="product-card shop-product-card"
-                  data-category="tote"
-                  data-color="black"
-                  data-price-value="148"
-                  data-style="classic"
-                  data-size="large"
-                  data-availability="in-stock best"
-                  data-date="12"
-                  data-sales="98"
-                >
-                  <div
-                    class="product-media"
-                    data-secondary="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=900&q=80"
-                  >
-                    <span class="badge badge-new">New</span
-                    ><button
-                      class="wishlist-button"
-                      type="button"
-                      aria-label="Add Aria Leather Tote to wishlist"
-                    >
-                      <i class="fa-regular fa-heart"></i></button
-                    ><img
-                      src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=80"
-                      alt="Black leather Aria tote bag"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="product-hover-actions">
-                      <button class="quick-view-button" type="button">
-                        Quick View</button
-                      ><button class="mini-button" type="button">
-                        Add to Bag
-                      </button>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-meta">
-                      <span class="category">Tote Bags</span
-                      ><span class="rating"
-                        ><i class="fa-solid fa-star"></i> 4.9
-                        <small>(42)</small></span
-                      >
-                    </div>
-                    <h3>Aria Leather Tote</h3>
-                    <div class="price-row">
-                      <div class="price-group">
-                        <span class="price">$148</span
-                        ><span class="old-price">$186</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-                <article
-                  id="solene-shoulder"
-                  class="product-card shop-product-card"
-                  data-category="shoulder"
-                  data-color="brown"
-                  data-price-value="126"
-                  data-style="everyday"
-                  data-size="medium"
-                  data-availability="in-stock"
-                  data-date="8"
-                  data-sales="85"
-                >
-                  <div
-                    class="product-media"
-                    data-secondary="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=900&q=80"
-                  >
-                    <span class="badge badge-sale">Sale</span
-                    ><button
-                      class="wishlist-button"
-                      type="button"
-                      aria-label="Add Solene Shoulder Bag to wishlist"
-                    >
-                      <i class="fa-regular fa-heart"></i></button
-                    ><img
-                      src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=80"
-                      alt="Brown Solene shoulder bag"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="product-hover-actions">
-                      <button class="quick-view-button" type="button">
-                        Quick View</button
-                      ><button class="mini-button" type="button">
-                        Add to Bag
-                      </button>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-meta">
-                      <span class="category">Shoulder Bags</span
-                      ><span class="rating"
-                        ><i class="fa-solid fa-star"></i> 4.8
-                        <small>(37)</small></span
-                      >
-                    </div>
-                    <h3>Solene Shoulder Bag</h3>
-                    <div class="price-row">
-                      <div class="price-group">
-                        <span class="price">$126</span
-                        ><span class="old-price">$164</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-                <article
-                  id="riva-crossbody"
-                  class="product-card shop-product-card"
-                  data-category="crossbody"
-                  data-color="beige"
-                  data-price-value="98"
-                  data-style="minimal"
-                  data-size="small"
-                  data-availability="in-stock best"
-                  data-date="7"
-                  data-sales="91"
-                >
-                  <div
-                    class="product-media"
-                    data-secondary="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=80"
-                  >
-                    <button
-                      class="wishlist-button"
-                      type="button"
-                      aria-label="Add Riva Crossbody to wishlist"
-                    >
-                      <i class="fa-regular fa-heart"></i></button
-                    ><img
-                      src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=900&q=80"
-                      alt="Tan Riva crossbody bag"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="product-hover-actions">
-                      <button class="quick-view-button" type="button">
-                        Quick View</button
-                      ><button class="mini-button" type="button">
-                        Add to Bag
-                      </button>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-meta">
-                      <span class="category">Crossbody Bags</span
-                      ><span class="rating"
-                        ><i class="fa-solid fa-star"></i> 5.0
-                        <small>(28)</small></span
-                      >
-                    </div>
-                    <h3>Riva Crossbody</h3>
-                    <div class="price-row">
-                      <div class="price-group">
-                        <span class="price">$98</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-                <article
-                  class="product-card shop-product-card"
-                  data-category="mini"
-                  data-color="cream"
-                  data-price-value="86"
-                  data-style="evening"
-                  data-size="mini"
-                  data-availability="in-stock new"
-                  data-date="14"
-                  data-sales="63"
-                >
-                  <div
-                    class="product-media"
-                    data-secondary="https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=900&q=80"
-                  >
-                    <span class="badge badge-new">New</span
-                    ><button
-                      class="wishlist-button"
-                      type="button"
-                      aria-label="Add Verona Mini Bag to wishlist"
-                    >
-                      <i class="fa-regular fa-heart"></i></button
-                    ><img
-                      src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=80"
-                      alt="Structured Verona mini bag"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="product-hover-actions">
-                      <button class="quick-view-button" type="button">
-                        Quick View</button
-                      ><button class="mini-button" type="button">
-                        Add to Bag
-                      </button>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-meta">
-                      <span class="category">Mini Bags</span
-                      ><span class="rating"
-                        ><i class="fa-solid fa-star"></i> 4.9
-                        <small>(31)</small></span
-                      >
-                    </div>
-                    <h3>Verona Mini Bag</h3>
-                    <div class="price-row">
-                      <div class="price-group">
-                        <span class="price">$86</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-                <article
-                  class="product-card shop-product-card"
-                  data-category="handbags"
-                  data-color="black"
-                  data-price-value="134"
-                  data-style="everyday"
-                  data-size="medium"
-                  data-availability="in-stock"
-                  data-date="6"
-                  data-sales="74"
-                >
-                  <div
-                    class="product-media"
-                    data-secondary="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=80"
-                  >
-                    <button
-                      class="wishlist-button"
-                      type="button"
-                      aria-label="Add Noa Everyday Bag to wishlist"
-                    >
-                      <i class="fa-regular fa-heart"></i></button
-                    ><img
-                      src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=80"
-                      alt="Black Noa everyday handbag"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="product-hover-actions">
-                      <button class="quick-view-button" type="button">
-                        Quick View</button
-                      ><button class="mini-button" type="button">
-                        Add to Bag
-                      </button>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-meta">
-                      <span class="category">Handbags</span
-                      ><span class="rating"
-                        ><i class="fa-solid fa-star"></i> 5.0
-                        <small>(54)</small></span
-                      >
-                    </div>
-                    <h3>Noa Everyday Bag</h3>
-                    <div class="price-row">
-                      <div class="price-group">
-                        <span class="price">$134</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-                <article
-                  class="product-card shop-product-card"
-                  data-category="tote"
-                  data-color="cream"
-                  data-price-value="158"
-                  data-style="classic"
-                  data-size="large"
-                  data-availability="in-stock new"
-                  data-date="15"
-                  data-sales="52"
-                >
-                  <div
-                    class="product-media"
-                    data-secondary="https://images.unsplash.com/photo-1605733513597-a8f8341084e6?auto=format&fit=crop&w=900&q=80"
-                  >
-                    <span class="badge badge-new">New</span
-                    ><button
-                      class="wishlist-button"
-                      type="button"
-                      aria-label="Add Clara Work Tote to wishlist"
-                    >
-                      <i class="fa-regular fa-heart"></i></button
-                    ><img
-                      src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=80"
-                      alt="Cream Clara work tote"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="product-hover-actions">
-                      <button class="quick-view-button" type="button">
-                        Quick View</button
-                      ><button class="mini-button" type="button">
-                        Add to Bag
-                      </button>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-meta">
-                      <span class="category">Tote Bags</span
-                      ><span class="rating"
-                        ><i class="fa-solid fa-star"></i> 4.9
-                        <small>(26)</small></span
-                      >
-                    </div>
-                    <h3>Clara Work Tote</h3>
-                    <div class="price-row">
-                      <div class="price-group">
-                        <span class="price">$158</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-                <article
-                  class="product-card shop-product-card"
-                  data-category="shoulder"
-                  data-color="burgundy"
-                  data-price-value="112"
-                  data-style="statement"
-                  data-size="medium"
-                  data-availability="in-stock best"
-                  data-date="4"
-                  data-sales="88"
-                >
-                  <div
-                    class="product-media"
-                    data-secondary="https://images.unsplash.com/photo-1591561954555-607968c989ab?auto=format&fit=crop&w=900&q=80"
-                  >
-                    <span class="badge badge-sale">Sale</span
-                    ><button
-                      class="wishlist-button"
-                      type="button"
-                      aria-label="Add Elara Shoulder Bag to wishlist"
-                    >
-                      <i class="fa-regular fa-heart"></i></button
-                    ><img
-                      src="https://images.unsplash.com/photo-1681747685985-a401c271156c?auto=format&fit=crop&w=900&q=80"
-                      alt="Burgundy Elara shoulder bag"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="product-hover-actions">
-                      <button class="quick-view-button" type="button">
-                        Quick View</button
-                      ><button class="mini-button" type="button">
-                        Add to Bag
-                      </button>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-meta">
-                      <span class="category">Shoulder Bags</span
-                      ><span class="rating"
-                        ><i class="fa-solid fa-star"></i> 4.8
-                        <small>(22)</small></span
-                      >
-                    </div>
-                    <h3>Elara Shoulder Bag</h3>
-                    <div class="price-row">
-                      <div class="price-group">
-                        <span class="price">$112</span
-                        ><span class="old-price">$146</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-                <article
-                  class="product-card shop-product-card"
-                  data-category="handbags"
-                  data-color="beige"
-                  data-price-value="178"
-                  data-style="classic"
-                  data-size="medium"
-                  data-availability="in-stock"
-                  data-date="3"
-                  data-sales="48"
-                >
-                  <div
-                    class="product-media"
-                    data-secondary="https://images.unsplash.com/photo-1523779105320-d1cd346ff52b?auto=format&fit=crop&w=900&q=80"
-                  >
-                    <span class="badge badge-new">Limited</span
-                    ><button
-                      class="wishlist-button"
-                      type="button"
-                      aria-label="Add Margot Structured Bag to wishlist"
-                    >
-                      <i class="fa-regular fa-heart"></i></button
-                    ><img
-                      src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=900&q=80"
-                      alt="Beige Margot structured handbag"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="product-hover-actions">
-                      <button class="quick-view-button" type="button">
-                        Quick View</button
-                      ><button class="mini-button" type="button">
-                        Add to Bag
-                      </button>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-meta">
-                      <span class="category">Handbags</span
-                      ><span class="rating"
-                        ><i class="fa-solid fa-star"></i> 4.9
-                        <small>(19)</small></span
-                      >
-                    </div>
-                    <h3>Margot Structured Bag</h3>
-                    <div class="price-row">
-                      <div class="price-group">
-                        <span class="price">$178</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-                <article
-                  class="product-card shop-product-card"
-                  data-category="crossbody"
-                  data-color="white"
-                  data-price-value="74"
-                  data-style="minimal"
-                  data-size="small"
-                  data-availability="in-stock new"
-                  data-date="16"
-                  data-sales="41"
-                >
-                  <div
-                    class="product-media"
-                    data-secondary="https://images.unsplash.com/photo-1685800750376-f4497f5da428?auto=format&fit=crop&w=900&q=80"
-                  >
-                    <span class="badge badge-new">New</span
-                    ><button
-                      class="wishlist-button"
-                      type="button"
-                      aria-label="Add Cleo Crossbody to wishlist"
-                    >
-                      <i class="fa-regular fa-heart"></i></button
-                    ><img
-                      src="https://images.unsplash.com/photo-1614179689702-355944cd0918?auto=format&fit=crop&w=900&q=80"
-                      alt="White Cleo crossbody bag"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="product-hover-actions">
-                      <button class="quick-view-button" type="button">
-                        Quick View</button
-                      ><button class="mini-button" type="button">
-                        Add to Bag
-                      </button>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-meta">
-                      <span class="category">Crossbody Bags</span
-                      ><span class="rating"
-                        ><i class="fa-solid fa-star"></i> 4.7
-                        <small>(16)</small></span
-                      >
-                    </div>
-                    <h3>Cleo Crossbody</h3>
-                    <div class="price-row">
-                      <div class="price-group">
-                        <span class="price">$74</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-                <article
-                  class="product-card shop-product-card"
-                  data-category="tote"
-                  data-color="brown"
-                  data-price-value="214"
-                  data-style="classic"
-                  data-size="large"
-                  data-availability="in-stock"
-                  data-date="2"
-                  data-sales="38"
-                >
-                  <span class="shop-product-badge badge badge-new"
-                    >Best Seller</span
-                  >
-                  <div
-                    class="product-media"
-                    data-secondary="https://images.unsplash.com/photo-1622560480654-d96214fdc887?auto=format&fit=crop&w=900&q=80"
-                  >
-                    <button
-                      class="wishlist-button"
-                      type="button"
-                      aria-label="Add Siena Carryall to wishlist"
-                    >
-                      <i class="fa-regular fa-heart"></i></button
-                    ><img
-                      src="https://images.unsplash.com/photo-1605733513597-a8f8341084e6?auto=format&fit=crop&w=900&q=80"
-                      alt="Brown Siena carryall tote"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="product-hover-actions">
-                      <button class="quick-view-button" type="button">
-                        Quick View</button
-                      ><button class="mini-button" type="button">
-                        Add to Bag
-                      </button>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-meta">
-                      <span class="category">Tote Bags</span
-                      ><span class="rating"
-                        ><i class="fa-solid fa-star"></i> 4.9
-                        <small>(61)</small></span
-                      >
-                    </div>
-                    <h3>Siena Carryall</h3>
-                    <div class="price-row">
-                      <div class="price-group">
-                        <span class="price">$214</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-                <article
-                  class="product-card shop-product-card"
-                  data-category="mini"
-                  data-color="black"
-                  data-price-value="68"
-                  data-style="evening"
-                  data-size="mini"
-                  data-availability="in-stock"
-                  data-date="1"
-                  data-sales="34"
-                >
-                  <div
-                    class="product-media"
-                    data-secondary="https://images.unsplash.com/photo-1597633125184-9fd7e54f0ff7?auto=format&fit=crop&w=900&q=80"
-                  >
-                    <button
-                      class="wishlist-button"
-                      type="button"
-                      aria-label="Add Nola Mini Bag to wishlist"
-                    >
-                      <i class="fa-regular fa-heart"></i></button
-                    ><img
-                      src="https://images.unsplash.com/photo-1685800750376-f4497f5da428?auto=format&fit=crop&w=900&q=80"
-                      alt="Black Nola mini bag"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="product-hover-actions">
-                      <button class="quick-view-button" type="button">
-                        Quick View</button
-                      ><button class="mini-button" type="button">
-                        Add to Bag
-                      </button>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-meta">
-                      <span class="category">Mini Bags</span
-                      ><span class="rating"
-                        ><i class="fa-solid fa-star"></i> 4.8
-                        <small>(13)</small></span
-                      >
-                    </div>
-                    <h3>Nola Mini Bag</h3>
-                    <div class="price-row">
-                      <div class="price-group">
-                        <span class="price">$68</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-                <article
-                  class="product-card shop-product-card"
-                  data-category="clutch"
-                  data-color="cream"
-                  data-price-value="92"
-                  data-style="evening"
-                  data-size="small"
-                  data-availability="in-stock new"
-                  data-date="17"
-                  data-sales="27"
-                >
-                  <div
-                    class="product-media"
-                    data-secondary="https://images.unsplash.com/photo-1559563458-527698bf5295?auto=format&fit=crop&w=900&q=80"
-                  >
-                    <span class="badge badge-new">New</span
-                    ><button
-                      class="wishlist-button"
-                      type="button"
-                      aria-label="Add Iris Clutch to wishlist"
-                    >
-                      <i class="fa-regular fa-heart"></i></button
-                    ><img
-                      src="https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?auto=format&fit=crop&w=900&q=80"
-                      alt="Cream Iris clutch bag"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="product-hover-actions">
-                      <button class="quick-view-button" type="button">
-                        Quick View</button
-                      ><button class="mini-button" type="button">
-                        Add to Bag
-                      </button>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-meta">
-                      <span class="category">Clutches</span
-                      ><span class="rating"
-                        ><i class="fa-solid fa-star"></i> 4.8
-                        <small>(11)</small></span
-                      >
-                    </div>
-                    <h3>Iris Evening Clutch</h3>
-                    <div class="price-row">
-                      <div class="price-group">
-                        <span class="price">$92</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
+              <div class="shop-active-filters" aria-live="polite"></div>
+              <div class="shop-skeleton" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
               </div>
+              <div class="shop-product-grid" data-catalog-source="products"></div>
+              <noscript>
+                <p class="shop-filter-note">
+                  Enable JavaScript to browse the live catalog and use product filters.
+                </p>
+              </noscript>
+
               <div class="shop-empty-state" hidden>
                 <span class="eyebrow">A quieter search</span>
                 <h2>No pieces found</h2>
@@ -1145,11 +512,8 @@
               <nav
                 class="shop-pagination woocommerce-pagination"
                 aria-label="Product pagination"
-              >
-                <span class="page-numbers current" aria-current="page">1</span>
-                <a class="page-numbers" href="shop-page-2.html#products" aria-label="Page 2">2</a>
-                <a class="page-numbers next" href="shop-page-2.html#products" rel="next" aria-label="Next page">Next</a>
-              </nav>
+                hidden
+              ></nav>
             </div>
           </div>
         </div>
@@ -1216,7 +580,7 @@
       <div class="container footer-bottom">
         <p>© 2026 Kinboni. All rights reserved.</p>
         <div class="footer-legal">
-          <span class="payment-note">Visa · Mastercard · Amex · PayPal</span
+          <span class="payment-note">Payment methods to be confirmed</span
           ><span aria-label="Privacy policy coming soon">Privacy Policy (Coming Soon)</span
           ><span aria-label="Terms coming soon">Terms (Coming Soon)</span>
         </div>
@@ -1296,10 +660,14 @@
           <h2 id="quick-view-title"></h2>
           <p class="shop-quick-category"></p>
           <div class="shop-quick-price"></div>
-          <p>
-            Thoughtfully shaped for everyday movement, with considered details
-            and room for what matters.
-          </p>
+          <p class="shop-quick-description"></p>
+          <label class="shop-quick-variant-wrap" hidden>
+            <span>Color</span>
+            <select class="shop-quick-variant" aria-label="Choose color"></select>
+          </label>
+          <a class="button button-secondary shop-quick-details" href="product.html">
+            View product details
+          </a>
           <button class="button button-primary shop-quick-add" type="button">
             Add to Bag
           </button>
@@ -1310,6 +678,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script defer src="assets/js/config.js"></script>
     <script defer src="assets/js/products.js"></script>
+    <script defer src="assets/js/shop-catalog.js"></script>
     <script defer src="assets/js/script.js"></script>
   </body>
 </html>

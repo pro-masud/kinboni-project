@@ -41,7 +41,42 @@ const productIdFromName = (name) =>
 document.querySelectorAll(".product-card").forEach((card) => {
   const name = card.querySelector("h3")?.textContent.trim();
   const productId = name ? productIdFromName(name) : "";
-  if (productsById.has(productId)) card.dataset.productId = productId;
+  if (!productsById.has(productId)) return;
+  card.dataset.productId = productId;
+  const title = card.querySelector("h3");
+  if (title && !title.querySelector("a")) {
+    const link = document.createElement("a");
+    link.href = `product.html?id=${encodeURIComponent(productId)}`;
+    link.textContent = title.textContent;
+    title.replaceChildren(link);
+  }
+});
+
+document.querySelectorAll(".coming-product-card").forEach((card) => {
+  const title = card.querySelector("h3");
+  const productId = title ? productIdFromName(title.textContent.trim()) : "";
+  const product = productsById.get(productId);
+  if (!product) return;
+  card.dataset.productId = product.id;
+  card.querySelectorAll(".wishlist-button").forEach((button) => {
+    button.dataset.productId = product.id;
+  });
+  if (title && !title.querySelector("a")) {
+    const link = document.createElement("a");
+    link.href = `product.html?id=${encodeURIComponent(product.id)}`;
+    link.textContent = title.textContent;
+    title.replaceChildren(link);
+  }
+});
+
+document.querySelectorAll("img").forEach((image) => {
+  if (!image.hasAttribute("alt")) image.alt = "";
+  if (
+    !image.hasAttribute("loading") &&
+    !image.closest(".hero-visual, .hero-image-wrap, .hero-image, .brand")
+  )
+    image.loading = "lazy";
+  if (!image.hasAttribute("decoding")) image.decoding = "async";
 });
 
 const readStoredValue = (key, fallback) => {
@@ -315,6 +350,12 @@ const applyConfigBindings = () => {
   renderSocialLinks();
   normalizeFooterLinks();
   renderPaymentBadges();
+  document.querySelectorAll(".payment-note").forEach((element) => {
+    const methods = getEnabledPaymentMethods();
+    element.textContent = methods.length
+      ? `Payment methods: ${methods.join(" · ")}`
+      : "Payment methods to be confirmed";
+  });
   document.querySelectorAll("[data-delivery-payment-copy]").forEach((element) => {
     const delivery = siteConfig.delivery || {};
     const methods = getEnabledPaymentMethods();
@@ -348,6 +389,142 @@ const applyConfigBindings = () => {
 };
 
 applyConfigBindings();
+
+const setMetaContent = (selector, attributes, content) => {
+  let element = document.head.querySelector(selector);
+  if (!element) {
+    element = document.createElement("meta");
+    Object.entries(attributes).forEach(([key, value]) =>
+      element.setAttribute(key, value),
+    );
+    document.head.append(element);
+  }
+  element.content = content;
+};
+
+const updateSeoMetadata = () => {
+  const description =
+    document.querySelector('meta[name="description"]')?.content ||
+    `${siteConfig.brandName || "Kinboni"} bags for everyday carry.`;
+  const pageTitle = document.title;
+  const pageName =
+    location.pathname.split(/[\\/]/).filter(Boolean).pop() || "index.html";
+  setMetaContent('meta[property="og:title"]', { property: "og:title" }, pageTitle);
+  setMetaContent(
+    'meta[property="og:description"]',
+    { property: "og:description" },
+    description,
+  );
+  setMetaContent('meta[property="og:type"]', { property: "og:type" }, "website");
+  setMetaContent('meta[name="twitter:card"]', { name: "twitter:card" }, "summary");
+  setMetaContent(
+    'meta[name="twitter:title"]',
+    { name: "twitter:title" },
+    pageTitle,
+  );
+  setMetaContent(
+    'meta[name="twitter:description"]',
+    { name: "twitter:description" },
+    description,
+  );
+
+  const configuredSiteUrl = String(siteConfig.siteUrl || "").trim();
+  if (configuredSiteUrl) {
+    let siteUrl;
+    try {
+      siteUrl = new URL(configuredSiteUrl);
+    } catch (error) {
+      console.error("The configured site URL is invalid.", error);
+      return;
+    }
+    if (!["http:", "https:"].includes(siteUrl.protocol)) {
+      console.error("The configured site URL must use HTTP or HTTPS.");
+      return;
+    }
+    const canonicalPath = pageName === "index.html" ? "" : pageName;
+    const canonicalUrl = new URL(
+      canonicalPath,
+      siteUrl.href.endsWith("/") ? siteUrl : `${siteUrl.href}/`,
+    );
+    if (pageName === "product.html") {
+      const productId = new URLSearchParams(location.search).get("id");
+      if (productId) canonicalUrl.searchParams.set("id", productId);
+    }
+    let canonical = document.head.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.append(canonical);
+    }
+    canonical.href = canonicalUrl.href;
+    setMetaContent(
+      'meta[property="og:url"]',
+      { property: "og:url" },
+      canonicalUrl.href,
+    );
+  }
+
+  let organizationSchema = document.getElementById(
+    "kinboni-organization-jsonld",
+  );
+  if (!organizationSchema) {
+    organizationSchema = document.createElement("script");
+    organizationSchema.type = "application/ld+json";
+    organizationSchema.id = "kinboni-organization-jsonld";
+    document.head.append(organizationSchema);
+  }
+  const organization = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: siteConfig.brandName || "Kinboni",
+  };
+  if (configuredSiteUrl) organization.url = configuredSiteUrl;
+  const socialUrls = Object.values(siteConfig.social || {}).filter(Boolean);
+  if (socialUrls.length) organization.sameAs = socialUrls;
+  organizationSchema.textContent = JSON.stringify(organization);
+
+  const breadcrumb = document.querySelector(".shop-breadcrumb");
+  if (breadcrumb && !document.querySelector(".product-page")) {
+    const items = Array.from(breadcrumb.querySelectorAll("a, [aria-current='page']"))
+      .map((item) => ({
+        name: item.textContent.trim(),
+        path: item.getAttribute("href") || "",
+      }))
+      .filter((item) => item.name);
+    if (items.length) {
+      const baseUrl = configuredSiteUrl
+        ? new URL(
+            configuredSiteUrl.endsWith("/")
+              ? configuredSiteUrl
+              : `${configuredSiteUrl}/`,
+          )
+        : null;
+      const breadcrumbSchema = document.createElement("script");
+      breadcrumbSchema.type = "application/ld+json";
+      breadcrumbSchema.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: items.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: item.name,
+          ...(baseUrl
+            ? {
+                item: new URL(
+                  item.path || pageName,
+                  baseUrl,
+                ).href,
+              }
+            : {}),
+        })),
+      });
+      document.head.append(breadcrumbSchema);
+    }
+  }
+};
+
+window.kinboniUpdateSeoMetadata = updateSeoMetadata;
+updateSeoMetadata();
 
 const storedCart = readStoredValue(cartStorageKey, []);
 let cartItems = Array.isArray(storedCart)
@@ -399,10 +576,10 @@ const setOverlayState = (overlay, isOpen, focusTarget, trigger) => {
     focusTarget?.focus();
     return;
   }
+  overlayFocusTargets.get(overlay)?.focus();
   overlay.classList.remove("is-open");
   overlay.setAttribute("aria-hidden", "true");
   overlay.inert = true;
-  overlayFocusTargets.get(overlay)?.focus();
 };
 
 const updateHeaderState = () => {
@@ -661,12 +838,181 @@ const productPriceText = (product) => {
   return `${currency.symbol || "৳"}${amount}`;
 };
 
+const categoryFilterValues = {
+  totes: "tote",
+  "shoulder-bags": "shoulder",
+  crossbody: "crossbody",
+  "mini-bags": "mini",
+  "work-bags": "work",
+  "travel-bags": "travel",
+  handbags: "handbags",
+  clutches: "clutch",
+};
+
+document.querySelectorAll(".product-card").forEach((card) => {
+  const name = card.querySelector("h3")?.textContent.trim() || "";
+  const product =
+    productsById.get(card.dataset.productId) ||
+    productsById.get(productIdFromName(name));
+  const collectionCategory = card.closest(".shop-product-grid")?.dataset
+    .catalogCategory;
+  const price = card.querySelector(".price");
+  const oldPrice = card.querySelector(".old-price");
+  if (product) {
+    card.dataset.productId = product.id;
+    card.dataset.category = collectionCategory
+      ? categoryFilterValues[collectionCategory] || ""
+      : categoryFilterValues[product.category] || product.category;
+    card.dataset.color = (product.colors || [])
+      .map((color) => color.toLowerCase())
+      .join(" ");
+    card.dataset.priceValue =
+      typeof product.price === "number" ? String(product.price) : "";
+    card.dataset.style = (product.tags || []).join(" ");
+    card.dataset.size = product.size || "";
+    card.dataset.stock = product.stockStatus || "unknown";
+    card.dataset.sale = String(
+      typeof product.price === "number" &&
+        typeof product.oldPrice === "number" &&
+        product.oldPrice > product.price,
+    );
+    card.dataset.date = product.createdAt
+      ? String(Date.parse(product.createdAt))
+      : "";
+    delete card.dataset.sales;
+    const availability = [];
+    if (product.stockStatus === "in-stock") availability.push("in-stock");
+    if (product.newArrival === true) availability.push("new");
+    if (product.bestSeller === true) availability.push("best");
+    if (card.dataset.sale === "true") availability.push("sale");
+    card.dataset.availability = availability.join(" ");
+    if (price)
+      price.textContent =
+        product.status === "coming-soon"
+          ? "Coming soon"
+          : productPriceText(product);
+    const imageInfo = product.images?.[0];
+    const image = card.querySelector(".product-media img");
+    if (image && imageInfo) {
+      image.src = imageInfo.src;
+      image.alt = imageInfo.src.includes("product-image-pending")
+        ? `Product photo pending: ${product.name}`
+        : imageInfo.alt || product.name;
+      image.loading = "lazy";
+      image.decoding = "async";
+      image.width = 900;
+      image.height = 1100;
+      image.addEventListener(
+        "error",
+        () => {
+          if (
+            imageInfo.fallback &&
+            image.src !== new URL(imageInfo.fallback, document.baseURI).href
+          )
+            image.src = imageInfo.fallback;
+        },
+        { once: true },
+      );
+    }
+    if (typeof product.oldPrice === "number" && price) {
+      let verifiedOldPrice = oldPrice;
+      if (!verifiedOldPrice) {
+        verifiedOldPrice = document.createElement("span");
+        verifiedOldPrice.className = "old-price";
+        price.after(verifiedOldPrice);
+      }
+      verifiedOldPrice.textContent = productPriceText({
+        price: product.oldPrice,
+      });
+    } else {
+      oldPrice?.remove();
+    }
+    card.querySelectorAll(".badge, .rating").forEach((label) => label.remove());
+    card.querySelectorAll(".wishlist-button").forEach((button) => {
+      button.dataset.productId = product.id;
+    });
+  } else {
+    if (price) price.textContent = "Price to be confirmed";
+    oldPrice?.remove();
+    card.querySelectorAll(".badge, .rating").forEach((label) => label.remove());
+  }
+});
+
+document.querySelectorAll(".shop-page:not(.shop-page-dynamic)").forEach((page) => {
+  const filters = page.querySelector(".shop-filters");
+  const priceFieldset = Array.from(filters?.querySelectorAll("fieldset") || []).find(
+    (fieldset) =>
+      fieldset.querySelector("legend")?.textContent.trim().toLowerCase() === "price",
+  );
+  if (priceFieldset) {
+    priceFieldset.querySelector("legend").textContent = "Price (BDT)";
+    priceFieldset.querySelectorAll("label").forEach((label) => label.remove());
+    const note = document.createElement("p");
+    note.className = "shop-filter-note";
+    note.textContent = "Prices have not been confirmed yet.";
+    priceFieldset.append(note);
+  }
+  const availableColors = new Set(
+    productCatalog.flatMap((product) =>
+      (product.colors || []).map((color) => color.toLowerCase()),
+    ),
+  );
+  filters?.querySelectorAll('[data-filter="color"]').forEach((input) => {
+    if (!availableColors.has(input.value)) {
+      input.disabled = true;
+      input.parentElement.title = "Color details have not been confirmed yet.";
+    }
+  });
+  const hasKnownStock = productCatalog.some(
+    (product) => product.stockStatus === "in-stock",
+  );
+  const hasSalePrice = productCatalog.some(
+    (product) =>
+      typeof product.price === "number" &&
+      typeof product.oldPrice === "number" &&
+      product.oldPrice > product.price,
+  );
+  filters?.querySelectorAll('[data-filter="availability"]').forEach((input) => {
+    if (
+      (input.value === "in-stock" && !hasKnownStock) ||
+      (input.value === "sale" && !hasSalePrice) ||
+      (input.value === "new" &&
+        !productCatalog.some((product) => product.newArrival === true)) ||
+      (input.value === "best" &&
+        !productCatalog.some((product) => product.bestSeller === true))
+    ) {
+      input.disabled = true;
+      input.parentElement.title =
+        "This filter will be available when product data is confirmed.";
+    }
+  });
+  const sort = page.querySelector(".shop-sort select");
+  if (sort) {
+    const hasPrices = productCatalog.some(
+      (product) => typeof product.price === "number",
+    );
+    ["low", "high"].forEach((value) => {
+      const option = sort.querySelector(`option[value="${value}"]`);
+      if (option) option.disabled = !hasPrices;
+    });
+    const bestOption = sort.querySelector('option[value="best"]');
+    if (bestOption) bestOption.disabled = true;
+    const newestOption = sort.querySelector('option[value="newest"]');
+    if (newestOption)
+      newestOption.disabled = !productCatalog.some(
+        (product) => Number.isFinite(Date.parse(product.createdAt || "")),
+      );
+  }
+});
+
 const productImageElement = (product) => {
   const imageInfo = product.images?.[0];
   if (!imageInfo) return null;
   const image = document.createElement("img");
   image.src = imageInfo.src;
-  image.alt = imageInfo.alt || product.name;
+  image.alt = imageInfo.src.includes("product-image-pending")
+    ? `Product photo pending: ${product.name}`
+    : imageInfo.alt || product.name;
   image.loading = "lazy";
   image.decoding = "async";
   image.addEventListener(
@@ -991,13 +1337,15 @@ const renderCart = () => {
   updateCartCount();
 };
 
-const addProductToCart = (product, variant = "") => {
+const addProductToCart = (product, variant = "", quantity = 1) => {
   if (!product || product.status === "coming-soon") return;
+  const addQuantity = Math.max(1, Math.min(99, Math.floor(Number(quantity)) || 1));
   const existingItem = cartItems.find(
     (item) => item.productId === product.id && item.variant === variant,
   );
-  if (existingItem) existingItem.quantity = Math.min(99, existingItem.quantity + 1);
-  else cartItems.push({ productId: product.id, variant, quantity: 1 });
+  if (existingItem)
+    existingItem.quantity = Math.min(99, existingItem.quantity + addQuantity);
+  else cartItems.push({ productId: product.id, variant, quantity: addQuantity });
   persistCart();
   renderCart();
   if (stickyCart) {
@@ -1011,6 +1359,7 @@ const addProductToCart = (product, variant = "") => {
     }, 3200);
   }
 };
+window.kinboniAddProductToCart = addProductToCart;
 
 const addToCart = (card) => {
   const product = productsById.get(card?.dataset.productId);
@@ -1091,7 +1440,7 @@ const renderWishlist = () => {
 const updateWishlistButtons = () => {
   wishlistButtons.forEach((button) => {
     const card = button.closest(".product-card");
-    const productId = card?.dataset.productId;
+    const productId = button.dataset.productId || card?.dataset.productId;
     if (!productId) return;
     const isSaved = wishlistProductIds.includes(productId);
     button.classList.toggle("is-active", isSaved);
@@ -1128,10 +1477,13 @@ const updateWishlistButtons = () => {
   });
   if (wishlistDrawer?.classList.contains("is-open")) renderWishlist();
 };
+window.kinboniUpdateWishlistButtons = updateWishlistButtons;
 
 wishlistButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const productId = button.closest(".product-card")?.dataset.productId;
+    const productId =
+      button.dataset.productId ||
+      button.closest(".product-card")?.dataset.productId;
     if (!productId) return;
     wishlistProductIds = wishlistProductIds.includes(productId)
       ? wishlistProductIds.filter((id) => id !== productId)
@@ -1522,6 +1874,7 @@ if (heroVideo && videoToggle) {
 }
 
 document.querySelectorAll(".product-card").forEach((card) => {
+  if (card.closest(".shop-page")) return;
   const actions = card.querySelector(".price-row");
   const quickAdd = card.querySelector(".mini-button");
   if (!actions || !quickAdd) return;
@@ -2137,7 +2490,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 const shopPage = document.querySelector(".shop-page");
-if (shopPage) {
+if (shopPage && !window.KINBONI_DYNAMIC_SHOP) {
   const shopGrid = shopPage.querySelector(".shop-product-grid");
   const shopCards = Array.from(shopPage.querySelectorAll(".shop-product-card"));
   const shopFilters = shopPage.querySelector(".shop-filters");
@@ -2303,18 +2656,54 @@ if (shopPage) {
   const quickTitle = quickView?.querySelector("#quick-view-title");
   const quickCategory = quickView?.querySelector(".shop-quick-category");
   const quickPrice = quickView?.querySelector(".shop-quick-price");
+  const quickCopy = quickView?.querySelector(".shop-quick-copy");
+  const quickAddButton = quickView?.querySelector(".shop-quick-add");
+  let quickDescription = quickCopy
+    ? Array.from(quickCopy.querySelectorAll("p")).find(
+        (paragraph) => paragraph !== quickCategory,
+      )
+    : null;
+  if (quickDescription) quickDescription.className = "shop-quick-description";
+  let quickVariantSelect = quickView?.querySelector(".shop-quick-variant");
+  let quickVariantWrap = quickView?.querySelector(".shop-quick-variant-wrap");
+  if (quickCopy && quickAddButton && !quickVariantWrap) {
+    quickVariantWrap = document.createElement("label");
+    quickVariantWrap.className = "shop-quick-variant-wrap";
+    quickVariantWrap.hidden = true;
+    const label = document.createElement("span");
+    label.textContent = "Color";
+    quickVariantSelect = document.createElement("select");
+    quickVariantSelect.className = "shop-quick-variant";
+    quickVariantSelect.setAttribute("aria-label", "Choose color");
+    quickVariantWrap.append(label, quickVariantSelect);
+    quickAddButton.before(quickVariantWrap);
+  }
+  let quickDetailsLink = quickView?.querySelector(".shop-quick-details");
+  if (quickCopy && quickAddButton && !quickDetailsLink) {
+    quickDetailsLink = document.createElement("a");
+    quickDetailsLink.className = "button button-secondary shop-quick-details";
+    quickDetailsLink.textContent = "View product details";
+    quickDetailsLink.href = "product.html";
+    quickAddButton.before(quickDetailsLink);
+  }
+  let quickProduct = null;
+  let quickViewTrigger = null;
   const closeQuickView = () => {
     if (!quickView?.classList.contains("is-open")) return;
     setOverlayState(quickView, false);
     document.body.classList.remove("shop-quick-open");
+    quickViewTrigger?.focus();
+    quickViewTrigger = null;
   };
 
   shopPage.querySelectorAll(".quick-view-button").forEach((button) => {
     button.addEventListener("click", () => {
       const card = button.closest(".shop-product-card");
       const image = card?.querySelector(".product-media img");
+      const product = productsById.get(card?.dataset.productId);
       if (
         !card ||
+        !product ||
         !image ||
         !quickView ||
         !quickImage ||
@@ -2323,13 +2712,35 @@ if (shopPage) {
         !quickPrice
       )
         return;
+      quickProduct = product;
+      quickViewTrigger = button;
       quickImage.src = image.src;
       quickImage.alt = image.alt;
       quickTitle.textContent =
         card.querySelector("h3")?.textContent || "Kinboni bag";
       quickCategory.textContent =
         card.querySelector(".category")?.textContent || "Kinboni collection";
-      quickPrice.textContent = card.querySelector(".price")?.textContent || "";
+      quickPrice.textContent = productPriceText(product);
+      if (quickDescription)
+        quickDescription.textContent =
+          product.description || "Product details will be confirmed soon.";
+      if (quickVariantSelect && quickVariantWrap) {
+        quickVariantSelect.replaceChildren();
+        (product.colors || []).forEach((color) => {
+          const option = document.createElement("option");
+          option.value = color;
+          option.textContent = color;
+          quickVariantSelect.append(option);
+        });
+        quickVariantWrap.hidden = !product.colors?.length;
+      }
+      if (quickDetailsLink)
+        quickDetailsLink.href = `product.html?id=${encodeURIComponent(product.id)}`;
+      if (quickAddButton)
+        quickAddButton.disabled = product.status === "coming-soon";
+      if (quickAddButton)
+        quickAddButton.textContent =
+          product.status === "coming-soon" ? "Coming Soon" : "Add to Bag";
       setOverlayState(
         quickView,
         true,
@@ -2372,11 +2783,8 @@ if (shopPage) {
       closeQuickView();
   });
   quickView?.querySelector(".shop-quick-add")?.addEventListener("click", () => {
-    const title = quickTitle?.textContent;
-    const card = shopCards.find(
-      (item) => item.querySelector("h3")?.textContent.trim() === title,
-    );
-    if (card) addToCart(card);
+    if (quickProduct && quickProduct.status !== "coming-soon")
+      addProductToCart(quickProduct, quickVariantSelect?.value || "");
     closeQuickView();
   });
 

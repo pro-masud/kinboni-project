@@ -1,0 +1,15 @@
+# Local operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local configuration and dependencies
+.env
+.env.*
+!.env.example
+node_modules/
+
+# Generated output
+coverage/
+dist/
+*.log

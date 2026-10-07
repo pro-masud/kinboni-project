@@ -9,7 +9,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/aria-leather-tote-black-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=80",
         alt: "Black Aria tote bag, front view",
@@ -32,7 +32,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/solene-shoulder-bag-brown-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=80",
         alt: "Brown Solene shoulder bag, front view",
@@ -55,7 +55,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/riva-crossbody-tan-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=900&q=80",
         alt: "Tan Riva crossbody bag, front view",
@@ -78,7 +78,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/verona-mini-bag-cream-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=80",
         alt: "Verona mini bag, front view",
@@ -95,13 +95,14 @@ window.KINBONI_PRODUCTS = [
     id: "atlas-travel-bag",
     slug: "atlas-travel-bag",
     name: "Atlas Travel Bag",
+    shopOrder: 100,
     category: "travel-bags",
     price: null,
     oldPrice: null,
     badges: [],
     images: [
       {
-        src: "assets/img/products/atlas-travel-bag-black-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=900&q=80",
         alt: "Atlas travel bag, front view",
@@ -118,13 +119,14 @@ window.KINBONI_PRODUCTS = [
     id: "oro-mini-shoulder-bag",
     slug: "oro-mini-shoulder-bag",
     name: "Oro Mini Shoulder Bag",
+    shopOrder: 101,
     category: "mini-bags",
     price: null,
     oldPrice: null,
     badges: [],
     images: [
       {
-        src: "assets/img/products/oro-mini-shoulder-bag-brown-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=900&q=80",
         alt: "Oro mini shoulder bag, front view",
@@ -147,7 +149,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/noa-everyday-bag-black-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=80",
         alt: "Black Noa everyday bag, front view",
@@ -170,7 +172,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/clara-work-tote-cream-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=80",
         alt: "Cream Clara work tote, front view",
@@ -193,7 +195,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/elara-shoulder-bag-burgundy-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=80",
         alt: "Elara shoulder bag, front view",
@@ -216,7 +218,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/margot-structured-bag-beige-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=900&q=80",
         alt: "Margot structured handbag, front view",
@@ -239,7 +241,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/cleo-crossbody-cream-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=900&q=80",
         alt: "Cleo crossbody bag, front view",
@@ -262,7 +264,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/siena-carryall-brown-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=80",
         alt: "Siena carryall bag, front view",
@@ -285,7 +287,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/nola-mini-bag-black-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=80",
         alt: "Nola mini bag, front view",
@@ -308,7 +310,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/iris-evening-clutch-cream-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=900&q=80",
         alt: "Iris evening clutch, front view",
@@ -332,7 +334,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/asha-layered-chain-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=900&q=85",
         alt: "Asha layered chain necklace",
@@ -356,7 +358,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/sona-sculpted-bangle-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&w=900&q=85",
         alt: "Sona sculpted bangle",
@@ -380,7 +382,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/noor-pendant-necklace-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=900&q=85",
         alt: "Noor pendant necklace",
@@ -404,7 +406,7 @@ window.KINBONI_PRODUCTS = [
     badges: [],
     images: [
       {
-        src: "assets/img/products/mira-sculpted-hoops-1.webp",
+        src: "assets/img/products/product-image-pending.svg",
         fallback:
           "https://images.unsplash.com/photo-1635767798638-3665a5d63e80?auto=format&fit=crop&w=900&q=85",
         alt: "Mira sculpted hoop earrings",

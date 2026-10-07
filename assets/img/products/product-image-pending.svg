@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1100" role="img" aria-labelledby="title desc">
+  <title id="title">Product photo pending</title>
+  <desc id="desc">Kinboni product photography will be added here.</desc>
+  <rect width="900" height="1100" fill="#f2ece7"/>
+  <circle cx="450" cy="430" r="190" fill="#e9ded8"/>
+  <path d="M350 388h200l27 248H323l27-248Z" fill="none" stroke="#997b70" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M392 389v-42a58 58 0 0 1 116 0v42" fill="none" stroke="#997b70" stroke-width="8"/>
+  <path d="M360 452h180" stroke="#c29b96" stroke-width="4"/>
+  <text x="450" y="735" fill="#554a46" font-family="Georgia, serif" font-size="46" text-anchor="middle" letter-spacing="5">KINBONI</text>
+  <text x="450" y="790" fill="#746762" font-family="Arial, sans-serif" font-size="22" text-anchor="middle" letter-spacing="2">PRODUCT PHOTO PENDING</text>
+</svg>
