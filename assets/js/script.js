@@ -13,9 +13,29 @@ const searchPanel = document.querySelector(".search-panel");
 const searchForm = document.querySelector(".search-form");
 const quizModal = document.querySelector(".quiz-modal");
 const cartDrawer = document.querySelector(".cart-drawer");
+const wishlistDrawer = document.querySelector(".wishlist-drawer");
+const wishlistItemsElement = document.querySelector(".wishlist-items");
+const wishlistEmpty = document.querySelector(".wishlist-empty");
 const cartItemsElement = document.querySelector(".cart-items");
 const cartEmpty = document.querySelector(".cart-empty");
 const cartItems = [];
+const overlayFocusTargets = new WeakMap();
+
+const setOverlayState = (overlay, isOpen, focusTarget, trigger) => {
+  if (!overlay) return;
+  if (isOpen) {
+    overlayFocusTargets.set(overlay, trigger || document.activeElement);
+    overlay.classList.add("is-open");
+    overlay.setAttribute("aria-hidden", "false");
+    overlay.inert = false;
+    focusTarget?.focus();
+    return;
+  }
+  overlay.classList.remove("is-open");
+  overlay.setAttribute("aria-hidden", "true");
+  overlay.inert = true;
+  overlayFocusTargets.get(overlay)?.focus();
+};
 
 const updateHeaderState = () => {
   if (!header) return;
@@ -28,6 +48,7 @@ window.addEventListener("scroll", updateHeaderState, { passive: true });
 const prefersReducedMotion = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 ).matches;
+if (prefersReducedMotion && videoToggle) videoToggle.hidden = true;
 
 const setupPageAnimations = () => {
   if (!window.gsap || prefersReducedMotion) {
@@ -143,6 +164,10 @@ const animateHeroSlide = (slide) => {
 
 const updateHeroBackground = (slide) => {
   if (!heroVideo || !slide) return;
+  if (prefersReducedMotion) {
+    heroVideo.pause();
+    return;
+  }
 
   const videoSource = slide.dataset.video;
   const poster = slide.querySelector(".hero-visual img")?.src;
@@ -171,29 +196,40 @@ heroVideo?.addEventListener("canplay", () => {
 heroVideo?.addEventListener("error", () => {
   heroVideo.classList.remove("is-ready");
 });
+heroVideo?.addEventListener("loadedmetadata", () => {
+  if (heroVideoPausedByUser || prefersReducedMotion) return;
+  const playRequest = heroVideo.play();
+  if (playRequest) playRequest.catch(() => {});
+});
 
 const closeSearch = () => {
-  if (!searchPanel) return;
-  searchPanel.classList.remove("is-open");
-  searchPanel.setAttribute("aria-hidden", "true");
+  setOverlayState(searchPanel, false);
 };
 
 const closeMobileMenu = () => {
   if (!mobileMenu || !menuToggle) return;
   mobileMenu.classList.remove("is-open");
   mobileMenu.setAttribute("aria-hidden", "true");
+  mobileMenu.inert = true;
   menuToggle.setAttribute("aria-expanded", "false");
   menuToggle.setAttribute("aria-label", "Open menu");
   menuToggle.querySelector("i").className = "fa-solid fa-bars";
   document.body.classList.remove("menu-open");
+  menuToggle.focus();
 };
 
 document.querySelectorAll(".search-toggle").forEach((button) => {
   button.addEventListener("click", () => {
-    closeMobileMenu();
-    searchPanel?.classList.add("is-open");
-    searchPanel?.setAttribute("aria-hidden", "false");
-    searchPanel?.querySelector("input")?.focus();
+    const trigger = mobileMenu?.classList.contains("is-open")
+      ? menuToggle
+      : button;
+    if (mobileMenu?.classList.contains("is-open")) closeMobileMenu();
+    setOverlayState(
+      searchPanel,
+      true,
+      searchPanel?.querySelector("input"),
+      trigger,
+    );
   });
 });
 
@@ -222,6 +258,58 @@ searchForm?.addEventListener("submit", (event) => {
       : "No bags found. Try tote, crossbody or shoulder bag.";
 });
 
+const renderWishlist = () => {
+  if (!wishlistItemsElement || !wishlistEmpty) return;
+  wishlistItemsElement.replaceChildren();
+  const savedProducts = Array.from(
+    document.querySelectorAll(".product-card .wishlist-button.is-active"),
+  )
+    .map((button) => button.closest(".product-card"))
+    .filter(Boolean);
+
+  savedProducts.forEach((card) => {
+    const item = document.createElement("div");
+    item.className = "cart-item";
+    const image = card.querySelector(".product-media img");
+    const title = card.querySelector("h3")?.textContent.trim() || "Kinboni bag";
+    const price = card.querySelector(".price")?.textContent.trim() || "";
+    if (image) {
+      const thumbnail = image.cloneNode();
+      thumbnail.alt = title;
+      item.append(thumbnail);
+    }
+    const description = document.createElement("div");
+    const name = document.createElement("strong");
+    name.textContent = title;
+    const priceLabel = document.createElement("span");
+    priceLabel.textContent = price;
+    description.append(name, priceLabel);
+    item.append(description);
+    wishlistItemsElement.append(item);
+  });
+  wishlistEmpty.hidden = savedProducts.length > 0;
+};
+
+document.querySelectorAll(".wishlist-toggle").forEach((button) => {
+  button.addEventListener("click", () => {
+    const trigger = mobileMenu?.classList.contains("is-open")
+      ? menuToggle
+      : button;
+    if (mobileMenu?.classList.contains("is-open")) closeMobileMenu();
+    renderWishlist();
+    setOverlayState(
+      wishlistDrawer,
+      true,
+      wishlistDrawer?.querySelector(".wishlist-close"),
+      trigger,
+    );
+  });
+});
+
+wishlistDrawer
+  ?.querySelector(".wishlist-close")
+  ?.addEventListener("click", () => setOverlayState(wishlistDrawer, false));
+
 const renderCart = () => {
   if (!cartItemsElement || !cartEmpty) return;
   cartItemsElement.innerHTML = cartItems
@@ -237,18 +325,23 @@ const renderCart = () => {
   cartEmpty.hidden = cartItems.length > 0;
 };
 
-const openCart = () => {
-  cartDrawer?.classList.add("is-open");
-  cartDrawer?.setAttribute("aria-hidden", "false");
+const openCart = (trigger) => {
+  setOverlayState(
+    cartDrawer,
+    true,
+    cartDrawer?.querySelector(".cart-close"),
+    trigger,
+  );
   renderCart();
 };
 
 const closeCart = () => {
-  cartDrawer?.classList.remove("is-open");
-  cartDrawer?.setAttribute("aria-hidden", "true");
+  setOverlayState(cartDrawer, false);
 };
 
-document.querySelector(".cart-button")?.addEventListener("click", openCart);
+document.querySelector(".cart-button")?.addEventListener("click", (event) => {
+  openCart(event.currentTarget);
+});
 document.querySelector(".cart-close")?.addEventListener("click", closeCart);
 
 const addToCart = (card) => {
@@ -261,13 +354,23 @@ const addToCart = (card) => {
   else cartItems.push({ title, price, image, quantity: 1 });
   if (cartCount)
     cartCount.textContent = String(
-      cartItems.reduce((total, item) => total + item.quantity, 0) + 2,
+      cartItems.reduce((total, item) => total + item.quantity, 0),
     );
   if (stickyCart) {
+    const itemTitle = stickyCart.querySelector(".sticky-cart-item");
+    if (itemTitle) itemTitle.textContent = title;
     stickyCart.classList.add("is-visible");
-    window.setTimeout(() => stickyCart.classList.remove("is-visible"), 3200);
+    stickyCart.setAttribute("aria-hidden", "false");
+    window.setTimeout(() => {
+      stickyCart.classList.remove("is-visible");
+      stickyCart.setAttribute("aria-hidden", "true");
+    }, 3200);
   }
 };
+
+stickyCart?.querySelector("button")?.addEventListener("click", (event) => {
+  openCart(document.querySelector(".cart-button") || event.currentTarget);
+});
 
 if (menuToggle && mobileMenu) {
   menuToggle.addEventListener("click", () => {
@@ -276,9 +379,15 @@ if (menuToggle && mobileMenu) {
     menuToggle.setAttribute("aria-expanded", String(isOpen));
     menuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
     mobileMenu.setAttribute("aria-hidden", String(!isOpen));
+    mobileMenu.inert = !isOpen;
     menuToggle.querySelector("i").className = isOpen
       ? "fa-solid fa-xmark"
       : "fa-solid fa-bars";
+    if (isOpen) {
+      mobileMenu.querySelector(".mobile-menu-close")?.focus();
+    } else {
+      menuToggle.focus();
+    }
   });
 
   mobileMenu
@@ -294,9 +403,6 @@ if (menuToggle && mobileMenu) {
     });
   });
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeMobileMenu();
-  });
 }
 
 const heroSlider = document.querySelector(".hero-slider");
@@ -307,11 +413,13 @@ if (window.Swiper && heroSlider) {
       effect: "fade",
       fadeEffect: { crossFade: true },
       speed: 850,
-      autoplay: {
-        delay: 10000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: false,
-      },
+      autoplay: prefersReducedMotion
+        ? false
+        : {
+            delay: 10000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: false,
+          },
       pagination: {
         el: ".hero-pagination",
         clickable: true,
@@ -327,6 +435,7 @@ if (window.Swiper && heroSlider) {
           const activeSlide = swiper.slides[swiper.activeIndex];
           updateHeroBackground(activeSlide);
           animateHeroSlide(activeSlide);
+          if (prefersReducedMotion) swiper.autoplay.stop();
         },
         slideChangeTransitionStart(swiper) {
           const activeSlide = swiper.slides[swiper.activeIndex];
@@ -487,11 +596,13 @@ if (window.Swiper && categorySlider) {
       speed: 700,
       grabCursor: true,
       watchOverflow: true,
-      autoplay: {
-        delay: 4500,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: false,
-      },
+      autoplay: prefersReducedMotion
+        ? false
+        : {
+            delay: 4500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: false,
+          },
       pagination: {
         el: ".category-pagination",
         clickable: true,
@@ -523,11 +634,13 @@ if (window.Swiper && testimonialSlider) {
       spaceBetween: 18,
       speed: 650,
       grabCursor: true,
-      autoplay: {
-        delay: 5000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: false,
-      },
+      autoplay: prefersReducedMotion
+        ? false
+        : {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: false,
+          },
       pagination: {
         el: ".testimonial-pagination",
         clickable: true,
@@ -587,8 +700,28 @@ wishlistButtons.forEach((button) => {
     button.classList.add("is-active");
     button.querySelector("i")?.classList.replace("fa-regular", "fa-solid");
   }
+  button.setAttribute(
+    "aria-pressed",
+    String(button.classList.contains("is-active")),
+  );
+  button.setAttribute(
+    "aria-label",
+    button.classList.contains("is-active")
+      ? "Remove from wishlist"
+      : "Add to wishlist",
+  );
   button.addEventListener("click", () => {
     button.classList.toggle("is-active");
+    button.setAttribute(
+      "aria-pressed",
+      String(button.classList.contains("is-active")),
+    );
+    button.setAttribute(
+      "aria-label",
+      button.classList.contains("is-active")
+        ? "Remove from wishlist"
+        : "Add to wishlist",
+    );
     const icon = button.querySelector("i");
     if (!icon) return;
     if (button.classList.contains("is-active")) {
@@ -604,6 +737,27 @@ wishlistButtons.forEach((button) => {
         String(button.classList.contains("is-active")),
       );
   });
+});
+
+const updateWishlistToggle = () => {
+  const savedCount = document.querySelectorAll(
+    ".product-card .wishlist-button.is-active",
+  ).length;
+  document.querySelectorAll(".wishlist-toggle").forEach((button) => {
+    button.setAttribute(
+      "aria-label",
+      savedCount ? `Wishlist, ${savedCount} saved bags` : "Wishlist",
+    );
+    const label = button.querySelector("span");
+    if (label)
+      label.textContent = savedCount ? `Wishlist (${savedCount})` : "Wishlist";
+  });
+  if (wishlistDrawer?.classList.contains("is-open")) renderWishlist();
+};
+
+updateWishlistToggle();
+wishlistButtons.forEach((button) => {
+  button.addEventListener("click", updateWishlistToggle);
 });
 
 document.querySelectorAll(".product-card").forEach((card) => {
@@ -627,17 +781,23 @@ document.querySelectorAll(".badge-sale").forEach((badge) => {
 });
 
 document.querySelectorAll(".quiz-open").forEach((button) => {
-  button.addEventListener("click", () => {
-    quizModal?.classList.add("is-open");
-    quizModal?.setAttribute("aria-hidden", "false");
-  });
+  button.addEventListener("click", () =>
+    setOverlayState(
+      quizModal,
+      true,
+      quizModal?.querySelector(".quiz-close"),
+      button,
+    ),
+  );
 });
 
 const closeQuiz = () => {
-  quizModal?.classList.remove("is-open");
-  quizModal?.setAttribute("aria-hidden", "true");
+  setOverlayState(quizModal, false);
 };
 quizModal?.querySelector(".quiz-close")?.addEventListener("click", closeQuiz);
+quizModal?.addEventListener("click", (event) => {
+  if (event.target === quizModal) closeQuiz();
+});
 quizModal?.querySelectorAll("[data-concern]").forEach((option) => {
   option.addEventListener("click", () => {
     const result = quizModal.querySelector(".quiz-result");
@@ -650,10 +810,12 @@ const newsletterForm = document.querySelector(".newsletter-form");
 if (newsletterForm) {
   newsletterForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    const button = newsletterForm.querySelector("button");
-    button.textContent = "Subscribed";
-    button.disabled = true;
-    button.style.opacity = "0.8";
+    const status = newsletterForm
+      .closest(".newsletter-form-wrap")
+      ?.querySelector(".newsletter-status");
+    if (status)
+      status.textContent =
+        "Newsletter sign-up is not connected yet. Please check back soon.";
   });
 }
 
@@ -662,8 +824,7 @@ const galleryPreview = galleryLightbox?.querySelector(".gallery-preview");
 const galleryCaption = galleryLightbox?.querySelector(".gallery-caption");
 
 const closeGallery = () => {
-  galleryLightbox?.classList.remove("is-open");
-  galleryLightbox?.setAttribute("aria-hidden", "true");
+  setOverlayState(galleryLightbox, false);
 };
 
 document.querySelectorAll(".ugc-item").forEach((item) => {
@@ -674,8 +835,12 @@ document.querySelectorAll(".ugc-item").forEach((item) => {
     galleryPreview.src = image.src;
     galleryPreview.alt = image.alt;
     galleryCaption.textContent = image.alt;
-    galleryLightbox.classList.add("is-open");
-    galleryLightbox.setAttribute("aria-hidden", "false");
+    setOverlayState(
+      galleryLightbox,
+      true,
+      galleryLightbox.querySelector(".gallery-close"),
+      item,
+    );
   });
 });
 
@@ -686,7 +851,43 @@ galleryLightbox?.addEventListener("click", (event) => {
   if (event.target === galleryLightbox) closeGallery();
 });
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeGallery();
+  const activeOverlay = [
+    galleryLightbox,
+    quizModal,
+    wishlistDrawer,
+    cartDrawer,
+    searchPanel,
+    mobileMenu,
+  ].find((overlay) => overlay?.classList.contains("is-open"));
+
+  if (event.key === "Escape") {
+    if (activeOverlay === galleryLightbox) closeGallery();
+    else if (activeOverlay === quizModal) closeQuiz();
+    else if (activeOverlay === wishlistDrawer)
+      setOverlayState(wishlistDrawer, false);
+    else if (activeOverlay === cartDrawer) closeCart();
+    else if (activeOverlay === searchPanel) closeSearch();
+    else if (activeOverlay === mobileMenu) closeMobileMenu();
+    return;
+  }
+
+  if (event.key !== "Tab" || !activeOverlay) return;
+  const dialog = activeOverlay.querySelector('[role="dialog"]') || activeOverlay;
+  const focusable = Array.from(
+    dialog.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ),
+  ).filter((element) => !element.closest("[inert]"));
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
 });
 
 const shopPage = document.querySelector(".shop-page");
@@ -730,7 +931,7 @@ if (shopPage) {
 
   const updateShop = () => {
     const filters = selectedFilters();
-    let visibleCards = shopCards.filter((card) =>
+    const visibleCards = shopCards.filter((card) =>
       matchesFilters(card, filters),
     );
     shopCards.forEach((card) =>
@@ -739,6 +940,27 @@ if (shopPage) {
     shopEmpty.hidden = visibleCards.length > 0;
     shopCount.textContent = `${visibleCards.length} Product${visibleCards.length === 1 ? "" : "s"}`;
   };
+
+  const applyShopCategory = (value) => {
+    filterInputs.forEach((input) => {
+      input.checked = false;
+    });
+    if (value !== "all") {
+      const filter = value === "new" ? "availability" : "category";
+      const option = value === "new" ? "new" : value;
+      const input = Array.from(filterInputs).find(
+        (item) => item.dataset.filter === filter && item.value === option,
+      );
+      if (input) input.checked = true;
+    }
+    updateShop();
+  };
+
+  shopPage.querySelectorAll("[data-shop-filter]").forEach((link) => {
+    link.addEventListener("click", () => {
+      applyShopCategory(link.dataset.shopFilter);
+    });
+  });
 
   const sortShop = (value) => {
     const sortedCards = [...shopCards].sort((first, second) => {
@@ -780,13 +1002,26 @@ if (shopPage) {
     ?.addEventListener("click", (event) => {
       const isOpen = shopFilters.classList.toggle("is-open");
       event.currentTarget.setAttribute("aria-expanded", String(isOpen));
+      if (isOpen) shopFilters.querySelector("input")?.focus();
     });
 
   shopCards.forEach((card) => {
     const media = card.querySelector(".product-media");
     const secondaryImage = media?.dataset.secondary;
-    if (media && secondaryImage)
-      media.style.setProperty("--secondary-image", `url("${secondaryImage}")`);
+    const image = media?.querySelector("img");
+    if (image) {
+      image.loading = "lazy";
+      image.decoding = "async";
+    }
+    if (media && secondaryImage) {
+      const loadSecondaryImage = () => {
+        if (media.dataset.secondaryLoaded) return;
+        media.style.setProperty("--secondary-image", `url("${secondaryImage}")`);
+        media.dataset.secondaryLoaded = "true";
+      };
+      media.addEventListener("pointerenter", loadSecondaryImage, { once: true });
+      media.addEventListener("focusin", loadSecondaryImage, { once: true });
+    }
 
     const priceRow = card.querySelector(".price-row");
     if (priceRow && !priceRow.querySelector(".shop-quick-add")) {
@@ -806,10 +1041,8 @@ if (shopPage) {
   const quickCategory = quickView?.querySelector(".shop-quick-category");
   const quickPrice = quickView?.querySelector(".shop-quick-price");
   const closeQuickView = () => {
-    if (quickView?.contains(document.activeElement))
-      document.activeElement.blur();
-    quickView?.classList.remove("is-open");
-    quickView?.setAttribute("aria-hidden", "true");
+    if (!quickView?.classList.contains("is-open")) return;
+    setOverlayState(quickView, false);
     document.body.classList.remove("shop-quick-open");
   };
 
@@ -834,8 +1067,12 @@ if (shopPage) {
       quickCategory.textContent =
         card.querySelector(".category")?.textContent || "Kinboni collection";
       quickPrice.textContent = card.querySelector(".price")?.textContent || "";
-      quickView.classList.add("is-open");
-      quickView.setAttribute("aria-hidden", "false");
+      setOverlayState(
+        quickView,
+        true,
+        quickView.querySelector(".shop-quick-close"),
+        button,
+      );
       document.body.classList.add("shop-quick-open");
     });
   });
@@ -846,8 +1083,30 @@ if (shopPage) {
   quickView?.addEventListener("click", (event) => {
     if (event.target === quickView) closeQuickView();
   });
+  quickView?.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab") return;
+    const focusable = Array.from(
+      quickView.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter((element) => element.getClientRects().length > 0);
+    if (!focusable.length) {
+      event.preventDefault();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeQuickView();
+    if (event.key === "Escape" && quickView?.classList.contains("is-open"))
+      closeQuickView();
   });
   quickView?.querySelector(".shop-quick-add")?.addEventListener("click", () => {
     const title = quickTitle?.textContent;
