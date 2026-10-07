@@ -1242,16 +1242,56 @@ h4 {
 .coming-product-badge {
   position: absolute;
   top: 13px;
-  left: 13px;
-  padding: 7px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.44);
-  border-radius: 999px;
-  background: rgba(255, 253, 251, 0.88);
-  color: #594136;
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.08rem;
+  right: 13px;
+  display: flex;
+  width: clamp(68px, 6vw, 78px);
+  aspect-ratio: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 8px;
+  border: 1px solid rgba(151, 111, 54, 0.72);
+  border-radius: 50%;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 251, 239, 0.97),
+    rgba(233, 211, 166, 0.96)
+  );
+  box-shadow: 0 8px 22px rgba(55, 37, 21, 0.22);
+  color: #684b24;
+  text-align: center;
+  transform: rotate(7deg);
+}
+
+.coming-product-badge::before {
+  position: absolute;
+  inset: 5px;
+  border: 1px dashed rgba(104, 75, 36, 0.52);
+  border-radius: 50%;
+  content: "";
+}
+
+.coming-product-badge > span,
+.coming-product-badge > strong {
+  position: relative;
+  z-index: 1;
+  display: block;
   text-transform: uppercase;
+}
+
+.coming-product-badge > span {
+  font-size: 0.43rem;
+  font-weight: 700;
+  letter-spacing: 0.06rem;
+  line-height: 1.1;
+}
+
+.coming-product-badge > strong {
+  width: 100%;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.82rem;
+  line-height: 0.78;
 }
 
 .coming-product-info {
@@ -3774,6 +3814,10 @@ h4 {
 }
 
 @media (max-width: 980px) {
+  .coming-soon-seal {
+    display: none;
+  }
+
   .hero-layout,
   .story-layout,
   .newsletter-shell,
@@ -3885,14 +3929,12 @@ h4 {
   }
 
   .coming-soon-header {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 14px 8px;
+    display: block;
     margin-bottom: 24px;
   }
 
   .coming-soon-copy {
-    grid-column: 1 / -1;
+    max-width: none;
   }
 
   .coming-soon-copy h2 {
@@ -3913,20 +3955,6 @@ h4 {
     letter-spacing: 0.06rem;
   }
 
-  .coming-soon-seal {
-    grid-column: 2;
-    width: 96px;
-    height: 96px;
-  }
-
-  .coming-soon-seal strong {
-    font-size: 1.35rem;
-  }
-
-  .coming-soon-seal span {
-    font-size: 0.43rem;
-  }
-
   .coming-soon-grid {
     gap: 12px;
   }
@@ -3937,9 +3965,17 @@ h4 {
 
   .coming-product-badge {
     top: 9px;
-    left: 9px;
-    padding: 6px 8px;
-    font-size: 0.49rem;
+    right: 9px;
+    width: 66px;
+    padding: 5px;
+  }
+
+  .coming-product-badge > strong {
+    font-size: 0.76rem;
+  }
+
+  .coming-product-badge > span {
+    font-size: 0.39rem;
   }
 
   .coming-product-info {
