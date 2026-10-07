@@ -451,6 +451,14 @@ h4 {
   transform: translateX(0);
 }
 
+.wishlist-drawer {
+  z-index: 86;
+}
+
+.wishlist-drawer.is-open {
+  transform: translateX(0);
+}
+
 .cart-drawer-head {
   display: flex;
   align-items: center;
@@ -560,6 +568,11 @@ h4 {
 .icon-button:hover {
   transform: translateY(-2px);
   background: rgba(255, 255, 255, 0.7);
+}
+
+.icon-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .cart-button {
@@ -2145,6 +2158,15 @@ h4 {
   font-size: 0.8rem;
 }
 
+.newsletter-form-wrap .newsletter-status:empty {
+  display: none;
+}
+
+.newsletter-form-wrap .newsletter-status {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
 .about-page {
   overflow-x: clip;
 }
@@ -3300,6 +3322,17 @@ h4 {
   background: rgba(255, 255, 255, 0.38);
 }
 
+.socials span {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(31, 26, 26, 0.08);
+  background: rgba(255, 255, 255, 0.38);
+}
+
 .site-footer h4 {
   font-size: 1.5rem;
   margin-bottom: 18px;
@@ -3330,7 +3363,8 @@ h4 {
 }
 
 .site-footer .brand-mark,
-.site-footer .socials a {
+.site-footer .socials a,
+.site-footer .socials span {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.12);
 }
@@ -3516,7 +3550,8 @@ h4 {
     gap: 7px;
   }
 
-  .mobile-menu-social .socials a {
+  .mobile-menu-social .socials a,
+  .mobile-menu-social .socials span {
     width: 34px;
     height: 34px;
     display: inline-flex;
@@ -3529,6 +3564,31 @@ h4 {
 
   body.menu-open {
     overflow: hidden;
+  }
+}
+
+@media (max-width: 400px) {
+  .header-right {
+    gap: 8px;
+  }
+
+  .header-actions .icon-button:not(.cart-button) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
@@ -3682,6 +3742,22 @@ h4 {
   .routine-shell {
     gap: 28px;
     padding: 26px 20px;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .routine-intro,
+  .routine-steps,
+  .routine-steps > div {
+    min-width: 0;
+  }
+
+  .routine-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .routine-steps small {
+    overflow-wrap: anywhere;
   }
 
   .ugc-grid {
@@ -3728,6 +3804,10 @@ h4 {
 
   .sticky-cart span {
     display: none;
+  }
+
+  .sticky-cart .sticky-cart-item {
+    display: block;
   }
 
   .newsletter-form {
