@@ -3912,20 +3912,64 @@ h4 {
   }
 
   .hero-layout {
-    min-height: 680px;
-    gap: 18px;
-    padding-top: 44px;
-    padding-bottom: 110px;
+    min-height: clamp(520px, 72svh, 600px);
+    gap: 12px;
+    padding-top: 28px;
+    padding-bottom: 76px;
   }
 
   .hero,
   .slide {
-    min-height: 680px;
+    min-height: clamp(520px, 72svh, 600px);
   }
 
   .hero-slider,
   .hero-slider .swiper-wrapper {
-    min-height: 680px;
+    min-height: clamp(520px, 72svh, 600px);
+  }
+
+  .hero-copy .eyebrow {
+    margin-bottom: 8px;
+  }
+
+  .hero-copy h1 {
+    margin-bottom: 12px;
+    font-size: clamp(2.15rem, 10vw, 2.65rem);
+  }
+
+  .hero-copy p {
+    margin-bottom: 18px;
+    font-size: 0.92rem;
+  }
+
+  .hero-actions {
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+
+  .hero-actions .button {
+    padding: 13px 14px;
+    font-size: 0.65rem;
+    letter-spacing: 0.06rem;
+  }
+
+  .hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .hero-metrics li {
+    min-width: 0;
+  }
+
+  .hero-metrics strong {
+    font-size: 0.86rem;
+  }
+
+  .hero-metrics span {
+    font-size: 0.58rem;
+    letter-spacing: 0.02rem;
   }
 
   .hero-video {
@@ -3943,7 +3987,7 @@ h4 {
   }
 
   .hero-nav-wrap {
-    bottom: 24px;
+    bottom: 18px;
   }
 
   .video-toggle span {
@@ -4249,10 +4293,13 @@ h4 {
 .shop-intro-controls {
   position: absolute;
   z-index: 5;
+  left: auto;
   right: max(calc((100% - 1200px) / 2), 24px);
   bottom: 26px;
   display: flex;
+  width: max-content;
   align-items: center;
+  justify-content: flex-end;
   gap: 18px;
   color: #fff;
 }
@@ -4955,6 +5002,29 @@ body.shop-quick-open {
   }
 }
 
+@media (min-width: 761px) and (max-width: 1100px) {
+  .shop-intro,
+  .shop-intro-inner {
+    min-height: 480px;
+  }
+
+  .shop-intro-copy {
+    width: 47%;
+    padding: 34px 0;
+  }
+
+  .shop-intro h1,
+  .shop-intro h2 {
+    font-size: 3.5rem;
+  }
+
+  .shop-intro-controls {
+    right: 24px;
+    bottom: 20px;
+    gap: 14px;
+  }
+}
+
 @media (max-width: 760px) {
   .shop-intro {
     min-height: 500px;
@@ -4991,7 +5061,8 @@ body.shop-quick-open {
   }
 
   .shop-intro-controls {
-    right: 24px;
+    left: auto;
+    right: clamp(16px, 4vw, 24px);
     bottom: 20px;
     gap: 12px;
   }
@@ -5142,6 +5213,11 @@ body.shop-quick-open {
 }
 
 @media (max-width: 400px) {
+  .shop-intro,
+  .shop-intro-inner {
+    min-height: 580px;
+  }
+
   .shop-product-grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 30px;
