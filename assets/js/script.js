@@ -931,7 +931,7 @@ if (shopPage) {
 
   const updateShop = () => {
     const filters = selectedFilters();
-    let visibleCards = shopCards.filter((card) =>
+    const visibleCards = shopCards.filter((card) =>
       matchesFilters(card, filters),
     );
     shopCards.forEach((card) =>
@@ -940,6 +940,27 @@ if (shopPage) {
     shopEmpty.hidden = visibleCards.length > 0;
     shopCount.textContent = `${visibleCards.length} Product${visibleCards.length === 1 ? "" : "s"}`;
   };
+
+  const applyShopCategory = (value) => {
+    filterInputs.forEach((input) => {
+      input.checked = false;
+    });
+    if (value !== "all") {
+      const filter = value === "new" ? "availability" : "category";
+      const option = value === "new" ? "new" : value;
+      const input = Array.from(filterInputs).find(
+        (item) => item.dataset.filter === filter && item.value === option,
+      );
+      if (input) input.checked = true;
+    }
+    updateShop();
+  };
+
+  shopPage.querySelectorAll("[data-shop-filter]").forEach((link) => {
+    link.addEventListener("click", () => {
+      applyShopCategory(link.dataset.shopFilter);
+    });
+  });
 
   const sortShop = (value) => {
     const sortedCards = [...shopCards].sort((first, second) => {
@@ -981,13 +1002,26 @@ if (shopPage) {
     ?.addEventListener("click", (event) => {
       const isOpen = shopFilters.classList.toggle("is-open");
       event.currentTarget.setAttribute("aria-expanded", String(isOpen));
+      if (isOpen) shopFilters.querySelector("input")?.focus();
     });
 
   shopCards.forEach((card) => {
     const media = card.querySelector(".product-media");
     const secondaryImage = media?.dataset.secondary;
-    if (media && secondaryImage)
-      media.style.setProperty("--secondary-image", `url("${secondaryImage}")`);
+    const image = media?.querySelector("img");
+    if (image) {
+      image.loading = "lazy";
+      image.decoding = "async";
+    }
+    if (media && secondaryImage) {
+      const loadSecondaryImage = () => {
+        if (media.dataset.secondaryLoaded) return;
+        media.style.setProperty("--secondary-image", `url("${secondaryImage}")`);
+        media.dataset.secondaryLoaded = "true";
+      };
+      media.addEventListener("pointerenter", loadSecondaryImage, { once: true });
+      media.addEventListener("focusin", loadSecondaryImage, { once: true });
+    }
 
     const priceRow = card.querySelector(".price-row");
     if (priceRow && !priceRow.querySelector(".shop-quick-add")) {
@@ -1007,10 +1041,8 @@ if (shopPage) {
   const quickCategory = quickView?.querySelector(".shop-quick-category");
   const quickPrice = quickView?.querySelector(".shop-quick-price");
   const closeQuickView = () => {
-    if (quickView?.contains(document.activeElement))
-      document.activeElement.blur();
-    quickView?.classList.remove("is-open");
-    quickView?.setAttribute("aria-hidden", "true");
+    if (!quickView?.classList.contains("is-open")) return;
+    setOverlayState(quickView, false);
     document.body.classList.remove("shop-quick-open");
   };
 
@@ -1035,8 +1067,12 @@ if (shopPage) {
       quickCategory.textContent =
         card.querySelector(".category")?.textContent || "Kinboni collection";
       quickPrice.textContent = card.querySelector(".price")?.textContent || "";
-      quickView.classList.add("is-open");
-      quickView.setAttribute("aria-hidden", "false");
+      setOverlayState(
+        quickView,
+        true,
+        quickView.querySelector(".shop-quick-close"),
+        button,
+      );
       document.body.classList.add("shop-quick-open");
     });
   });
@@ -1047,8 +1083,30 @@ if (shopPage) {
   quickView?.addEventListener("click", (event) => {
     if (event.target === quickView) closeQuickView();
   });
+  quickView?.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab") return;
+    const focusable = Array.from(
+      quickView.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter((element) => element.getClientRects().length > 0);
+    if (!focusable.length) {
+      event.preventDefault();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeQuickView();
+    if (event.key === "Escape" && quickView?.classList.contains("is-open"))
+      closeQuickView();
   });
   quickView?.querySelector(".shop-quick-add")?.addEventListener("click", () => {
     const title = quickTitle?.textContent;
