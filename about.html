@@ -129,20 +129,6 @@
         </div>
         <div class="mobile-menu-social">
           <span>Follow Kinboni</span>
-          <div class="socials" aria-label="Social media links">
-            <a href="#" aria-label="Instagram"
-              ><i class="fa-brands fa-instagram"></i
-            ></a>
-            <a href="#" aria-label="Pinterest"
-              ><i class="fa-brands fa-pinterest-p"></i
-            ></a>
-            <a href="#" aria-label="TikTok"
-              ><i class="fa-brands fa-tiktok"></i
-            ></a>
-            <a href="#" aria-label="Facebook"
-              ><i class="fa-brands fa-facebook-f"></i
-            ></a>
-          </div>
         </div>
       </div>
     </nav>
@@ -400,20 +386,6 @@
             Thoughtfully designed handbags made to bring ease, character, and
             confidence to your everyday carry.
           </p>
-          <div class="socials" aria-label="Social media links">
-            <a href="#" aria-label="Instagram"
-              ><i class="fa-brands fa-instagram"></i
-            ></a>
-            <a href="#" aria-label="Pinterest"
-              ><i class="fa-brands fa-pinterest-p"></i
-            ></a>
-            <a href="#" aria-label="TikTok"
-              ><i class="fa-brands fa-tiktok"></i
-            ></a>
-            <a href="#" aria-label="Facebook"
-              ><i class="fa-brands fa-facebook-f"></i
-            ></a>
-          </div>
         </div>
 
         <div>
@@ -433,11 +405,11 @@
         <div>
           <h4>Customer Care</h4>
           <ul>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Shipping</a></li>
-            <li><a href="#">Returns</a></li>
-            <li><a href="#">Track Order</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="delivery-payment.html">Shipping</a></li>
+            <li><a href="returns-exchange.html">Returns</a></li>
+            <li><span>Order tracking is not available yet</span></li>
           </ul>
         </div>
 
@@ -446,10 +418,10 @@
           <ul>
             <li><a href="about.html">Our Story</a></li>
             <li><a href="#philosophy">Our Philosophy</a></li>
-            <li><a href="#">Journal</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms &amp; Conditions</a></li>
-            <li><a href="#">Refund Policy</a></li>
+            <li><a href="about.html#our-story">Journal</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms &amp; Conditions</a></li>
+            <li><a href="returns-exchange.html">Refund Policy</a></li>
           </ul>
         </div>
       </div>
@@ -458,16 +430,61 @@
         <p>© 2026 Kinboni. All rights reserved.</p>
         <div class="footer-legal">
           <span class="payment-note">Visa · Mastercard · Amex · PayPal</span>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms</a>
-          <a href="#">Refund Policy</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms.html">Terms</a>
+          <a href="returns-exchange.html">Refund Policy</a>
         </div>
       </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    <script src="assets/js/script.js"></script>
+    <aside
+      class="cart-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-labelledby="cart-title"
+      inert
+    >
+      <div class="cart-drawer-head">
+        <h2 id="cart-title">Your Bag</h2>
+        <button class="cart-close" type="button" aria-label="Close bag">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="cart-items" aria-live="polite"></div>
+      <p class="cart-empty">Your bag is empty.</p>
+      <button class="button button-primary cart-checkout" type="button">
+        Checkout
+      </button>
+    </aside>
+
+    <aside
+      class="wishlist-drawer cart-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-labelledby="wishlist-title"
+      inert
+    >
+      <div class="cart-drawer-head">
+        <h2 id="wishlist-title">Your Wishlist</h2>
+        <button
+          class="wishlist-close cart-close"
+          type="button"
+          aria-label="Close wishlist"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="wishlist-items cart-items" aria-live="polite"></div>
+      <p class="wishlist-empty cart-empty">Save a product to see it here.</p>
+    </aside>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script defer src="assets/js/config.js"></script>
+    <script defer src="assets/js/products.js"></script>
+    <script defer src="assets/js/script.js"></script>
   </body>
 </html>

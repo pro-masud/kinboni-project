@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delivery &amp; Payment | Kinboni</title>
+    <meta name="description" content="Review Kinboni delivery zones, estimated timings and available payment methods for Bangladesh." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-site-shell></div>
+    <main id="main-content" class="info-page section-spacing">
+      <div class="container info-narrow">
+        <nav class="shop-breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">›</span><span aria-current="page">Delivery &amp; Payment</span></nav>
+        <div class="section-heading"><span class="eyebrow">Bangladesh orders</span><h1>Delivery &amp; Payment</h1><p>Current fees, timing and enabled payment methods are controlled from the Kinboni configuration.</p></div>
+        <div class="delivery-payment-strip"><strong>Delivery &amp; Payment</strong><p data-delivery-payment-copy></p><div class="payment-badge-list" data-payment-badges></div></div>
+        <section class="info-card"><h2>Delivery zones</h2><dl class="config-list">
+          <div><dt>Inside Dhaka delivery charge</dt><dd data-config-text="delivery.insideDhakaCharge" data-config-format="currency" data-config-empty="To be confirmed"></dd></div>
+          <div><dt>Outside Dhaka delivery charge</dt><dd data-config-text="delivery.outsideDhakaCharge" data-config-format="currency" data-config-empty="To be confirmed"></dd></div>
+          <div><dt>Free-delivery threshold</dt><dd data-config-text="delivery.freeDeliveryThreshold" data-config-format="currency" data-config-empty="No threshold configured"></dd></div>
+          <div><dt>Estimated delivery inside Dhaka</dt><dd data-config-text="delivery.estimatedDaysInsideDhaka" data-config-suffix=" days" data-config-empty="To be confirmed"></dd></div>
+          <div><dt>Estimated delivery outside Dhaka</dt><dd data-config-text="delivery.estimatedDaysOutsideDhaka" data-config-suffix=" days" data-config-empty="To be confirmed"></dd></div>
+        </dl></section>
+        <section class="info-card"><h2>Payment methods</h2><ul class="payment-method-list" data-enabled-payments></ul><p>Only methods enabled in the Kinboni config will be offered at checkout. Merchant numbers and policy details must be confirmed by the business owner before launch.</p></section>
+        <section class="info-card"><h2>Cash on Delivery</h2><p data-cod-status></p></section>
+      </div>
+    </main>
+    <script defer src="assets/js/config.js"></script><script defer src="assets/js/products.js"></script><script defer src="assets/js/info-shell.js"></script><script defer src="assets/js/script.js"></script>
+  </body>
+</html>

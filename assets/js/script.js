@@ -18,8 +18,376 @@ const wishlistItemsElement = document.querySelector(".wishlist-items");
 const wishlistEmpty = document.querySelector(".wishlist-empty");
 const cartItemsElement = document.querySelector(".cart-items");
 const cartEmpty = document.querySelector(".cart-empty");
-const cartItems = [];
 const overlayFocusTargets = new WeakMap();
+const siteConfig = window.KINBONI_CONFIG || {};
+const productCatalog = Array.isArray(window.KINBONI_PRODUCTS)
+  ? window.KINBONI_PRODUCTS
+  : [];
+const productsById = new Map(
+  productCatalog.map((product) => [product.id, product]),
+);
+const cartStorageKey = "kinboni-cart-v1";
+const wishlistStorageKey = "kinboni-wishlist-v1";
+
+const productIdFromName = (name) =>
+  name
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+document.querySelectorAll(".product-card").forEach((card) => {
+  const name = card.querySelector("h3")?.textContent.trim();
+  const productId = name ? productIdFromName(name) : "";
+  if (productsById.has(productId)) card.dataset.productId = productId;
+});
+
+const readStoredValue = (key, fallback) => {
+  try {
+    const value = window.localStorage.getItem(key);
+    return value === null ? fallback : JSON.parse(value);
+  } catch (error) {
+    console.error(`Unable to read ${key} from local storage.`, error);
+    return fallback;
+  }
+};
+
+const writeStoredValue = (key, value) => {
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch (error) {
+    console.error(`Unable to save ${key} to local storage.`, error);
+    return false;
+  }
+};
+
+const getConfigValue = (path) =>
+  path
+    .split(".")
+    .reduce(
+      (value, key) => (value && key in value ? value[key] : undefined),
+      siteConfig,
+    );
+
+const configuredPriceText = (value) => {
+  if (typeof value !== "number" || !Number.isFinite(value)) return "";
+  const currency = siteConfig.currency || {};
+  const amount = new Intl.NumberFormat(currency.locale || "en-BD", {
+    maximumFractionDigits: 0,
+  }).format(value);
+  return `${currency.symbol || "৳"}${amount}`;
+};
+
+const renderSocialLinks = () => {
+  const socialChannels = [
+    ["instagram", "Instagram", "fa-instagram"],
+    ["facebook", "Facebook", "fa-facebook-f"],
+    ["tiktok", "TikTok", "fa-tiktok"],
+    ["pinterest", "Pinterest", "fa-pinterest-p"],
+    ["youtube", "YouTube", "fa-youtube"],
+  ];
+  document
+    .querySelectorAll(
+      '[data-social-container], .socials[aria-label="Social media links"]',
+    )
+    .forEach((container) => {
+    container.replaceChildren();
+    socialChannels.forEach(([key, label, icon]) => {
+      const url = siteConfig.social?.[key];
+      if (!url) return;
+      let parsedUrl;
+      try {
+        parsedUrl = new URL(url);
+      } catch (error) {
+        console.error(`Invalid configured ${label} URL.`, error);
+        return;
+      }
+      if (!["https:", "http:"].includes(parsedUrl.protocol)) {
+        console.error(`Configured ${label} URL must use HTTP or HTTPS.`);
+        return;
+      }
+      const link = document.createElement("a");
+      link.href = parsedUrl.href;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.setAttribute("aria-label", `Kinboni on ${label}`);
+      const mark = document.createElement("i");
+      mark.className = `fa-brands ${icon}`;
+      link.append(mark);
+      container.append(link);
+    });
+    container.hidden = !container.childElementCount;
+    });
+};
+
+const normalizeFooterLinks = () => {
+  document.querySelectorAll(".site-footer").forEach((footer) => {
+    footer
+      .querySelectorAll(
+        '.footer-legal span[aria-label*="policy"], .footer-grid span[aria-label*="policy"]',
+      )
+      .forEach((placeholder) => placeholder.remove());
+    footer.querySelectorAll(".footer-grid a").forEach((link) => {
+      const label = link.textContent.trim().toLowerCase();
+      if (label === "faq") link.href = "faq.html";
+      if (label === "shipping") link.href = "delivery-payment.html";
+      if (label === "returns") link.href = "returns-exchange.html";
+    });
+    footer.querySelectorAll(".footer-grid span").forEach((placeholder) => {
+      if (!/contact.*coming soon/i.test(placeholder.textContent)) return;
+      const link = document.createElement("a");
+      link.href = "contact.html";
+      link.textContent = "Contact";
+      placeholder.replaceWith(link);
+    });
+
+    const columns = Array.from(footer.querySelectorAll(".footer-grid > div"));
+    const aboutColumn = columns.find(
+      (column) => column.querySelector("h4")?.textContent.trim() === "About",
+    );
+    const aboutList = aboutColumn?.querySelector("ul");
+    [
+      ["privacy-policy.html", "Privacy Policy"],
+      ["terms.html", "Terms & Conditions"],
+      ["returns-exchange.html", "Returns & Exchange"],
+    ].forEach(([href, label]) => {
+      if (footer.querySelector(`.footer-legal a[href="${href}"]`)) return;
+      const legal = footer.querySelector(".footer-legal");
+      if (legal) {
+        const link = document.createElement("a");
+        link.href = href;
+        link.textContent = label;
+        legal.append(link);
+      }
+      if (aboutList && !aboutList.querySelector(`a[href="${href}"]`)) {
+        const item = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = href;
+        link.textContent = label;
+        item.append(link);
+        aboutList.append(item);
+      }
+    });
+
+    const contactColumn = columns.find(
+      (column) => column.querySelector("h4")?.textContent.trim() === "Contact",
+    );
+    const careColumn = columns.find(
+      (column) =>
+        column.querySelector("h4")?.textContent.trim() === "Customer Care",
+    );
+    const contactHost = careColumn;
+    if (
+      !contactColumn &&
+      contactHost &&
+      !contactHost.querySelector(".footer-config-contact")
+    ) {
+      const contactBlock = document.createElement("div");
+      contactBlock.className = "footer-config-contact";
+      if (!contactColumn) {
+        const heading = document.createElement("h5");
+        heading.textContent = "Contact";
+        contactBlock.append(heading);
+      }
+      [
+        ["Phone", "phone", "tel:"],
+        ["WhatsApp", "whatsappNumber", "https://wa.me/"],
+        ["Email", "email", "mailto:"],
+        ["Address", "address", ""],
+        ["Business hours", "businessHours", ""],
+      ].forEach(([label, key, prefix]) => {
+        const value = siteConfig.contact?.[key];
+        const line = document.createElement("p");
+        const labelElement = document.createElement("strong");
+        labelElement.textContent = `${label}: `;
+        line.append(labelElement);
+        if (value && prefix) {
+          const link = document.createElement("a");
+          link.href = `${prefix}${value}`;
+          link.textContent = value;
+          if (key === "whatsappNumber") {
+            link.href = `${prefix}${String(value).replace(/\D/g, "")}`;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+          }
+          line.append(link);
+        } else {
+          const detail = document.createElement("span");
+          detail.textContent = value || "To be provided";
+          line.append(detail);
+        }
+        contactBlock.append(line);
+      });
+      contactHost.append(contactBlock);
+    }
+  });
+};
+
+const deliveryChargeText = (amount) =>
+  typeof amount === "number" && Number.isFinite(amount)
+    ? configuredPriceText(amount)
+    : "To be confirmed";
+
+const getEnabledPaymentMethods = () => {
+  const payment = siteConfig.payment || {};
+  return [
+    payment.cashOnDeliveryEnabled ? "Cash on Delivery" : "",
+    payment.bkashEnabled && payment.bkashMerchantNumber ? "bKash" : "",
+    payment.nagadEnabled && payment.nagadMerchantNumber ? "Nagad" : "",
+    payment.onlineCardEnabled ? "Online card payment" : "",
+  ].filter(Boolean);
+};
+
+const renderPaymentBadges = () => {
+  const payment = siteConfig.payment || {};
+  const methods = [
+    {
+      label: "Cash on Delivery",
+      icon: "fa-money-bill-wave",
+      enabled: Boolean(payment.cashOnDeliveryEnabled),
+    },
+    {
+      label: "bKash",
+      icon: "fa-mobile-screen-button",
+      enabled: Boolean(payment.bkashEnabled && payment.bkashMerchantNumber),
+    },
+    {
+      label: "Nagad",
+      icon: "fa-mobile-screen-button",
+      enabled: Boolean(payment.nagadEnabled && payment.nagadMerchantNumber),
+    },
+  ];
+  document.querySelectorAll("[data-payment-badges]").forEach((container) => {
+    container.replaceChildren();
+    methods.forEach((method) => {
+      const badge = document.createElement("span");
+      badge.className = method.enabled
+        ? "payment-badge"
+        : "payment-badge is-unavailable";
+      const icon = document.createElement("i");
+      icon.className = `fa-solid ${method.icon}`;
+      icon.setAttribute("aria-hidden", "true");
+      const label = document.createElement("span");
+      label.textContent = method.enabled
+        ? method.label
+        : `${method.label} — not configured`;
+      badge.append(icon, label);
+      container.append(badge);
+    });
+  });
+};
+
+const applyConfigBindings = () => {
+  document.querySelectorAll("[data-config-text]").forEach((element) => {
+    const value = getConfigValue(element.dataset.configText);
+    const output =
+      element.dataset.configFormat === "currency"
+        ? configuredPriceText(value)
+        : value === null || value === undefined
+          ? ""
+          : String(value);
+    element.textContent = output
+      ? `${output}${element.dataset.configSuffix || ""}`
+      : element.dataset.configEmpty || "";
+  });
+
+  document.querySelectorAll("[data-config-href]").forEach((element) => {
+    const value = getConfigValue(element.dataset.configHref);
+    if (!value) {
+      if (element.tagName === "A") {
+        const replacement = document.createElement("span");
+        replacement.className = element.className;
+        replacement.textContent = element.dataset.configEmpty || "";
+        element.replaceWith(replacement);
+      }
+      return;
+    }
+    if (element.tagName === "A") {
+      element.href = `${element.dataset.configPrefix || ""}${value}`;
+      element.hidden = false;
+      if (!element.textContent.trim()) element.textContent = String(value);
+    }
+  });
+
+  renderSocialLinks();
+  normalizeFooterLinks();
+  renderPaymentBadges();
+  document.querySelectorAll("[data-delivery-payment-copy]").forEach((element) => {
+    const delivery = siteConfig.delivery || {};
+    const methods = getEnabledPaymentMethods();
+    element.textContent = [
+      `Inside Dhaka: ${deliveryChargeText(delivery.insideDhakaCharge)}`,
+      `outside Dhaka: ${deliveryChargeText(delivery.outsideDhakaCharge)}`,
+      `payment: ${methods.length ? methods.join(", ") : "to be confirmed"}`,
+    ].join(" · ");
+  });
+  document.querySelectorAll("[data-enabled-payments]").forEach((list) => {
+    list.replaceChildren();
+    getEnabledPaymentMethods().forEach((method) => {
+      const item = document.createElement("li");
+      item.textContent = method;
+      list.append(item);
+    });
+    if (!list.childElementCount) {
+      const item = document.createElement("li");
+      item.textContent = "Payment methods to be confirmed.";
+      list.append(item);
+    }
+  });
+  document.querySelectorAll("[data-cod-status]").forEach((element) => {
+    element.textContent = siteConfig.payment?.cashOnDeliveryEnabled
+      ? "Cash on Delivery is currently enabled in the site configuration."
+      : "Cash on Delivery has not been enabled.";
+  });
+  document.querySelectorAll("[data-current-year]").forEach((element) => {
+    element.textContent = String(new Date().getFullYear());
+  });
+};
+
+applyConfigBindings();
+
+const storedCart = readStoredValue(cartStorageKey, []);
+let cartItems = Array.isArray(storedCart)
+  ? storedCart
+      .filter(
+        (item) =>
+          item &&
+          productsById.has(item.productId) &&
+          Number.isInteger(item.quantity) &&
+          item.quantity > 0,
+      )
+      .map((item) => ({
+        productId: item.productId,
+        variant: typeof item.variant === "string" ? item.variant : "",
+        quantity: Math.min(item.quantity, 99),
+      }))
+  : [];
+
+const loadWishlist = () => {
+  const stored = readStoredValue(wishlistStorageKey, null);
+  if (Array.isArray(stored))
+    return [...new Set(stored.filter((id) => productsById.has(id)))];
+
+  const migrated = [];
+  try {
+    productCatalog.forEach((product) => {
+      if (
+        window.localStorage.getItem(`kinboni-wishlist-${product.name}`) ===
+        "true"
+      )
+        migrated.push(product.id);
+    });
+  } catch (error) {
+    console.error("Unable to restore the saved wishlist.", error);
+  }
+  if (migrated.length) writeStoredValue(wishlistStorageKey, migrated);
+  return migrated;
+};
+
+let wishlistProductIds = loadWishlist();
 
 const setOverlayState = (overlay, isOpen, focusTarget, trigger) => {
   if (!overlay) return;
@@ -59,7 +427,7 @@ const setupPageAnimations = () => {
   if (window.ScrollTrigger) window.gsap.registerPlugin(window.ScrollTrigger);
 
   const sectionItems = document.querySelectorAll(
-    ".trust-item, .category-card, .product-card, .coming-product-card, .concern-card, .ingredient-card, .routine-step, .testimonial-card, .collection-card, .benefit-card, .ugc-card, .faq-item",
+    ".trust-item, .category-card, .product-card, .coming-product-card, .concern-card, .edit-steps-grid > div, .testimonial-card, .collection-card, .benefit-card, .ugc-card, .faq-item",
   );
 
   revealItems.forEach((section) => {
@@ -268,71 +636,512 @@ document.querySelectorAll(".search-toggle").forEach((button) => {
       searchPanel?.querySelector("input"),
       trigger,
     );
+    renderSearch(searchInput?.value || "");
   });
 });
 
 searchPanel
   ?.querySelector(".search-close")
   ?.addEventListener("click", closeSearch);
-searchForm?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const query = searchForm.querySelector("input")?.value.trim().toLowerCase();
-  const status = searchForm.querySelector(".search-status");
-  const products = Array.from(document.querySelectorAll(".product-card"));
-  if (!query) {
-    products.forEach((product) => product.removeAttribute("hidden"));
-    if (status) status.textContent = "Showing all products.";
-    document.dispatchEvent(
-      new CustomEvent("shop:search", { detail: { query: "" } }),
-    );
-    return;
-  }
-  const matches = products.filter((product) => {
-    const searchableText = product.textContent.toLowerCase();
-    const matchesQuery = searchableText.includes(query);
-    product.toggleAttribute("hidden", !matchesQuery);
-    return matchesQuery;
-  });
-  if (status)
-    status.textContent = matches.length
-      ? `${matches.length} product${matches.length === 1 ? "" : "s"} found.`
-      : "No bags found. Try tote, crossbody or shoulder bag.";
+
+const normalizeSearchText = (value) =>
+  value
+    .toLocaleLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+
+const productPriceText = (product) => {
+  if (typeof product.price !== "number" || !Number.isFinite(product.price))
+    return "Price to be confirmed";
+  const currency = siteConfig.currency || {};
+  const amount = new Intl.NumberFormat(currency.locale || "en-BD", {
+    maximumFractionDigits: 0,
+  }).format(product.price);
+  return `${currency.symbol || "৳"}${amount}`;
+};
+
+const productImageElement = (product) => {
+  const imageInfo = product.images?.[0];
+  if (!imageInfo) return null;
+  const image = document.createElement("img");
+  image.src = imageInfo.src;
+  image.alt = imageInfo.alt || product.name;
+  image.loading = "lazy";
+  image.decoding = "async";
+  image.addEventListener(
+    "error",
+    () => {
+      if (imageInfo.fallback && image.src !== new URL(imageInfo.fallback, document.baseURI).href) {
+        image.src = imageInfo.fallback;
+      }
+    },
+    { once: true },
+  );
+  return image;
+};
+
+let searchResults = searchForm?.querySelector(".search-results");
+if (searchForm && !searchResults) {
+  searchResults = document.createElement("ul");
+  searchResults.className = "search-results";
+  searchResults.setAttribute("role", "listbox");
+  searchResults.setAttribute("aria-label", "Product search results");
+  searchForm.querySelector(".search-status")?.before(searchResults);
+}
+
+const searchInput = searchForm?.querySelector('input[type="search"]');
+const searchStatus = searchForm?.querySelector(".search-status");
+let searchDebounce;
+
+const dispatchShopSearch = (query) =>
   document.dispatchEvent(
     new CustomEvent("shop:search", { detail: { query } }),
   );
+
+const renderSearch = (value = "") => {
+  if (!searchResults) return [];
+  const query = normalizeSearchText(value);
+  searchResults.replaceChildren();
+  if (!query) {
+    const popular = Array.isArray(siteConfig.popularSearches)
+      ? siteConfig.popularSearches
+      : [];
+    popular.forEach((term) => {
+      const item = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "search-suggestion";
+      button.textContent = term;
+      button.addEventListener("click", () => {
+        if (!searchInput) return;
+        searchInput.value = term;
+        renderSearch(term);
+        searchInput.focus();
+      });
+      item.append(button);
+      searchResults.append(item);
+    });
+    if (searchStatus)
+      searchStatus.textContent = popular.length
+        ? "Popular searches"
+        : "Start typing to search the catalog.";
+    dispatchShopSearch("");
+    return [];
+  }
+
+  const matches = productCatalog.filter((product) => {
+    const searchable = normalizeSearchText(
+      [
+        product.name,
+        product.category,
+        product.description,
+        ...(product.tags || []),
+      ].join(" "),
+    );
+    return searchable.includes(query);
+  });
+
+  matches.forEach((product) => {
+    const item = document.createElement("li");
+    const link = document.createElement("a");
+    link.className = "search-result";
+    link.href = `product.html?id=${encodeURIComponent(product.id)}`;
+    link.setAttribute("role", "option");
+    const image = productImageElement(product);
+    if (image) link.append(image);
+    const details = document.createElement("span");
+    const name = document.createElement("strong");
+    name.textContent = product.name;
+    const category = document.createElement("small");
+    category.textContent = product.category;
+    const price = document.createElement("small");
+    price.textContent =
+      product.status === "coming-soon"
+        ? "Coming soon"
+        : productPriceText(product);
+    details.append(name, category, price);
+    link.append(details);
+    item.append(link);
+    searchResults.append(item);
+  });
+  if (searchStatus)
+    searchStatus.textContent = matches.length
+      ? `${matches.length} product${matches.length === 1 ? "" : "s"} found.`
+      : "No products found. Try tote, crossbody or shoulder bag.";
+  dispatchShopSearch(query);
+  return matches;
+};
+
+searchInput?.addEventListener("input", () => {
+  window.clearTimeout(searchDebounce);
+  searchDebounce = window.setTimeout(
+    () => renderSearch(searchInput.value),
+    150,
+  );
+});
+searchInput?.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeSearch();
+    return;
+  }
+  if (event.key !== "ArrowDown") return;
+  const firstResult = searchResults?.querySelector("a, button");
+  if (firstResult) {
+    event.preventDefault();
+    firstResult.focus();
+  }
+});
+searchResults?.addEventListener("keydown", (event) => {
+  if (!["ArrowDown", "ArrowUp"].includes(event.key)) return;
+  const options = Array.from(searchResults.querySelectorAll("a, button"));
+  const currentIndex = options.indexOf(document.activeElement);
+  const nextIndex =
+    (currentIndex + (event.key === "ArrowDown" ? 1 : -1) + options.length) %
+    options.length;
+  if (options.length) {
+    event.preventDefault();
+    options[nextIndex].focus();
+  }
+});
+searchForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  renderSearch(searchInput?.value || "");
+});
+if (searchPanel?.classList.contains("is-open")) renderSearch();
+
+const persistCart = () =>
+  writeStoredValue(
+    cartStorageKey,
+    cartItems.map(({ productId, variant, quantity }) => ({
+      productId,
+      variant,
+      quantity,
+    })),
+  );
+
+const getOrCreateCartSummary = () => {
+  if (!cartDrawer) return null;
+  let summary = cartDrawer.querySelector(".cart-summary");
+  if (!summary) {
+    const deliveryInfo = document.createElement("div");
+    deliveryInfo.className = "cart-delivery-payment delivery-payment-strip";
+    deliveryInfo.innerHTML =
+      '<strong>Delivery &amp; Payment</strong><p data-delivery-payment-copy></p><div class="payment-badge-list" data-payment-badges></div>';
+    cartDrawer.querySelector(".cart-drawer-head")?.after(deliveryInfo);
+    const deliveryCopy = deliveryInfo.querySelector(
+      "[data-delivery-payment-copy]",
+    );
+    if (deliveryCopy) {
+      const delivery = siteConfig.delivery || {};
+      const methods = getEnabledPaymentMethods();
+      deliveryCopy.textContent = [
+        `Inside Dhaka: ${deliveryChargeText(delivery.insideDhakaCharge)}`,
+        `Outside Dhaka: ${deliveryChargeText(delivery.outsideDhakaCharge)}`,
+        `Payment: ${methods.length ? methods.join(", ") : "to be confirmed"}`,
+      ].join(" · ");
+    }
+    renderPaymentBadges();
+    summary = document.createElement("div");
+    summary.className = "cart-summary";
+    summary.innerHTML =
+      '<div><span>Subtotal</span><strong class="cart-subtotal-value"></strong></div><p class="cart-delivery-note"></p>';
+    const checkout = cartDrawer.querySelector(".cart-checkout");
+    if (checkout) checkout.before(summary);
+    else cartDrawer.append(summary);
+  }
+  return summary;
+};
+
+const cartSummary = getOrCreateCartSummary();
+const cartSubtotalValue = cartSummary?.querySelector(".cart-subtotal-value");
+const cartDeliveryNote = cartSummary?.querySelector(".cart-delivery-note");
+const cartCheckout = cartDrawer?.querySelector(".cart-checkout");
+const cartContinueShopping = document.createElement("a");
+cartContinueShopping.className = "cart-continue";
+cartContinueShopping.href = "shop.html";
+cartContinueShopping.textContent = "Continue shopping";
+if (cartDrawer && !cartDrawer.querySelector(".cart-continue"))
+  cartCheckout?.after(cartContinueShopping);
+
+const updateCartCount = () => {
+  const count = cartItems.reduce((total, item) => total + item.quantity, 0);
+  document.querySelectorAll(".cart-count").forEach((badge) => {
+    badge.textContent = String(count);
+    badge.hidden = count === 0;
+  });
+  document.querySelectorAll(".cart-button").forEach((button) => {
+    button.setAttribute(
+      "aria-label",
+      count ? `Shopping bag, ${count} items` : "Shopping bag",
+    );
+  });
+};
+
+const updateCartQuantity = (productId, variant, change) => {
+  const item = cartItems.find(
+    (entry) => entry.productId === productId && entry.variant === variant,
+  );
+  if (!item) return;
+  item.quantity = Math.max(1, Math.min(99, item.quantity + change));
+  persistCart();
+  renderCart();
+};
+
+const removeCartItem = (productId, variant) => {
+  cartItems = cartItems.filter(
+    (item) => item.productId !== productId || item.variant !== variant,
+  );
+  persistCart();
+  renderCart();
+};
+
+const renderCart = () => {
+  if (!cartItemsElement || !cartEmpty) {
+    updateCartCount();
+    return;
+  }
+  cartItemsElement.replaceChildren();
+  let subtotal = 0;
+  let hasUnpricedItems = false;
+  cartItems.forEach((cartItem) => {
+    const product = productsById.get(cartItem.productId);
+    if (!product) return;
+    const row = document.createElement("article");
+    row.className = "cart-item";
+    const image = productImageElement(product);
+    if (image) row.append(image);
+    const detail = document.createElement("div");
+    detail.className = "cart-item-details";
+    const name = document.createElement("strong");
+    name.textContent = product.name;
+    const variant = document.createElement("span");
+    variant.textContent = cartItem.variant
+      ? `Option: ${cartItem.variant}`
+      : "Standard";
+    const unitPrice = document.createElement("span");
+    unitPrice.textContent = productPriceText(product);
+    const controls = document.createElement("div");
+    controls.className = "cart-quantity-controls";
+    const decrease = document.createElement("button");
+    decrease.type = "button";
+    decrease.textContent = "−";
+    decrease.setAttribute("aria-label", `Decrease ${product.name} quantity`);
+    decrease.addEventListener("click", () =>
+      updateCartQuantity(cartItem.productId, cartItem.variant, -1),
+    );
+    const quantity = document.createElement("span");
+    quantity.className = "cart-quantity";
+    quantity.textContent = String(cartItem.quantity);
+    const increase = document.createElement("button");
+    increase.type = "button";
+    increase.textContent = "+";
+    increase.setAttribute("aria-label", `Increase ${product.name} quantity`);
+    increase.disabled = cartItem.quantity >= 99;
+    increase.addEventListener("click", () =>
+      updateCartQuantity(cartItem.productId, cartItem.variant, 1),
+    );
+    controls.append(decrease, quantity, increase);
+    const lineTotal = document.createElement("span");
+    lineTotal.className = "cart-line-total";
+    if (typeof product.price === "number" && Number.isFinite(product.price)) {
+      const lineValue = product.price * cartItem.quantity;
+      subtotal += lineValue;
+      lineTotal.textContent = productPriceText({
+        ...product,
+        price: lineValue,
+      });
+    } else {
+      hasUnpricedItems = true;
+      lineTotal.textContent = "Line total to be confirmed";
+    }
+    detail.append(name, variant, unitPrice, controls, lineTotal);
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "cart-item-remove";
+    remove.textContent = "Remove";
+    remove.setAttribute("aria-label", `Remove ${product.name} from bag`);
+    remove.addEventListener("click", () =>
+      removeCartItem(cartItem.productId, cartItem.variant),
+    );
+    row.append(detail, remove);
+    cartItemsElement.append(row);
+  });
+  cartEmpty.hidden = cartItems.length > 0;
+  cartEmpty.textContent = "Your bag is empty.";
+  cartItemsElement.setAttribute("aria-live", "polite");
+  if (cartSubtotalValue)
+    cartSubtotalValue.textContent = hasUnpricedItems
+      ? "To be confirmed"
+      : productPriceText({ price: subtotal });
+  if (cartDeliveryNote)
+    cartDeliveryNote.textContent = hasUnpricedItems
+      ? "Final price and delivery are confirmed before checkout."
+      : "Delivery charge is calculated at checkout.";
+  if (cartCheckout) {
+    cartCheckout.disabled =
+      cartItems.length === 0 || hasUnpricedItems || !cartItems.length;
+    cartCheckout.setAttribute(
+      "aria-label",
+      hasUnpricedItems
+        ? "Checkout unavailable until product prices are confirmed"
+        : "Continue to checkout",
+    );
+  }
+  updateCartCount();
+};
+
+const addProductToCart = (product, variant = "") => {
+  if (!product || product.status === "coming-soon") return;
+  const existingItem = cartItems.find(
+    (item) => item.productId === product.id && item.variant === variant,
+  );
+  if (existingItem) existingItem.quantity = Math.min(99, existingItem.quantity + 1);
+  else cartItems.push({ productId: product.id, variant, quantity: 1 });
+  persistCart();
+  renderCart();
+  if (stickyCart) {
+    const itemTitle = stickyCart.querySelector(".sticky-cart-item");
+    if (itemTitle) itemTitle.textContent = product.name;
+    stickyCart.classList.add("is-visible");
+    stickyCart.setAttribute("aria-hidden", "false");
+    window.setTimeout(() => {
+      stickyCart.classList.remove("is-visible");
+      stickyCart.setAttribute("aria-hidden", "true");
+    }, 3200);
+  }
+};
+
+const addToCart = (card) => {
+  const product = productsById.get(card?.dataset.productId);
+  if (!product) {
+    console.error("A product card is missing a matching product data record.", card);
+    return;
+  }
+  addProductToCart(product);
+};
+
+const openCart = (trigger) => {
+  setOverlayState(
+    cartDrawer,
+    true,
+    cartDrawer?.querySelector(".cart-close"),
+    trigger,
+  );
+  renderCart();
+};
+
+const closeCart = () => setOverlayState(cartDrawer, false);
+
+document.querySelector(".cart-button")?.addEventListener("click", (event) => {
+  openCart(event.currentTarget);
+});
+document.querySelector(".cart-close")?.addEventListener("click", closeCart);
+cartCheckout?.addEventListener("click", () => {
+  if (!cartCheckout.disabled) window.location.href = "checkout.html";
+});
+stickyCart?.querySelector("button")?.addEventListener("click", (event) => {
+  openCart(document.querySelector(".cart-button") || event.currentTarget);
 });
 
 const renderWishlist = () => {
   if (!wishlistItemsElement || !wishlistEmpty) return;
   wishlistItemsElement.replaceChildren();
-  const savedProducts = Array.from(
-    document.querySelectorAll(".product-card .wishlist-button.is-active"),
-  )
-    .map((button) => button.closest(".product-card"))
-    .filter(Boolean);
-
-  savedProducts.forEach((card) => {
-    const item = document.createElement("div");
-    item.className = "cart-item";
-    const image = card.querySelector(".product-media img");
-    const title = card.querySelector("h3")?.textContent.trim() || "Kinboni bag";
-    const price = card.querySelector(".price")?.textContent.trim() || "";
-    if (image) {
-      const thumbnail = image.cloneNode();
-      thumbnail.alt = title;
-      item.append(thumbnail);
-    }
-    const description = document.createElement("div");
+  wishlistProductIds.forEach((productId) => {
+    const product = productsById.get(productId);
+    if (!product) return;
+    const item = document.createElement("article");
+    item.className = "cart-item wishlist-item";
+    const image = productImageElement(product);
+    if (image) item.append(image);
+    const detail = document.createElement("div");
+    detail.className = "cart-item-details";
     const name = document.createElement("strong");
-    name.textContent = title;
-    const priceLabel = document.createElement("span");
-    priceLabel.textContent = price;
-    description.append(name, priceLabel);
-    item.append(description);
+    name.textContent = product.name;
+    const price = document.createElement("span");
+    price.textContent =
+      product.status === "coming-soon"
+        ? "Coming soon"
+        : productPriceText(product);
+    const actions = document.createElement("div");
+    actions.className = "wishlist-item-actions";
+    const addButton = document.createElement("button");
+    addButton.type = "button";
+    addButton.textContent = "Add to bag";
+    addButton.disabled = product.status === "coming-soon";
+    addButton.addEventListener("click", () => addProductToCart(product));
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.textContent = "Remove";
+    removeButton.addEventListener("click", () => {
+      wishlistProductIds = wishlistProductIds.filter((id) => id !== productId);
+      writeStoredValue(wishlistStorageKey, wishlistProductIds);
+      updateWishlistButtons();
+      renderWishlist();
+    });
+    actions.append(addButton, removeButton);
+    detail.append(name, price, actions);
+    item.append(detail);
     wishlistItemsElement.append(item);
   });
-  wishlistEmpty.hidden = savedProducts.length > 0;
+  wishlistEmpty.hidden = wishlistProductIds.length > 0;
+  wishlistItemsElement.setAttribute("aria-live", "polite");
 };
+
+const updateWishlistButtons = () => {
+  wishlistButtons.forEach((button) => {
+    const card = button.closest(".product-card");
+    const productId = card?.dataset.productId;
+    if (!productId) return;
+    const isSaved = wishlistProductIds.includes(productId);
+    button.classList.toggle("is-active", isSaved);
+    button.setAttribute("aria-pressed", String(isSaved));
+    button.setAttribute(
+      "aria-label",
+      isSaved
+        ? `Remove ${productsById.get(productId)?.name || "product"} from wishlist`
+        : `Add ${productsById.get(productId)?.name || "product"} to wishlist`,
+    );
+    const icon = button.querySelector("i");
+    icon?.classList.toggle("fa-solid", isSaved);
+    icon?.classList.toggle("fa-regular", !isSaved);
+  });
+  const savedCount = wishlistProductIds.length;
+  document.querySelectorAll(".wishlist-toggle").forEach((button) => {
+    button.setAttribute(
+      "aria-label",
+      savedCount ? `Wishlist, ${savedCount} saved products` : "Wishlist",
+    );
+    const label = button.querySelector("span");
+    if (label && !button.querySelector(".wishlist-count"))
+      label.textContent = savedCount ? `Wishlist (${savedCount})` : "Wishlist";
+    let badge = button.querySelector(".wishlist-count");
+    if (savedCount && !badge) {
+      badge = document.createElement("span");
+      badge.className = "wishlist-count";
+      button.append(badge);
+    }
+    if (badge) {
+      badge.textContent = String(savedCount);
+      badge.hidden = savedCount === 0;
+    }
+  });
+  if (wishlistDrawer?.classList.contains("is-open")) renderWishlist();
+};
+
+wishlistButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const productId = button.closest(".product-card")?.dataset.productId;
+    if (!productId) return;
+    wishlistProductIds = wishlistProductIds.includes(productId)
+      ? wishlistProductIds.filter((id) => id !== productId)
+      : [...wishlistProductIds, productId];
+    writeStoredValue(wishlistStorageKey, wishlistProductIds);
+    updateWishlistButtons();
+  });
+});
+updateWishlistButtons();
+renderWishlist();
 
 document.querySelectorAll(".wishlist-toggle").forEach((button) => {
   button.addEventListener("click", () => {
@@ -354,67 +1163,45 @@ wishlistDrawer
   ?.querySelector(".wishlist-close")
   ?.addEventListener("click", () => setOverlayState(wishlistDrawer, false));
 
-const renderCart = () => {
-  if (!cartItemsElement || !cartEmpty) return;
-  cartItemsElement.innerHTML = cartItems
-    .map(
-      (item) => `
-    <div class="cart-item">
-      <img src="${item.image}" alt="${item.title}" />
-      <div><strong>${item.title}</strong><span>${item.price} · Qty ${item.quantity}</span></div>
-    </div>
-  `,
-    )
-    .join("");
-  cartEmpty.hidden = cartItems.length > 0;
-};
-
-const openCart = (trigger) => {
-  setOverlayState(
-    cartDrawer,
-    true,
-    cartDrawer?.querySelector(".cart-close"),
-    trigger,
-  );
-  renderCart();
-};
-
-const closeCart = () => {
-  setOverlayState(cartDrawer, false);
-};
-
-document.querySelector(".cart-button")?.addEventListener("click", (event) => {
-  openCart(event.currentTarget);
-});
-document.querySelector(".cart-close")?.addEventListener("click", closeCart);
-
-const addToCart = (card) => {
-  const title =
-    card.querySelector("h3")?.textContent.trim() || "Kinboni product";
-  const price = card.querySelector(".price")?.textContent.trim() || "$0";
-  const image = card.querySelector(".product-media img")?.src || "";
-  const existingItem = cartItems.find((item) => item.title === title);
-  if (existingItem) existingItem.quantity += 1;
-  else cartItems.push({ title, price, image, quantity: 1 });
-  if (cartCount)
-    cartCount.textContent = String(
-      cartItems.reduce((total, item) => total + item.quantity, 0),
-    );
-  if (stickyCart) {
-    const itemTitle = stickyCart.querySelector(".sticky-cart-item");
-    if (itemTitle) itemTitle.textContent = title;
-    stickyCart.classList.add("is-visible");
-    stickyCart.setAttribute("aria-hidden", "false");
-    window.setTimeout(() => {
-      stickyCart.classList.remove("is-visible");
-      stickyCart.setAttribute("aria-hidden", "true");
-    }, 3200);
+window.addEventListener("storage", (event) => {
+  if (event.key === cartStorageKey) {
+    try {
+      const parsed = event.newValue ? JSON.parse(event.newValue) : [];
+      cartItems = Array.isArray(parsed)
+        ? parsed
+            .filter(
+              (item) =>
+                item &&
+                productsById.has(item.productId) &&
+                Number.isInteger(item.quantity) &&
+                item.quantity > 0,
+            )
+            .map((item) => ({
+              productId: item.productId,
+              variant: typeof item.variant === "string" ? item.variant : "",
+              quantity: Math.min(item.quantity, 99),
+            }))
+        : [];
+      renderCart();
+    } catch (error) {
+      console.error("Unable to sync the shopping bag across tabs.", error);
+    }
   }
-};
-
-stickyCart?.querySelector("button")?.addEventListener("click", (event) => {
-  openCart(document.querySelector(".cart-button") || event.currentTarget);
+  if (event.key === wishlistStorageKey) {
+    try {
+      const parsed = event.newValue ? JSON.parse(event.newValue) : [];
+      wishlistProductIds = Array.isArray(parsed)
+        ? [...new Set(parsed.filter((id) => productsById.has(id)))]
+        : [];
+      updateWishlistButtons();
+    } catch (error) {
+      console.error("Unable to sync the wishlist across tabs.", error);
+    }
+  }
 });
+
+updateCartCount();
+renderCart();
 
 if (menuToggle && mobileMenu) {
   menuToggle.addEventListener("click", () => {
@@ -734,94 +1521,20 @@ if (heroVideo && videoToggle) {
   });
 }
 
-wishlistButtons.forEach((button) => {
-  const productCard = button.closest(".product-card");
-  const productKey = productCard?.querySelector("h3")?.textContent.trim();
-  if (
-    productKey &&
-    localStorage.getItem(`kinboni-wishlist-${productKey}`) === "true"
-  ) {
-    button.classList.add("is-active");
-    button.querySelector("i")?.classList.replace("fa-regular", "fa-solid");
-  }
-  button.setAttribute(
-    "aria-pressed",
-    String(button.classList.contains("is-active")),
-  );
-  button.setAttribute(
-    "aria-label",
-    button.classList.contains("is-active")
-      ? "Remove from wishlist"
-      : "Add to wishlist",
-  );
-  button.addEventListener("click", () => {
-    button.classList.toggle("is-active");
-    button.setAttribute(
-      "aria-pressed",
-      String(button.classList.contains("is-active")),
-    );
-    button.setAttribute(
-      "aria-label",
-      button.classList.contains("is-active")
-        ? "Remove from wishlist"
-        : "Add to wishlist",
-    );
-    const icon = button.querySelector("i");
-    if (!icon) return;
-    if (button.classList.contains("is-active")) {
-      icon.classList.remove("fa-regular");
-      icon.classList.add("fa-solid");
-    } else {
-      icon.classList.remove("fa-solid");
-      icon.classList.add("fa-regular");
-    }
-    if (productKey)
-      localStorage.setItem(
-        `kinboni-wishlist-${productKey}`,
-        String(button.classList.contains("is-active")),
-      );
-  });
-});
-
-const updateWishlistToggle = () => {
-  const savedCount = document.querySelectorAll(
-    ".product-card .wishlist-button.is-active",
-  ).length;
-  document.querySelectorAll(".wishlist-toggle").forEach((button) => {
-    button.setAttribute(
-      "aria-label",
-      savedCount ? `Wishlist, ${savedCount} saved bags` : "Wishlist",
-    );
-    const label = button.querySelector("span");
-    if (label)
-      label.textContent = savedCount ? `Wishlist (${savedCount})` : "Wishlist";
-  });
-  if (wishlistDrawer?.classList.contains("is-open")) renderWishlist();
-};
-
-updateWishlistToggle();
-wishlistButtons.forEach((button) => {
-  button.addEventListener("click", updateWishlistToggle);
-});
-
 document.querySelectorAll(".product-card").forEach((card) => {
   const actions = card.querySelector(".price-row");
   const quickAdd = card.querySelector(".mini-button");
   if (!actions || !quickAdd) return;
 
   quickAdd.textContent = "Add to Bag";
-  quickAdd.setAttribute("aria-label", "Add product to bag");
-
-  const rating = card.querySelector(".rating");
-  if (rating) rating.insertAdjacentText("beforeend", " (128)");
+  quickAdd.setAttribute(
+    "aria-label",
+    `Add ${card.querySelector("h3")?.textContent.trim() || "product"} to bag`,
+  );
 
   quickAdd.addEventListener("click", () => {
     addToCart(card);
   });
-});
-
-document.querySelectorAll(".badge-sale").forEach((badge) => {
-  badge.textContent = "SALE -25%";
 });
 
 document.querySelectorAll(".quiz-open").forEach((button) => {
@@ -846,21 +1559,510 @@ quizModal?.querySelectorAll("[data-concern]").forEach((option) => {
   option.addEventListener("click", () => {
     const result = quizModal.querySelector(".quiz-result");
     if (result)
-      result.textContent = `Your starting point: ${option.textContent}. Explore the routine below.`;
+      result.textContent = `Your starting point: ${option.textContent}. Explore the collection below.`;
   });
 });
 
 const newsletterForm = document.querySelector(".newsletter-form");
 if (newsletterForm) {
-  newsletterForm.addEventListener("submit", (event) => {
+  newsletterForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const status = newsletterForm
       .closest(".newsletter-form-wrap")
       ?.querySelector(".newsletter-status");
-    if (status)
+    const email = newsletterForm.querySelector('input[type="email"]');
+    const honeypot = newsletterForm.querySelector('input[name="website"]');
+    const submitButton = newsletterForm.querySelector('[type="submit"]');
+    if (
+      !email ||
+      !status ||
+      !submitButton ||
+      submitButton.disabled ||
+      !newsletterForm.reportValidity()
+    )
+      return;
+    status.removeAttribute("data-state");
+    if (honeypot?.value.trim()) {
+      status.dataset.state = "error";
+      status.textContent = "The sign-up could not be processed. Please try again.";
+      return;
+    }
+    submitButton.disabled = true;
+    try {
+      const endpoint = siteConfig.newsletterEndpoint;
+      if (endpoint) {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email.value.trim() }),
+        });
+        if (!response.ok)
+          throw new Error(`Newsletter endpoint returned ${response.status}.`);
+        status.dataset.state = "success";
+        status.textContent = "Thanks for subscribing.";
+      } else {
+        const current = readStoredValue("kinboni-newsletter-v1", []);
+        const emails = Array.isArray(current) ? current : [];
+        const normalizedEmail = email.value.trim().toLowerCase();
+        if (emails.includes(normalizedEmail)) {
+          status.dataset.state = "success";
+          status.textContent = "This email is already saved on this device.";
+        } else if (
+          writeStoredValue("kinboni-newsletter-v1", [
+            ...emails,
+            normalizedEmail,
+          ])
+        ) {
+          status.dataset.state = "success";
+          status.textContent =
+            "Thanks — your sign-up has been saved on this device.";
+        } else {
+          throw new Error("The newsletter sign-up could not be stored.");
+        }
+      }
+      newsletterForm.reset();
+    } catch (error) {
+      console.error("Newsletter sign-up failed.", error);
+      status.dataset.state = "error";
       status.textContent =
-        "Newsletter sign-up is not connected yet. Please check back soon.";
+        "We could not complete the sign-up. Please try again later.";
+    } finally {
+      submitButton.disabled = false;
+    }
   });
+}
+
+const contactForm = document.querySelector(".contact-form");
+contactForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const status = contactForm.querySelector(".form-status");
+  if (!status || !contactForm.reportValidity()) return;
+  const formData = new FormData(contactForm);
+  const name = String(formData.get("name") || "").trim();
+  const email = String(formData.get("email") || "").trim();
+  const message = String(formData.get("message") || "").trim();
+  const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+  const whatsappNumber = String(siteConfig.contact?.whatsappNumber || "").replace(
+    /\D/g,
+    "",
+  );
+  const businessEmail = String(siteConfig.contact?.email || "").trim();
+  let contactUrl = "";
+  if (whatsappNumber) {
+    contactUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(body)}`;
+  } else if (businessEmail) {
+    contactUrl = `mailto:${businessEmail}?subject=${encodeURIComponent(
+      "Kinboni customer enquiry",
+    )}&body=${encodeURIComponent(body)}`;
+  }
+  if (!contactUrl) {
+    status.dataset.state = "error";
+    status.textContent =
+      "No contact channel is configured yet. Kinboni's WhatsApp or email must be added in config.js.";
+    return;
+  }
+  status.dataset.state = "success";
+  status.textContent = "Opening the configured contact channel…";
+  const contactWindow = window.open(contactUrl, "_blank");
+  if (contactWindow) contactWindow.opener = null;
+  else window.location.href = contactUrl;
+});
+
+const checkoutForm = document.querySelector("#checkout-form");
+if (checkoutForm) {
+  const checkoutEmpty = document.querySelector(".checkout-empty");
+  const checkoutItems = document.querySelector(".checkout-items");
+  const checkoutSubtotal = document.querySelector("[data-checkout-subtotal]");
+  const checkoutDelivery = document.querySelector("[data-checkout-delivery]");
+  const checkoutTotal = document.querySelector("[data-checkout-total]");
+  const deliveryZone = checkoutForm.querySelector('[name="deliveryZone"]');
+  const deliveryChargeLabel = checkoutForm.querySelector(
+    "[data-delivery-charge]",
+  );
+  const phoneInput = checkoutForm.querySelector('[name="phone"]');
+  const phoneError = checkoutForm.querySelector("#phone-error");
+  const paymentInstructions = checkoutForm.querySelector(
+    "[data-payment-instructions]",
+  );
+  const transactionField = checkoutForm.querySelector(".transaction-field");
+  const transactionInput = transactionField?.querySelector("input");
+  const status = checkoutForm.querySelector(".form-status");
+  const paymentConfig = siteConfig.payment || {};
+
+  const bkashInput = checkoutForm.querySelector('[value="bkash"]');
+  const nagadInput = checkoutForm.querySelector('[value="nagad"]');
+  const codInput = checkoutForm.querySelector('[value="cod"]');
+  const cardInput = checkoutForm.querySelector('[value="card"]');
+  const codPaymentNote = checkoutForm.querySelector("[data-cod-payment-note]");
+  if (bkashInput)
+    bkashInput.disabled =
+      !paymentConfig.bkashEnabled || !paymentConfig.bkashMerchantNumber;
+  if (nagadInput)
+    nagadInput.disabled =
+      !paymentConfig.nagadEnabled || !paymentConfig.nagadMerchantNumber;
+  if (codInput) {
+    codInput.disabled = !paymentConfig.cashOnDeliveryEnabled;
+    codInput.checked = !codInput.disabled;
+  }
+  if (codPaymentNote)
+    codPaymentNote.textContent = codInput?.disabled
+      ? " (not configured yet)"
+      : "";
+  if (cardInput) cardInput.disabled = !paymentConfig.onlineCardEnabled;
+  if (codInput?.disabled) {
+    const firstEnabled = checkoutForm.querySelector(
+      'input[name="paymentMethod"]:not(:disabled)',
+    );
+    if (firstEnabled) firstEnabled.checked = true;
+  }
+
+  const currentCheckoutTotals = () => {
+    const items = cartItems.map((item) => ({
+      item,
+      product: productsById.get(item.productId),
+    }));
+    const subtotalKnown =
+      items.length > 0 &&
+      items.every(
+        ({ item, product }) =>
+          product &&
+          typeof product.price === "number" &&
+          Number.isFinite(product.price) &&
+          product.status !== "coming-soon" &&
+          item.quantity <= 99,
+      );
+    const subtotal = subtotalKnown
+      ? items.reduce(
+          (sum, { item, product }) => sum + product.price * item.quantity,
+          0,
+        )
+      : null;
+    const zone = deliveryZone?.value;
+    const delivery = siteConfig.delivery || {};
+    const rawCharge =
+      zone === "insideDhaka"
+        ? delivery.insideDhakaCharge
+        : zone === "outsideDhaka"
+          ? delivery.outsideDhakaCharge
+          : null;
+    const threshold = delivery.freeDeliveryThreshold;
+    const deliveryAmount =
+      subtotalKnown &&
+      typeof threshold === "number" &&
+      Number.isFinite(threshold) &&
+      subtotal >= threshold
+        ? 0
+        : typeof rawCharge === "number" && Number.isFinite(rawCharge)
+          ? rawCharge
+          : null;
+    return {
+      items,
+      subtotal,
+      delivery: deliveryAmount,
+      total:
+        subtotal !== null && deliveryAmount !== null
+          ? subtotal + deliveryAmount
+          : null,
+    };
+  };
+
+  const renderCheckout = () => {
+    const totals = currentCheckoutTotals();
+    if (checkoutItems) {
+      checkoutItems.replaceChildren();
+      totals.items.forEach(({ item, product }) => {
+        if (!product) return;
+        const row = document.createElement("div");
+        row.className = "checkout-line";
+        const name = document.createElement("span");
+        name.textContent = `${product.name} × ${item.quantity}`;
+        const price = document.createElement("strong");
+        price.textContent =
+          typeof product.price === "number"
+            ? productPriceText({ price: product.price * item.quantity })
+            : "To be confirmed";
+        row.append(name, price);
+        checkoutItems.append(row);
+      });
+    }
+    if (checkoutEmpty) checkoutEmpty.hidden = cartItems.length > 0;
+    if (checkoutSubtotal)
+      checkoutSubtotal.textContent =
+        totals.subtotal === null
+          ? "To be confirmed"
+          : productPriceText({ price: totals.subtotal });
+    if (checkoutDelivery)
+      checkoutDelivery.textContent =
+        totals.delivery === null
+          ? "To be confirmed"
+          : productPriceText({ price: totals.delivery });
+    if (checkoutTotal)
+      checkoutTotal.textContent =
+        totals.total === null
+          ? "To be confirmed"
+          : productPriceText({ price: totals.total });
+    if (deliveryChargeLabel) {
+      const zone = deliveryZone?.value;
+      const delivery = siteConfig.delivery || {};
+      const amount =
+        zone === "insideDhaka"
+          ? delivery.insideDhakaCharge
+          : zone === "outsideDhaka"
+            ? delivery.outsideDhakaCharge
+            : null;
+      deliveryChargeLabel.textContent = zone
+        ? `Configured charge: ${deliveryChargeText(amount)}.`
+        : "Choose a delivery area to see the configured charge.";
+    }
+    return totals;
+  };
+
+  const updatePaymentInstructions = () => {
+    const method = checkoutForm.querySelector(
+      'input[name="paymentMethod"]:checked',
+    )?.value;
+    const merchant =
+      method === "bkash"
+        ? paymentConfig.bkashMerchantNumber
+        : method === "nagad"
+          ? paymentConfig.nagadMerchantNumber
+          : "";
+    const paymentLabel =
+      method === "bkash" ? "bKash" : method === "nagad" ? "Nagad" : "";
+    if (paymentInstructions) {
+      paymentInstructions.hidden = !merchant;
+      paymentInstructions.textContent = merchant
+        ? `${paymentLabel} merchant number: ${merchant}. Enter the transaction ID or last 4 digits after payment.`
+        : "";
+    }
+    if (transactionField) transactionField.hidden = !merchant;
+    if (transactionInput) transactionInput.required = Boolean(merchant);
+  };
+
+  const validateBangladeshPhone = () => {
+    if (!phoneInput) return true;
+    const phone = phoneInput.value.trim();
+    const valid = /^(?:01[3-9]\d{8}|\+8801[3-9]\d{8})$/.test(phone);
+    phoneInput.setCustomValidity(
+      phone && !valid ? "Enter a valid Bangladesh mobile number." : "",
+    );
+    if (phoneError)
+      phoneError.textContent =
+        phone && !valid ? "Enter a valid Bangladesh mobile number." : "";
+    return valid;
+  };
+
+  phoneInput?.addEventListener("input", validateBangladeshPhone);
+  checkoutForm
+    .querySelectorAll('[name="paymentMethod"]')
+    .forEach((input) =>
+      input.addEventListener("change", updatePaymentInstructions),
+    );
+  deliveryZone?.addEventListener("change", renderCheckout);
+  updatePaymentInstructions();
+  renderCheckout();
+
+  checkoutForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (status) {
+      status.removeAttribute("data-state");
+      status.textContent = "";
+    }
+    validateBangladeshPhone();
+    if (!checkoutForm.reportValidity()) return;
+    const totals = renderCheckout();
+    if (!cartItems.length) {
+      if (status) {
+        status.dataset.state = "error";
+        status.textContent = "Your bag is empty. Add a product before checkout.";
+      }
+      return;
+    }
+    if (totals.total === null) {
+      if (status) {
+        status.dataset.state = "error";
+        status.textContent =
+          "The product prices or delivery charge are not configured yet. Kinboni must confirm them before checkout.";
+      }
+      return;
+    }
+    const formData = new FormData(checkoutForm);
+    const method = String(formData.get("paymentMethod") || "");
+    const whatsappNumber = String(
+      siteConfig.contact?.whatsappNumber || "",
+    ).replace(/\D/g, "");
+    const endpoint = String(siteConfig.orderEndpoint || "").trim();
+    if (!method) {
+      if (status) {
+        status.dataset.state = "error";
+        status.textContent =
+          "No payment method is enabled. Kinboni must configure an available method before checkout.";
+      }
+      return;
+    }
+    if (!whatsappNumber && !endpoint) {
+      if (status) {
+        status.dataset.state = "error";
+        status.textContent =
+          "Order submission is not configured. Add a WhatsApp number or order endpoint in config.js.";
+      }
+      return;
+    }
+
+    const date = new Date();
+    const orderId = `KB-${String(date.getFullYear()).slice(-2)}${String(
+      date.getMonth() + 1,
+    ).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}-${Math.random()
+      .toString(36)
+      .slice(2, 6)
+      .toUpperCase()}`;
+    const items = cartItems.map((item) => {
+      const product = productsById.get(item.productId);
+      return {
+        id: item.productId,
+        name: product?.name || item.productId,
+        variant: item.variant,
+        quantity: item.quantity,
+        unitPrice: product?.price,
+      };
+    });
+    const order = {
+      orderId,
+      createdAt: date.toISOString(),
+      customer: {
+        name: String(formData.get("name") || "").trim(),
+        phone: String(formData.get("phone") || "").trim(),
+        email: String(formData.get("email") || "").trim(),
+        division: String(formData.get("division") || ""),
+        district: String(formData.get("district") || ""),
+        area: String(formData.get("area") || "").trim(),
+        address: String(formData.get("address") || "").trim(),
+        deliveryNote: String(formData.get("deliveryNote") || "").trim(),
+      },
+      paymentMethod: method,
+      transactionId: String(formData.get("transactionId") || "").trim(),
+      deliveryZone: String(formData.get("deliveryZone") || ""),
+      items,
+      subtotal: totals.subtotal,
+      deliveryCharge: totals.delivery,
+      total: totals.total,
+      currency: siteConfig.currency?.code || "BDT",
+    };
+    const message = [
+      `Kinboni order request ${orderId}`,
+      ...items.map(
+        (item) =>
+          `${item.name}${item.variant ? ` (${item.variant})` : ""} × ${item.quantity} — ${productPriceText({ price: item.unitPrice * item.quantity })}`,
+      ),
+      `Subtotal: ${productPriceText({ price: totals.subtotal })}`,
+      `Delivery: ${productPriceText({ price: totals.delivery })}`,
+      `Total: ${productPriceText({ price: totals.total })}`,
+      `Payment: ${method}`,
+      `Name: ${order.customer.name}`,
+      `Phone: ${order.customer.phone}`,
+      `Address: ${order.customer.address}, ${order.customer.area}, ${order.customer.district}, ${order.customer.division}`,
+      `Delivery note: ${order.customer.deliveryNote || "None"}`,
+    ].join("\n");
+    const whatsappUrl = whatsappNumber
+      ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+      : "";
+    const whatsappWindow = whatsappUrl
+      ? window.open("about:blank", "_blank")
+      : null;
+
+    let endpointSucceeded = false;
+    if (endpoint) {
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(order),
+        });
+        if (!response.ok)
+          throw new Error(`Order endpoint returned ${response.status}.`);
+        endpointSucceeded = true;
+      } catch (error) {
+        console.error("Order endpoint failed; using WhatsApp fallback.", error);
+      }
+    }
+    if (!endpointSucceeded && !whatsappUrl) {
+      whatsappWindow?.close();
+      if (status) {
+        status.dataset.state = "error";
+        status.textContent =
+          "The order endpoint failed and no WhatsApp fallback is configured.";
+      }
+      return;
+    }
+    order.whatsappUrl = whatsappUrl;
+    order.endpointSucceeded = endpointSucceeded;
+    if (!writeStoredValue("kinboni-last-order-v1", order)) {
+      whatsappWindow?.close();
+      if (status) {
+        status.dataset.state = "error";
+        status.textContent =
+          "The order could not be saved on this device. Please retry or contact Kinboni.";
+      }
+      return;
+    }
+    if (whatsappWindow && whatsappUrl) {
+      whatsappWindow.location.href = whatsappUrl;
+      whatsappWindow.opener = null;
+    }
+    cartItems = [];
+    persistCart();
+    renderCart();
+    window.location.href = "order-success.html";
+  });
+}
+
+const successContent = document.querySelector(".order-success-content");
+if (successContent) {
+  const order = readStoredValue("kinboni-last-order-v1", null);
+  const message = successContent.querySelector(".order-success-message");
+  const summary = successContent.querySelector(".order-success-summary");
+  const whatsappLink = successContent.querySelector(".order-whatsapp-link");
+  if (!order) {
+    if (message)
+      message.textContent =
+        "No saved order request was found on this device. Return to the shop to start an order.";
+  } else {
+    if (message)
+      message.textContent =
+        "Your order request is prepared. Kinboni must confirm availability and delivery details before the order is final.";
+    const details = [
+      ["Order reference", order.orderId],
+      ["Name", order.customer?.name],
+      ["Items", String(order.items?.reduce((count, item) => count + item.quantity, 0) || 0)],
+      [
+        "Total",
+        typeof order.total === "number"
+          ? productPriceText({ price: order.total })
+          : "To be confirmed",
+      ],
+      [
+        "Submission",
+        order.endpointSucceeded
+          ? "Sent to the configured order endpoint"
+          : "Ready for WhatsApp confirmation",
+      ],
+    ];
+    details.forEach(([label, value]) => {
+      const row = document.createElement("div");
+      const term = document.createElement("dt");
+      term.textContent = label;
+      const description = document.createElement("dd");
+      description.textContent = value || "—";
+      row.append(term, description);
+      summary?.append(row);
+    });
+    if (order.whatsappUrl && whatsappLink) {
+      whatsappLink.href = order.whatsappUrl;
+      whatsappLink.target = "_blank";
+      whatsappLink.rel = "noopener noreferrer";
+      whatsappLink.hidden = false;
+    }
+  }
 }
 
 const galleryLightbox = document.querySelector(".gallery-lightbox");

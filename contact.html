@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Kinboni | Customer Care</title>
+    <meta name="description" content="Contact Kinboni about bags, delivery and orders. Phone, email, address and WhatsApp details are configured by the business." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-site-shell></div>
+    <main id="main-content" class="info-page section-spacing"><div class="container info-narrow">
+      <nav class="shop-breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">›</span><span aria-current="page">Contact</span></nav>
+      <div class="section-heading"><span class="eyebrow">We are here to help</span><h1>Contact Kinboni</h1><p>Business contact details are intentionally left blank until confirmed.</p></div>
+      <section class="info-card contact-details">
+        <p><strong>Phone:</strong> <span data-config-text="contact.phone" data-config-empty="To be provided"></span></p>
+        <p><strong>WhatsApp:</strong> <span data-config-text="contact.whatsappNumber" data-config-empty="To be provided"></span></p>
+        <p><strong>Email:</strong> <span data-config-text="contact.email" data-config-empty="To be provided"></span></p>
+        <p><strong>Address:</strong> <span data-config-text="contact.address" data-config-empty="To be provided"></span></p>
+        <p><strong>Business hours:</strong> <span data-config-text="contact.businessHours" data-config-empty="To be provided"></span></p>
+        <a class="button button-secondary" data-config-href="contact.googleMapsUrl" data-config-empty="Map link not configured" hidden>Open map</a>
+      </section>
+      <form class="contact-form info-card" id="contact-form" novalidate>
+        <h2>Send a message</h2>
+        <label>Your name<input name="name" autocomplete="name" required /></label>
+        <label>Email<input name="email" type="email" autocomplete="email" required /></label>
+        <label>Message<textarea name="message" rows="5" required></textarea></label>
+        <p class="form-status" role="status" aria-live="polite"></p>
+        <button class="button button-primary" type="submit">Continue to contact channel</button>
+      </form>
+    </div></main>
+    <script defer src="assets/js/config.js"></script><script defer src="assets/js/products.js"></script><script defer src="assets/js/info-shell.js"></script><script defer src="assets/js/script.js"></script>
+  </body>
+</html>

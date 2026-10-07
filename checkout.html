@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout | Kinboni</title>
+    <meta name="description" content="Review your Kinboni bag and prepare your order for delivery in Bangladesh." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-site-shell></div>
+    <main id="main-content" class="info-page section-spacing">
+      <div class="container">
+        <nav class="shop-breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a><span aria-hidden="true">›</span><span aria-current="page">Checkout</span>
+        </nav>
+        <div class="section-heading">
+          <span class="eyebrow">Your Kinboni order</span>
+          <h1>Checkout</h1>
+          <p>Review your bag and enter delivery details. Your order is not placed until you confirm it.</p>
+        </div>
+        <div class="delivery-payment-strip">
+          <strong>Delivery &amp; Payment</strong>
+          <p data-delivery-payment-copy></p>
+          <div class="payment-badge-list" data-payment-badges></div>
+        </div>
+        <div class="checkout-layout">
+          <form class="checkout-form" id="checkout-form" novalidate>
+            <section class="info-card">
+              <h2>Delivery details</h2>
+              <div class="form-grid">
+                <label>Full name<input name="name" autocomplete="name" required /></label>
+                <label>Phone number<input name="phone" type="tel" autocomplete="tel" placeholder="01XXXXXXXXX" required aria-describedby="phone-hint phone-error" /><small id="phone-hint">Use a Bangladesh mobile number, e.g. 01XXXXXXXXX or +8801XXXXXXXXX.</small><span class="field-error" id="phone-error"></span></label>
+                <label>Email address (optional)<input name="email" type="email" autocomplete="email" /></label>
+                <label>Division<select name="division" required><option value="">Choose division</option><option>Barishal</option><option>Chattogram</option><option>Dhaka</option><option>Khulna</option><option>Mymensingh</option><option>Rajshahi</option><option>Rangpur</option><option>Sylhet</option></select></label>
+                <label>District<select name="district" required><option value="">Choose district</option><option>Dhaka</option><option>Gazipur</option><option>Narayanganj</option><option>Chattogram</option><option>Cumilla</option><option>Sylhet</option><option>Khulna</option><option>Rajshahi</option><option>Barishal</option><option>Rangpur</option><option>Mymensingh</option></select></label>
+                <label>Area / thana<input name="area" autocomplete="address-level3" required /></label>
+                <label class="form-field-wide">Full address<textarea name="address" autocomplete="street-address" rows="3" required></textarea></label>
+                <label class="form-field-wide">Delivery note (optional)<textarea name="deliveryNote" rows="2"></textarea></label>
+              </div>
+            </section>
+            <section class="info-card">
+              <h2>Delivery zone</h2>
+              <label>Delivery area<select name="deliveryZone" required><option value="">Choose delivery area</option><option value="insideDhaka">Inside Dhaka</option><option value="outsideDhaka">Outside Dhaka</option></select></label>
+              <p class="form-helper" data-delivery-charge></p>
+            </section>
+            <section class="info-card">
+              <h2>Payment method</h2>
+              <fieldset class="payment-options">
+                <legend>Select a payment method</legend>
+                <label><input type="radio" name="paymentMethod" value="cod" /> <span>Cash on Delivery</span><small data-cod-payment-note></small></label>
+                <label><input type="radio" name="paymentMethod" value="bkash" disabled /> bKash (configure merchant details to enable)</label>
+                <label><input type="radio" name="paymentMethod" value="nagad" disabled /> Nagad (configure merchant details to enable)</label>
+                <label><input type="radio" name="paymentMethod" value="card" disabled /> Card / online payment — coming later</label>
+              </fieldset>
+              <p class="merchant-number" data-payment-instructions hidden></p>
+              <label class="transaction-field" hidden>Transaction ID or last 4 digits<input name="transactionId" autocomplete="off" /></label>
+            </section>
+            <label class="consent-check"><input type="checkbox" name="termsAccepted" required /> I have reviewed the <a href="terms.html">order terms</a> and <a href="privacy-policy.html">privacy notice</a>.</label>
+            <p class="form-status" role="status" aria-live="polite"></p>
+            <button class="button button-primary" type="submit">Place order</button>
+          </form>
+          <aside class="checkout-summary-panel info-card" aria-labelledby="order-summary-title">
+            <h2 id="order-summary-title">Order summary</h2>
+            <div class="checkout-items" aria-live="polite"></div>
+            <p class="checkout-empty">Your bag is empty. <a href="shop.html">Explore the collection</a>.</p>
+            <dl class="checkout-totals">
+              <div><dt>Subtotal</dt><dd data-checkout-subtotal>—</dd></div>
+              <div><dt>Delivery</dt><dd data-checkout-delivery>—</dd></div>
+              <div class="checkout-grand-total"><dt>Total</dt><dd data-checkout-total>—</dd></div>
+            </dl>
+          </aside>
+        </div>
+      </div>
+    </main>
+    <script defer src="assets/js/config.js"></script>
+    <script defer src="assets/js/products.js"></script>
+    <script defer src="assets/js/info-shell.js"></script>
+    <script defer src="assets/js/script.js"></script>
+  </body>
+</html>
