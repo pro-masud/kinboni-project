@@ -59,12 +59,12 @@ const setupPageAnimations = () => {
   if (window.ScrollTrigger) window.gsap.registerPlugin(window.ScrollTrigger);
 
   const sectionItems = document.querySelectorAll(
-    ".trust-item, .category-card, .product-card, .concern-card, .ingredient-card, .routine-step, .testimonial-card, .collection-card, .benefit-card, .ugc-card, .faq-item",
+    ".trust-item, .category-card, .product-card, .coming-product-card, .concern-card, .ingredient-card, .routine-step, .testimonial-card, .collection-card, .benefit-card, .ugc-card, .faq-item",
   );
 
   revealItems.forEach((section) => {
     const headingItems = section.querySelectorAll(
-      ".section-heading > *, .banner-copy > *, .story-copy > *, .newsletter-shell > *",
+      ".section-heading > *, .banner-copy > *, .story-copy > *, .newsletter-shell > *, .coming-soon-copy > *, .coming-soon-aside > *",
     );
     const cards = Array.from(sectionItems).filter((item) =>
       section.contains(item),
@@ -125,6 +125,44 @@ const setupPageAnimations = () => {
 };
 
 setupPageAnimations();
+
+const comingSoonSection = document.querySelector("#coming-soon");
+if (comingSoonSection && window.gsap && !prefersReducedMotion) {
+  const comingSoonObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const copyItems = comingSoonSection.querySelectorAll(
+          ".coming-soon-copy > *, .coming-soon-aside > *",
+        );
+        const productCards = comingSoonSection.querySelectorAll(
+          ".coming-product-card",
+        );
+
+        window.gsap
+          .timeline({ defaults: { ease: "power3.out" } })
+          .fromTo(
+            comingSoonSection,
+            { opacity: 0, y: 22 },
+            { opacity: 1, y: 0, duration: 0.65 },
+          )
+          .from(
+            copyItems,
+            { opacity: 0, y: 16, duration: 0.45, stagger: 0.06 },
+            "-=0.32",
+          )
+          .from(
+            productCards,
+            { opacity: 0, y: 24, duration: 0.55, stagger: 0.12 },
+            "-=0.2",
+          );
+        observer.unobserve(comingSoonSection);
+      });
+    },
+    { threshold: 0.14 },
+  );
+  comingSoonObserver.observe(comingSoonSection);
+}
 
 const animateHeroSlide = (slide) => {
   if (!window.gsap || prefersReducedMotion || !slide) return;

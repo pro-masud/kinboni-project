@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coming Soon | Kinboni</title>
+    <meta
+      name="description"
+      content="Get a first look at the Kinboni pieces coming soon, including thoughtful jewelry for everyday."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body class="coming-soon-page">
+    <div class="announcement-bar">
+      <p>Free shipping on orders over $75 • New arrivals now live</p>
+    </div>
+
+    <header class="site-header" id="site-header">
+      <div class="container header-inner">
+        <a href="index.html" class="brand" aria-label="Kinboni home">
+          <span class="brand-mark">K</span>
+          <span class="brand-name">KINBONI</span>
+        </a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="shop.html">Shop</a>
+          <a href="new-arrivals.html">New Arrivals</a>
+          <a href="coming-soon.html" class="is-active" aria-current="page"
+            >Coming Soon</a
+          >
+          <a href="totes.html">Totes</a>
+          <a href="shoulder-bags.html">Shoulder Bags</a>
+          <a href="crossbody.html">Crossbody</a>
+          <a href="mini-bags.html">Mini Bags</a>
+          <a href="work-bags.html">Work Bags</a>
+          <a href="about.html">About</a>
+        </nav>
+        <div class="header-right">
+          <div class="header-actions">
+            <button
+              class="icon-button search-toggle"
+              type="button"
+              aria-label="Search"
+            >
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <button
+              class="icon-button account-button"
+              type="button"
+              aria-label="Account access coming soon"
+              title="Account access coming soon"
+              disabled
+            >
+              <i class="fa-regular fa-user"></i>
+            </button>
+            <button
+              class="icon-button wishlist-toggle"
+              type="button"
+              aria-label="Wishlist"
+            >
+              <i class="fa-regular fa-heart"></i>
+            </button>
+            <button
+              class="icon-button cart-button"
+              type="button"
+              aria-label="Shopping bag"
+            >
+              <i class="fa-solid fa-bag-shopping"></i>
+              <span class="cart-count">0</span>
+            </button>
+          </div>
+          <button
+            class="menu-toggle"
+            type="button"
+            aria-label="Open menu"
+            aria-expanded="false"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <nav
+      class="mobile-menu"
+      aria-label="Mobile navigation"
+      aria-hidden="true"
+      inert
+    >
+      <div class="mobile-menu-panel">
+        <div class="mobile-menu-top">
+          <span>Explore Kinboni</span>
+          <button
+            class="mobile-menu-close"
+            type="button"
+            aria-label="Close menu"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="mobile-menu-utilities">
+          <button
+            class="mobile-menu-tool search-toggle"
+            type="button"
+            aria-label="Search"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+          </button>
+          <button
+            class="mobile-menu-tool wishlist-toggle"
+            type="button"
+            aria-label="Wishlist"
+          >
+            <i class="fa-regular fa-heart"></i>
+            <span>Wishlist</span>
+          </button>
+        </div>
+        <div class="mobile-menu-links">
+          <a href="shop.html">Shop</a>
+          <a href="new-arrivals.html">New Arrivals</a>
+          <a href="coming-soon.html" aria-current="page">Coming Soon</a>
+          <a href="totes.html">Totes</a>
+          <a href="shoulder-bags.html">Shoulder Bags</a>
+          <a href="crossbody.html">Crossbody</a>
+          <a href="mini-bags.html">Mini Bags</a>
+          <a href="work-bags.html">Work Bags</a>
+          <a href="about.html">About</a>
+        </div>
+        <div class="mobile-menu-social">
+          <span>Follow Kinboni</span>
+          <div class="socials" aria-label="Social media links">
+            <span aria-label="Instagram profile link coming soon"
+              ><i class="fa-brands fa-instagram"></i
+            ></span>
+            <span aria-label="Pinterest profile link coming soon"
+              ><i class="fa-brands fa-pinterest-p"></i
+            ></span>
+            <span aria-label="TikTok profile link coming soon"
+              ><i class="fa-brands fa-tiktok"></i
+            ></span>
+            <span aria-label="Facebook profile link coming soon"
+              ><i class="fa-brands fa-facebook-f"></i
+            ></span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div
+      class="search-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Search Kinboni Bags"
+      aria-hidden="true"
+      inert
+    >
+      <form class="search-form">
+        <label for="site-search">Search Kinboni Bags</label>
+        <div>
+          <input
+            id="site-search"
+            type="search"
+            placeholder="Search totes, leather bags, crossbody..."
+          />
+          <button type="submit" aria-label="Submit search">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+        <p class="search-status" aria-live="polite"></p>
+      </form>
+      <button class="search-close" type="button" aria-label="Close search">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <main>
+      <section class="coming-soon-hero" aria-labelledby="coming-soon-title">
+        <img
+          class="coming-soon-hero-image"
+          src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=2000&q=85"
+          alt="Sculptural gold jewelry from the upcoming Kinboni collection"
+        />
+        <div class="coming-soon-hero-shade"></div>
+        <div class="container coming-soon-hero-content">
+          <nav class="shop-breadcrumb" aria-label="Breadcrumb">
+            <a href="index.html">Home</a>
+            <span class="shop-breadcrumb-separator" aria-hidden="true"
+              ><i class="fa-solid fa-chevron-right"></i
+            ></span>
+            <span aria-current="page">Coming Soon</span>
+          </nav>
+          <span class="coming-soon-kicker">The next Kinboni edit</span>
+          <h1 id="coming-soon-title">A Little Something<br />Gold Is Coming.</h1>
+          <p>
+            Thoughtful finishing touches, made to feel like you. Discover the
+            pieces joining Kinboni soon.
+          </p>
+          <a class="button button-primary" href="#coming-products"
+            >Explore the Preview</a
+          >
+        </div>
+      </section>
+
+      <section class="coming-soon-collection section-spacing" id="coming-products">
+        <div class="container">
+          <div class="section-heading split-heading">
+            <div>
+              <span class="eyebrow">Not here just yet</span>
+              <h2>Coming Soon to Kinboni</h2>
+            </div>
+            <span class="coming-soon-count">The first four pieces</span>
+          </div>
+
+          <div class="coming-soon-product-grid">
+            <article class="coming-soon-product">
+              <div class="coming-soon-product-media">
+                <img
+                  src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=900&q=85"
+                  alt="Layered gold chains with gemstone pendants"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="coming-soon-product-label">Coming Soon</span>
+              </div>
+              <div class="coming-soon-product-info">
+                <span class="coming-soon-product-type">Necklaces</span>
+                <h3>Asha Layered Chain</h3>
+                <p>Golden layers, made for every day.</p>
+              </div>
+            </article>
+
+            <article class="coming-soon-product">
+              <div class="coming-soon-product-media">
+                <img
+                  src="https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&w=900&q=85"
+                  alt="Delicate gold bangle on a soft blush background"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="coming-soon-product-label">Coming Soon</span>
+              </div>
+              <div class="coming-soon-product-info">
+                <span class="coming-soon-product-type">Bangles</span>
+                <h3>Sona Sculpted Bangle</h3>
+                <p>A little shine for your everyday.</p>
+              </div>
+            </article>
+
+            <article class="coming-soon-product">
+              <div class="coming-soon-product-media">
+                <img
+                  src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=900&q=85"
+                  alt="Fine layered necklaces worn with a light outfit"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="coming-soon-product-label">Coming Soon</span>
+              </div>
+              <div class="coming-soon-product-info">
+                <span class="coming-soon-product-type">Necklaces</span>
+                <h3>Noor Pendant Necklace</h3>
+                <p>Quietly elegant, easy to layer.</p>
+              </div>
+            </article>
+
+            <article class="coming-soon-product">
+              <div class="coming-soon-product-media">
+                <img
+                  src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=900&q=85"
+                  alt="Sculptural gold hoop earrings"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="coming-soon-product-label">Coming Soon</span>
+              </div>
+              <div class="coming-soon-product-info">
+                <span class="coming-soon-product-type">Earrings</span>
+                <h3>Mira Sculpted Hoops</h3>
+                <p>A polished finishing touch.</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="coming-soon-footer-cta">
+            <p>Until then, find your everyday favourite.</p>
+            <a class="button button-secondary" href="shop.html#products"
+              >Shop the Bags</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand" aria-label="Kinboni home">
+            <span class="brand-mark">K</span>
+            <span class="brand-name">KINBONI</span>
+          </a>
+          <p>
+            Thoughtfully designed handbags made to bring ease, character, and
+            confidence to your everyday carry.
+          </p>
+          <div class="socials" aria-label="Social media links">
+            <span aria-label="Instagram profile link coming soon"
+              ><i class="fa-brands fa-instagram"></i
+            ></span>
+            <span aria-label="Pinterest profile link coming soon"
+              ><i class="fa-brands fa-pinterest-p"></i
+            ></span>
+            <span aria-label="TikTok profile link coming soon"
+              ><i class="fa-brands fa-tiktok"></i
+            ></span>
+            <span aria-label="Facebook profile link coming soon"
+              ><i class="fa-brands fa-facebook-f"></i
+            ></span>
+          </div>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="shop.html#products">All Bags</a></li>
+            <li><a href="new-arrivals.html">New Arrivals</a></li>
+            <li><a href="coming-soon.html" aria-current="page">Coming Soon</a></li>
+            <li><a href="totes.html">Totes</a></li>
+            <li><a href="shoulder-bags.html">Shoulder Bags</a></li>
+            <li><a href="crossbody.html">Crossbody Bags</a></li>
+            <li><a href="mini-bags.html">Mini Bags</a></li>
+            <li><a href="work-bags.html">Work Bags</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Customer Care</h4>
+          <ul>
+            <li><span>Contact (Coming Soon)</span></li>
+            <li><a href="index.html#faq">FAQ</a></li>
+            <li><span>Shipping (Coming Soon)</span></li>
+            <li><span>Returns (Coming Soon)</span></li>
+            <li><span>Track Order (Coming Soon)</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4>About</h4>
+          <ul>
+            <li><a href="about.html">Our Story</a></li>
+            <li><span>Journal (Coming Soon)</span></li>
+            <li><span>Sustainability (Coming Soon)</span></li>
+            <li><span>Privacy Policy (Coming Soon)</span></li>
+            <li><span>Terms &amp; Conditions (Coming Soon)</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p>© 2026 Kinboni. All rights reserved.</p>
+        <div class="footer-legal">
+          <span class="payment-note">Visa · Mastercard · Amex · PayPal</span>
+          <span>Privacy Policy (Coming Soon)</span>
+          <span>Terms (Coming Soon)</span>
+        </div>
+      </div>
+    </footer>
+
+    <aside
+      class="cart-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-labelledby="cart-title"
+      inert
+    >
+      <div class="cart-drawer-head">
+        <h2 id="cart-title">Your Bag</h2>
+        <button class="cart-close" type="button" aria-label="Close bag">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="cart-items"></div>
+      <div class="cart-empty">Your bag is ready for something beautiful.</div>
+      <button class="button button-primary cart-checkout" type="button" disabled>
+        Checkout (Coming Soon)
+      </button>
+    </aside>
+
+    <aside
+      class="wishlist-drawer cart-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-labelledby="wishlist-title"
+      inert
+    >
+      <div class="cart-drawer-head">
+        <h2 id="wishlist-title">Your Wishlist</h2>
+        <button
+          class="wishlist-close cart-close"
+          type="button"
+          aria-label="Close wishlist"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="wishlist-items cart-items"></div>
+      <p class="wishlist-empty cart-empty">Save a bag to see it here.</p>
+    </aside>
+
+    <script src="assets/js/script.js"></script>
+  </body>
+</html>
