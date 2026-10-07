@@ -244,6 +244,9 @@ searchForm?.addEventListener("submit", (event) => {
   if (!query) {
     products.forEach((product) => product.removeAttribute("hidden"));
     if (status) status.textContent = "Showing all products.";
+    document.dispatchEvent(
+      new CustomEvent("shop:search", { detail: { query: "" } }),
+    );
     return;
   }
   const matches = products.filter((product) => {
@@ -256,6 +259,9 @@ searchForm?.addEventListener("submit", (event) => {
     status.textContent = matches.length
       ? `${matches.length} product${matches.length === 1 ? "" : "s"} found.`
       : "No bags found. Try tote, crossbody or shoulder bag.";
+  document.dispatchEvent(
+    new CustomEvent("shop:search", { detail: { query } }),
+  );
 });
 
 const renderWishlist = () => {
@@ -899,6 +905,7 @@ if (shopPage) {
   const shopEmpty = shopPage.querySelector(".shop-empty-state");
   const shopSort = shopPage.querySelector(".shop-sort select");
   const filterInputs = shopPage.querySelectorAll(".shop-filters input");
+  let searchQuery = "";
 
   const priceMatches = (value, price) => {
     if (value === "under-50") return price < 50;
@@ -920,6 +927,7 @@ if (shopPage) {
   };
 
   const matchesFilters = (card, filters) =>
+    (!searchQuery || card.textContent.toLowerCase().includes(searchQuery)) &&
     Object.entries(filters).every(([filter, values]) => {
       const cardValue = card.dataset[filter] || "";
       return values.some((value) =>
@@ -938,7 +946,13 @@ if (shopPage) {
       card.toggleAttribute("hidden", !visibleCards.includes(card)),
     );
     shopEmpty.hidden = visibleCards.length > 0;
-    shopCount.textContent = `${visibleCards.length} Product${visibleCards.length === 1 ? "" : "s"}`;
+    shopCount.textContent = `${visibleCards.length} Product${
+      visibleCards.length === 1 ? "" : "s"
+    }`;
+    shopPage.querySelector(".shop-results-note").textContent =
+      visibleCards.length
+        ? `Showing 1-${visibleCards.length} of ${visibleCards.length} products`
+        : "Showing 0 products";
   };
 
   const applyShopCategory = (value) => {
@@ -962,6 +976,11 @@ if (shopPage) {
     });
   });
 
+  document.addEventListener("shop:search", (event) => {
+    searchQuery = event.detail.query;
+    updateShop();
+  });
+
   const sortShop = (value) => {
     const sortedCards = [...shopCards].sort((first, second) => {
       if (value === "low")
@@ -979,6 +998,7 @@ if (shopPage) {
       return shopCards.indexOf(first) - shopCards.indexOf(second);
     });
     sortedCards.forEach((card) => shopGrid.append(card));
+    updateShop();
   };
 
   filterInputs.forEach((input) => {
@@ -1024,7 +1044,8 @@ if (shopPage) {
     }
 
     const priceRow = card.querySelector(".price-row");
-    if (priceRow && !priceRow.querySelector(".shop-quick-add")) {
+    const quickAdd = priceRow?.querySelector(".mini-button");
+    if (priceRow && !quickAdd) {
       const quickAdd = document.createElement("button");
       quickAdd.className = "mini-button shop-quick-add";
       quickAdd.type = "button";
@@ -1032,6 +1053,8 @@ if (shopPage) {
       quickAdd.setAttribute("aria-label", "Add product to bag");
       quickAdd.addEventListener("click", () => addToCart(card));
       priceRow.append(quickAdd);
+    } else {
+      quickAdd?.addEventListener("click", () => addToCart(card));
     }
   });
 
@@ -1116,4 +1139,6 @@ if (shopPage) {
     if (card) addToCart(card);
     closeQuickView();
   });
+
+  updateShop();
 }

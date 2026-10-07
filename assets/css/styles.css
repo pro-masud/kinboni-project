@@ -4694,6 +4694,50 @@ h4 {
   display: none;
 }
 
+.shop-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 48px;
+}
+
+.shop-pagination[hidden] {
+  display: none;
+}
+
+.shop-pagination .page-numbers {
+  min-width: 40px;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 0.7rem;
+  letter-spacing: 0.04rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.shop-pagination a.page-numbers:hover,
+.shop-pagination .page-numbers.current {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--panel-strong);
+}
+
+.shop-pagination .page-numbers.prev,
+.shop-pagination .page-numbers.next {
+  padding-inline: 16px;
+}
+
 .shop-page .shop-product-card .product-media {
   position: relative;
   overflow: hidden;
