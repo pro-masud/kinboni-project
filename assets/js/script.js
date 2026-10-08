@@ -942,15 +942,30 @@ document.querySelectorAll(".shop-page:not(.shop-page-dynamic)").forEach((page) =
   const filters = page.querySelector(".shop-filters");
   const priceFieldset = Array.from(filters?.querySelectorAll("fieldset") || []).find(
     (fieldset) =>
-      fieldset.querySelector("legend")?.textContent.trim().toLowerCase() === "price",
+      fieldset
+        .querySelector("legend")
+        ?.textContent.trim().toLowerCase().startsWith("price"),
   );
   if (priceFieldset) {
-    priceFieldset.querySelector("legend").textContent = "Price (BDT)";
-    priceFieldset.querySelectorAll("label").forEach((label) => label.remove());
-    const note = document.createElement("p");
-    note.className = "shop-filter-note";
-    note.textContent = "Prices have not been confirmed yet.";
-    priceFieldset.append(note);
+    const legend = priceFieldset.querySelector("legend");
+    const priceRange = document.createElement("div");
+    priceRange.className = "shop-price-range";
+    [
+      { id: "shop-price-min", label: "Min", placeholder: "৳ Min" },
+      { id: "shop-price-max", label: "Max", placeholder: "৳ Max" },
+    ].forEach(({ id, label: labelText, placeholder }) => {
+      const label = document.createElement("label");
+      label.htmlFor = id;
+      label.textContent = labelText;
+      const input = document.createElement("input");
+      input.id = id;
+      input.type = "number";
+      input.min = "0";
+      input.inputMode = "numeric";
+      input.placeholder = placeholder;
+      priceRange.append(label, input);
+    });
+    priceFieldset.replaceChildren(legend, priceRange);
   }
   const availableColors = new Set(
     productCatalog.flatMap((product) =>
@@ -2498,15 +2513,9 @@ if (shopPage && !window.KINBONI_DYNAMIC_SHOP) {
   const shopEmpty = shopPage.querySelector(".shop-empty-state");
   const shopSort = shopPage.querySelector(".shop-sort select");
   const filterInputs = shopPage.querySelectorAll(".shop-filters input");
+  const minPriceInput = shopPage.querySelector("#shop-price-min");
+  const maxPriceInput = shopPage.querySelector("#shop-price-max");
   let searchQuery = "";
-
-  const priceMatches = (value, price) => {
-    if (value === "under-50") return price < 50;
-    if (value === "50-100") return price >= 50 && price <= 100;
-    if (value === "100-200") return price > 100 && price <= 200;
-    if (value === "200-plus") return price > 200;
-    return true;
-  };
 
   const selectedFilters = () => {
     const filters = {};
@@ -2519,16 +2528,26 @@ if (shopPage && !window.KINBONI_DYNAMIC_SHOP) {
     return filters;
   };
 
-  const matchesFilters = (card, filters) =>
-    (!searchQuery || card.textContent.toLowerCase().includes(searchQuery)) &&
-    Object.entries(filters).every(([filter, values]) => {
-      const cardValue = card.dataset[filter] || "";
-      return values.some((value) =>
-        filter === "price"
-          ? priceMatches(value, Number(card.dataset.priceValue))
-          : cardValue.split(" ").includes(value),
-      );
-    });
+  const matchesFilters = (card, filters) => {
+    const cardPrice = Number(card.dataset.priceValue);
+    const minimum =
+      minPriceInput?.value === "" ? null : Number(minPriceInput?.value);
+    const maximum =
+      maxPriceInput?.value === "" ? null : Number(maxPriceInput?.value);
+    const matchesPrice =
+      card.dataset.priceValue !== "" &&
+      Number.isFinite(cardPrice) &&
+      (minimum === null || !Number.isFinite(minimum) || cardPrice >= minimum) &&
+      (maximum === null || !Number.isFinite(maximum) || cardPrice <= maximum);
+    return (
+      (!searchQuery || card.textContent.toLowerCase().includes(searchQuery)) &&
+      (!minPriceInput?.value && !maxPriceInput?.value || matchesPrice) &&
+      Object.entries(filters).every(([filter, values]) => {
+        const cardValue = card.dataset[filter] || "";
+        return values.some((value) => cardValue.split(" ").includes(value));
+      })
+    );
+  };
 
   const updateShop = () => {
     const filters = selectedFilters();
@@ -2598,6 +2617,9 @@ if (shopPage && !window.KINBONI_DYNAMIC_SHOP) {
     input.addEventListener("change", () => {
       updateShop();
     });
+  });
+  [minPriceInput, maxPriceInput].forEach((input) => {
+    input?.addEventListener("input", updateShop);
   });
 
   shopPage.querySelectorAll(".shop-clear-filters").forEach((button) => {

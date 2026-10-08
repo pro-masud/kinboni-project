@@ -7288,3 +7288,15 @@ body.shop-quick-open {
     align-items: flex-start;
   }
 }
+
+.product-info h3,
+.coming-product-info h3,
+.coming-soon-product-info h3,
+.product-related-card h3 {
+  min-height: 0;
+  overflow: hidden;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  white-space: nowrap;
+}

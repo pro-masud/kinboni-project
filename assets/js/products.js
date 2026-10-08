@@ -4,7 +4,7 @@ window.KINBONI_PRODUCTS = [
     slug: "aria-leather-tote",
     name: "Aria Leather Tote",
     category: "totes",
-    price: null,
+    price: 4890,
     oldPrice: null,
     badges: [],
     images: [
@@ -27,7 +27,7 @@ window.KINBONI_PRODUCTS = [
     slug: "solene-shoulder-bag",
     name: "Solene Shoulder Bag",
     category: "shoulder-bags",
-    price: null,
+    price: 4290,
     oldPrice: null,
     badges: [],
     images: [
@@ -50,7 +50,7 @@ window.KINBONI_PRODUCTS = [
     slug: "riva-crossbody",
     name: "Riva Crossbody",
     category: "crossbody",
-    price: null,
+    price: 3290,
     oldPrice: null,
     badges: [],
     images: [
@@ -73,7 +73,7 @@ window.KINBONI_PRODUCTS = [
     slug: "verona-mini-bag",
     name: "Verona Mini Bag",
     category: "mini-bags",
-    price: null,
+    price: 2790,
     oldPrice: null,
     badges: [],
     images: [
@@ -97,7 +97,7 @@ window.KINBONI_PRODUCTS = [
     name: "Atlas Travel Bag",
     shopOrder: 100,
     category: "travel-bags",
-    price: null,
+    price: 5990,
     oldPrice: null,
     badges: [],
     images: [
@@ -121,7 +121,7 @@ window.KINBONI_PRODUCTS = [
     name: "Oro Mini Shoulder Bag",
     shopOrder: 101,
     category: "mini-bags",
-    price: null,
+    price: 2990,
     oldPrice: null,
     badges: [],
     images: [
@@ -144,7 +144,7 @@ window.KINBONI_PRODUCTS = [
     slug: "noa-everyday-bag",
     name: "Noa Everyday Bag",
     category: "shoulder-bags",
-    price: null,
+    price: 3590,
     oldPrice: null,
     badges: [],
     images: [
@@ -167,7 +167,7 @@ window.KINBONI_PRODUCTS = [
     slug: "clara-work-tote",
     name: "Clara Work Tote",
     category: "work-bags",
-    price: null,
+    price: 4590,
     oldPrice: null,
     badges: [],
     images: [
@@ -190,7 +190,7 @@ window.KINBONI_PRODUCTS = [
     slug: "elara-shoulder-bag",
     name: "Elara Shoulder Bag",
     category: "shoulder-bags",
-    price: null,
+    price: 3890,
     oldPrice: null,
     badges: [],
     images: [
@@ -213,7 +213,7 @@ window.KINBONI_PRODUCTS = [
     slug: "margot-structured-bag",
     name: "Margot Structured Bag",
     category: "handbags",
-    price: null,
+    price: 5290,
     oldPrice: null,
     badges: [],
     images: [
@@ -236,7 +236,7 @@ window.KINBONI_PRODUCTS = [
     slug: "cleo-crossbody",
     name: "Cleo Crossbody",
     category: "crossbody",
-    price: null,
+    price: 3190,
     oldPrice: null,
     badges: [],
     images: [
@@ -259,7 +259,7 @@ window.KINBONI_PRODUCTS = [
     slug: "siena-carryall",
     name: "Siena Carryall",
     category: "totes",
-    price: null,
+    price: 4990,
     oldPrice: null,
     badges: [],
     images: [
@@ -282,7 +282,7 @@ window.KINBONI_PRODUCTS = [
     slug: "nola-mini-bag",
     name: "Nola Mini Bag",
     category: "mini-bags",
-    price: null,
+    price: 2490,
     oldPrice: null,
     badges: [],
     images: [
@@ -305,7 +305,7 @@ window.KINBONI_PRODUCTS = [
     slug: "iris-evening-clutch",
     name: "Iris Evening Clutch",
     category: "clutches",
-    price: null,
+    price: 1990,
     oldPrice: null,
     badges: [],
     images: [
@@ -329,7 +329,7 @@ window.KINBONI_PRODUCTS = [
     name: "Asha Layered Chain",
     category: "jewelry",
     status: "coming-soon",
-    price: null,
+    price: 990,
     oldPrice: null,
     badges: [],
     images: [
@@ -353,7 +353,7 @@ window.KINBONI_PRODUCTS = [
     name: "Sona Sculpted Bangle",
     category: "jewelry",
     status: "coming-soon",
-    price: null,
+    price: 1290,
     oldPrice: null,
     badges: [],
     images: [
@@ -377,7 +377,7 @@ window.KINBONI_PRODUCTS = [
     name: "Noor Pendant Necklace",
     category: "jewelry",
     status: "coming-soon",
-    price: null,
+    price: 1190,
     oldPrice: null,
     badges: [],
     images: [
@@ -401,7 +401,7 @@ window.KINBONI_PRODUCTS = [
     name: "Mira Sculpted Hoops",
     category: "jewelry",
     status: "coming-soon",
-    price: null,
+    price: 1490,
     oldPrice: null,
     badges: [],
     images: [
