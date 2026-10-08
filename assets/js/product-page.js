@@ -184,7 +184,7 @@ if (productPage) {
     const whatsappNumber = String(
       window.KINBONI_CONFIG.contact.whatsappNumber || "",
     ).replace(/\D/g, "");
-    if (whatsappNumber) {
+    if (/^\d{8,15}$/.test(whatsappNumber)) {
       const message = encodeURIComponent(
         `Hello Kinboni, I'm interested in ${productName}.`,
       );

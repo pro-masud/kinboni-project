@@ -20,6 +20,17 @@ const cartItemsElement = document.querySelector(".cart-items");
 const cartEmpty = document.querySelector(".cart-empty");
 const overlayFocusTargets = new WeakMap();
 const siteConfig = window.KINBONI_CONFIG || {};
+const configuredWhatsAppNumber = () => {
+  const number = String(siteConfig.contact?.whatsappNumber || "").replace(
+    /\D/g,
+    "",
+  );
+  return /^\d{8,15}$/.test(number) ? number : "";
+};
+const configuredBusinessEmail = () => {
+  const email = String(siteConfig.contact?.email || "").trim();
+  return email && !/@[^@]+\.example(?:\s|$)/i.test(email) ? email : "";
+};
 const productCatalog = Array.isArray(window.KINBONI_PRODUCTS)
   ? window.KINBONI_PRODUCTS
   : [];
@@ -240,7 +251,16 @@ const normalizeFooterLinks = () => {
       labelElement.textContent = label;
       const valueElement = document.createElement("span");
       valueElement.className = "footer-contact-value";
-      if (value && prefix) {
+      const digits = String(value || "").replace(/\D/g, "");
+      const isActiveChannel =
+        key === "whatsappNumber"
+          ? /^\d{8,15}$/.test(digits)
+          : key === "phone"
+            ? /^[+\d\s().-]+$/.test(value) && digits.length >= 7
+            : key === "email"
+              ? Boolean(configuredBusinessEmail())
+              : false;
+      if (value && prefix && isActiveChannel) {
         const link = document.createElement("a");
         link.textContent = value;
         link.href =
@@ -263,6 +283,13 @@ const normalizeFooterLinks = () => {
     contactColumn.parentElement?.classList.add("has-contact-column");
   });
 };
+
+document.querySelectorAll(".announcement-bar p").forEach((announcement) => {
+  const phone = siteConfig.contact?.phone;
+  if (!phone || announcement.dataset.contactAdded) return;
+  announcement.append(document.createTextNode(` · Customer care: ${phone}`));
+  announcement.dataset.contactAdded = "true";
+});
 
 const deliveryChargeText = (amount) =>
   typeof amount === "number" && Number.isFinite(amount)
@@ -362,11 +389,28 @@ const applyConfigBindings = () => {
   document.querySelectorAll("[data-delivery-payment-copy]").forEach((element) => {
     const delivery = siteConfig.delivery || {};
     const methods = getEnabledPaymentMethods();
-    element.textContent = [
-      `Inside Dhaka: ${deliveryChargeText(delivery.insideDhakaCharge)}`,
-      `outside Dhaka: ${deliveryChargeText(delivery.outsideDhakaCharge)}`,
-      `payment: ${methods.length ? methods.join(", ") : "to be confirmed"}`,
-    ].join(" · ");
+    const details = [
+      ["Inside Dhaka", deliveryChargeText(delivery.insideDhakaCharge)],
+      ["Outside Dhaka", deliveryChargeText(delivery.outsideDhakaCharge)],
+      ["Payment options", methods.length ? methods.join(", ") : "To be confirmed"],
+    ];
+    if (element.closest(".home-delivery-payment")) {
+      element.replaceChildren(
+        ...details.map(([label, value]) => {
+          const item = document.createElement("span");
+          const title = document.createElement("strong");
+          title.textContent = label;
+          const detail = document.createElement("span");
+          detail.textContent = value;
+          item.append(title, detail);
+          return item;
+        }),
+      );
+      return;
+    }
+    element.textContent = details
+      .map(([label, value]) => `${label}: ${value}`)
+      .join(" · ");
   });
   document.querySelectorAll("[data-enabled-payments]").forEach((list) => {
     list.replaceChildren();
@@ -2013,11 +2057,8 @@ contactForm?.addEventListener("submit", (event) => {
   const email = String(formData.get("email") || "").trim();
   const message = String(formData.get("message") || "").trim();
   const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
-  const whatsappNumber = String(siteConfig.contact?.whatsappNumber || "").replace(
-    /\D/g,
-    "",
-  );
-  const businessEmail = String(siteConfig.contact?.email || "").trim();
+  const whatsappNumber = configuredWhatsAppNumber();
+  const businessEmail = configuredBusinessEmail();
   let contactUrl = "";
   if (whatsappNumber) {
     contactUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(body)}`;
@@ -2029,7 +2070,7 @@ contactForm?.addEventListener("submit", (event) => {
   if (!contactUrl) {
     status.dataset.state = "error";
     status.textContent =
-      "No contact channel is configured yet. Kinboni's WhatsApp or email must be added in config.js.";
+      "No active contact channel is configured yet. Replace the demo WhatsApp number or email in config.js.";
     return;
   }
   status.dataset.state = "success";
@@ -2259,9 +2300,7 @@ if (checkoutForm) {
     }
     const formData = new FormData(checkoutForm);
     const method = String(formData.get("paymentMethod") || "");
-    const whatsappNumber = String(
-      siteConfig.contact?.whatsappNumber || "",
-    ).replace(/\D/g, "");
+    const whatsappNumber = configuredWhatsAppNumber();
     const endpoint = String(siteConfig.orderEndpoint || "").trim();
     if (!method) {
       if (status) {
@@ -2275,7 +2314,7 @@ if (checkoutForm) {
       if (status) {
         status.dataset.state = "error";
         status.textContent =
-          "Order submission is not configured. Add a WhatsApp number or order endpoint in config.js.";
+          "Order submission is not configured. Replace the demo WhatsApp number or add an order endpoint in config.js.";
       }
       return;
     }

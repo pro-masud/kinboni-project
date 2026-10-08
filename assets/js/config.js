@@ -10,11 +10,11 @@ window.KINBONI_CONFIG = Object.freeze({
     locale: "en-BD",
   },
   contact: {
-    phone: "",
-    whatsappNumber: "",
-    email: "",
-    address: "",
-    businessHours: "",
+    phone: "+880 1XXX-XXXXXX (Demo)",
+    whatsappNumber: "+880 1XXX-XXXXXX (Demo)",
+    email: "hello@kinboni.example (Demo)",
+    address: "House XX, Road XX, Demo Area, Dhaka 1200, Bangladesh",
+    businessHours: "Saturday–Thursday, 10:00 AM–6:00 PM (Demo)",
     googleMapsUrl: "",
   },
   social: {
