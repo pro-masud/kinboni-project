@@ -280,28 +280,20 @@ h4 {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.82rem;
-  letter-spacing: 0.28rem;
-  text-transform: uppercase;
+  width: 174px;
+  height: 44px;
 }
 
-.brand-mark {
-  width: 32px;
-  height: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #f2e9e2;
-  border: 1px solid rgba(31, 26, 26, 0.06);
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 700;
-  font-size: 1.65rem;
+.brand::before {
+  width: 100%;
+  height: 100%;
+  background: url("../img/kinboni-logo.svg") center / contain no-repeat;
+  content: "";
 }
 
+.brand-mark,
 .brand-name {
-  font-weight: 700;
+  display: none;
 }
 
 .main-nav {
@@ -2157,6 +2149,25 @@ h4 {
   background: rgba(255, 255, 255, 0.18);
 }
 
+.testimonials .section-heading {
+  max-width: 700px;
+  margin: 0 auto 36px;
+}
+
+.testimonials .section-heading h2 {
+  margin-bottom: 12px;
+}
+
+.review-demo-note {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid rgba(83, 104, 87, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 253, 251, 0.65);
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+
 .review-summary {
   display: flex;
   align-items: center;
@@ -2183,12 +2194,37 @@ h4 {
 }
 
 .testimonial-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: hidden;
   background: rgba(255, 255, 255, 0.45);
   border: 1px solid rgba(31, 26, 26, 0.04);
   border-radius: 26px;
-  padding: 28px 22px;
-  min-height: 260px;
+  padding: 26px 24px 22px;
+  min-height: 285px;
   height: auto;
+  box-shadow: 0 14px 36px rgba(31, 26, 26, 0.035);
+}
+
+.testimonial-demo-label {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(83, 104, 87, 0.1);
+  color: #536857;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.testimonial-quote {
+  position: absolute;
+  top: 26px;
+  right: 24px;
+  color: rgba(198, 146, 77, 0.58);
+  font-size: 1.35rem;
 }
 
 .stars {
@@ -2200,17 +2236,19 @@ h4 {
 }
 
 .testimonial-card p {
-  font-size: 1.08rem;
+  flex: 1;
+  margin: 22px 0 24px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.45rem;
   color: var(--ink);
-  margin-bottom: 24px;
-  line-height: 1.7;
+  line-height: 1.4;
 }
 
 .testimonial-user {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
+  width: 100%;
   padding-top: 12px;
   border-top: 1px solid var(--line);
 }
@@ -2218,14 +2256,13 @@ h4 {
 .testimonial-user > div {
   display: grid;
   flex: 1;
-  gap: 2px;
+  gap: 3px;
 }
 
 .customer-avatar {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  margin-right: auto;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(255, 253, 251, 0.86);
@@ -2243,6 +2280,20 @@ h4 {
   color: var(--muted);
 }
 
+.testimonial-user .testimonial-location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.64rem;
+  letter-spacing: 0.01rem;
+  text-transform: none;
+}
+
+.testimonial-location i {
+  color: #8b7060;
+  font-size: 0.62rem;
+}
+
 .carousel-controls {
   display: flex;
   align-items: center;
@@ -2251,9 +2302,44 @@ h4 {
   margin-top: 30px;
 }
 
+.testimonial-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 20px;
+}
+
+.testimonial-navigation {
+  display: flex;
+  gap: 8px;
+}
+
+.testimonial-navigation button {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--ink);
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.testimonial-navigation button:hover {
+  border-color: #332522;
+  background: #332522;
+  color: #fffaf6;
+}
+
 .testimonial-pagination {
-  position: static !important;
-  width: auto !important;
+  position: static;
+  display: flex;
+  align-items: center;
+  width: auto;
 }
 
 .testimonial-pagination .swiper-pagination-bullet {
@@ -4041,6 +4127,10 @@ h4 {
   color: rgba(247, 238, 232, 0.68);
 }
 
+.site-footer .brand::before {
+  filter: brightness(0) invert(1);
+}
+
 .site-footer .brand-mark,
 .site-footer .socials a,
 .site-footer .socials span {
@@ -4359,6 +4449,11 @@ h4 {
 @media (max-width: 760px) {
   :root {
     --header-height: 78px;
+  }
+
+  .brand {
+    width: 146px;
+    height: 36px;
   }
 
   .header-inner {

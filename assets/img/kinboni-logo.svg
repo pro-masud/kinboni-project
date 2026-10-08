@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 72" fill="none">
+  <circle cx="36" cy="36" r="31"/>
+  <circle cx="36" cy="36" r="30" stroke="#A98262" stroke-opacity=".48" stroke-width="1.2"/>
+  <path d="M26 31v-4.5a10 10 0 0 1 20 0V31" stroke="#6F5142" stroke-linecap="round" stroke-width="2.2"/>
+  <path d="M20.5 31.5h31l-2.8 25h-25.4l-2.8-25Z" stroke="#6F5142" stroke-linejoin="round" stroke-width="1.8"/>
+  <path d="M31 39v11m0-5.5 10-5.5m-10 5.5 10 5.5" stroke="#6F5142" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+  <text x="82" y="46" fill="#332522" font-family="Cormorant Garamond, Georgia, serif" font-size="34" font-weight="600" letter-spacing="6">KINBONI</text>
+  <path d="M84 56h184" stroke="#A98262" stroke-opacity=".55"/>
+</svg>
