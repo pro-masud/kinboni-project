@@ -5201,6 +5201,10 @@ h4 {
   color: var(--muted);
 }
 
+.product-load-status[hidden] {
+  display: none;
+}
+
 .product-detail {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
@@ -5218,13 +5222,14 @@ h4 {
   overflow: hidden;
   padding: 0;
   border: 0;
+  border-radius: 3px;
   background: var(--bg-soft);
   cursor: zoom-in;
 }
 
 .product-main-image {
   width: 100%;
-  max-height: 760px;
+  max-height: 820px;
   display: block;
   aspect-ratio: 0.86;
   object-fit: cover;
@@ -5241,6 +5246,10 @@ h4 {
   gap: 10px;
   overflow-x: auto;
   padding: 12px 0 2px;
+}
+
+.product-thumbnails:has(.product-thumbnail:only-child) {
+  display: none;
 }
 
 .product-thumbnail {
@@ -5266,20 +5275,22 @@ h4 {
 
 .product-summary {
   position: sticky;
-  top: 110px;
+  top: 100px;
 }
 
 .product-summary h1 {
   margin: 10px 0 12px;
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(2.5rem, 4.2vw, 4rem);
+  font-size: clamp(2.5rem, 4vw, 3.8rem);
   font-weight: 500;
-  line-height: 0.98;
+  line-height: 1.02;
+  overflow-wrap: anywhere;
 }
 
 .product-price {
-  margin: 0 0 18px;
-  font-size: 0.92rem;
+  margin: 0 0 20px;
+  color: var(--ink);
+  font-size: 1.25rem;
   font-weight: 700;
 }
 
@@ -5291,7 +5302,13 @@ h4 {
 }
 
 .product-stock-status {
-  margin: 0 0 20px;
+  width: fit-content;
+  margin: 0 0 24px;
+  padding: 7px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-soft);
+  color: var(--ink);
   font-size: 0.7rem;
 }
 
@@ -5327,12 +5344,16 @@ h4 {
   font-size: 0.72rem;
 }
 
+.product-variant-note {
+  margin: 14px 0 0;
+}
+
 .product-purchase-row {
   display: grid;
-  grid-template-columns: 116px minmax(0, 1fr);
+  grid-template-columns: minmax(92px, 116px) minmax(0, 1fr);
   align-items: end;
   gap: 12px;
-  margin-top: 22px;
+  margin-top: 24px;
 }
 
 .product-quantity {
@@ -5358,6 +5379,9 @@ h4 {
 }
 
 .product-secondary-actions .product-wishlist {
+  width: 100%;
+  min-width: 0;
+  height: auto;
   position: static;
   inset: auto;
   min-height: 44px;
@@ -5373,6 +5397,14 @@ h4 {
   font-size: 0.67rem;
   letter-spacing: 0.04rem;
   text-transform: uppercase;
+}
+
+.product-secondary-actions:has(.product-whatsapp[hidden]) .product-wishlist {
+  grid-column: 1 / -1;
+}
+
+.product-secondary-actions .product-whatsapp[hidden] {
+  display: none;
 }
 
 .product-secondary-actions .product-wishlist:hover,
@@ -5596,6 +5628,18 @@ h4 {
 
   .product-secondary-actions {
     grid-template-columns: 1fr;
+  }
+
+  .product-secondary-actions:has(.product-whatsapp[hidden]) .product-wishlist {
+    grid-column: auto;
+  }
+
+  .product-summary h1 {
+    font-size: clamp(2.6rem, 9vw, 3.4rem);
+  }
+
+  .product-related {
+    margin-top: 64px;
   }
 }
 
