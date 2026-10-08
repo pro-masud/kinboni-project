@@ -207,57 +207,60 @@ const normalizeFooterLinks = () => {
       }
     });
 
-    const contactColumn = columns.find(
+    let contactColumn = columns.find(
       (column) => column.querySelector("h4")?.textContent.trim() === "Contact",
     );
-    const careColumn = columns.find(
-      (column) =>
-        column.querySelector("h4")?.textContent.trim() === "Customer Care",
-    );
-    const contactHost = careColumn;
-    if (
-      !contactColumn &&
-      contactHost &&
-      !contactHost.querySelector(".footer-config-contact")
-    ) {
-      const contactBlock = document.createElement("div");
-      contactBlock.className = "footer-config-contact";
-      if (!contactColumn) {
-        const heading = document.createElement("h5");
-        heading.textContent = "Contact";
-        contactBlock.append(heading);
-      }
-      [
-        ["Phone", "phone", "tel:"],
-        ["WhatsApp", "whatsappNumber", "https://wa.me/"],
-        ["Email", "email", "mailto:"],
-        ["Address", "address", ""],
-        ["Business hours", "businessHours", ""],
-      ].forEach(([label, key, prefix]) => {
-        const value = siteConfig.contact?.[key];
-        const line = document.createElement("p");
-        const labelElement = document.createElement("strong");
-        labelElement.textContent = `${label}: `;
-        line.append(labelElement);
-        if (value && prefix) {
-          const link = document.createElement("a");
-          link.href = `${prefix}${value}`;
-          link.textContent = value;
-          if (key === "whatsappNumber") {
-            link.href = `${prefix}${String(value).replace(/\D/g, "")}`;
-            link.target = "_blank";
-            link.rel = "noopener noreferrer";
-          }
-          line.append(link);
-        } else {
-          const detail = document.createElement("span");
-          detail.textContent = value || "To be provided";
-          line.append(detail);
-        }
-        contactBlock.append(line);
-      });
-      contactHost.append(contactBlock);
+    if (!contactColumn) {
+      contactColumn = document.createElement("div");
+      const aboutColumn = columns.find(
+        (column) => column.querySelector("h4")?.textContent.trim() === "About",
+      );
+      if (aboutColumn) aboutColumn.before(contactColumn);
+      else footer.querySelector(".footer-grid")?.append(contactColumn);
     }
+    const contactHeading =
+      contactColumn.querySelector("h4") || document.createElement("h4");
+    contactHeading.textContent = "Contact";
+    const contactList =
+      contactColumn.querySelector("ul") || document.createElement("ul");
+    contactList.className = "footer-contact-list";
+    contactList.replaceChildren();
+    [
+      ["Phone", "phone", "tel:"],
+      ["WhatsApp", "whatsappNumber", "https://wa.me/"],
+      ["Email", "email", "mailto:"],
+      ["Address", "address", ""],
+      ["Business hours", "businessHours", ""],
+    ].forEach(([label, key, prefix]) => {
+      const value = siteConfig.contact?.[key];
+      const item = document.createElement("li");
+      item.className = "footer-contact-item";
+      const labelElement = document.createElement("span");
+      labelElement.className = "footer-contact-label";
+      labelElement.textContent = label;
+      const valueElement = document.createElement("span");
+      valueElement.className = "footer-contact-value";
+      if (value && prefix) {
+        const link = document.createElement("a");
+        link.textContent = value;
+        link.href =
+          key === "whatsappNumber"
+            ? `${prefix}${String(value).replace(/\D/g, "")}`
+            : `${prefix}${value}`;
+        if (key === "whatsappNumber") {
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+        }
+        valueElement.append(link);
+      } else {
+        valueElement.textContent = value || "To be provided";
+      }
+      item.append(labelElement, valueElement);
+      contactList.append(item);
+    });
+    contactColumn.replaceChildren(contactHeading, contactList);
+    contactColumn.classList.add("footer-contact-column");
+    contactColumn.parentElement?.classList.add("has-contact-column");
   });
 };
 
