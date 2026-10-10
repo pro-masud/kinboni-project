@@ -2617,6 +2617,19 @@ h4 {
   text-wrap: balance;
 }
 
+.info-page .faq-layout {
+  margin-top: 34px;
+}
+
+.info-page .faq-intro h1 {
+  max-width: 440px;
+  margin: 0 0 16px;
+  font-size: clamp(2.8rem, 4.2vw, 4.2rem);
+  font-weight: 500;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
 .faq-intro > p {
   max-width: 340px;
   margin-bottom: 28px;
@@ -2666,6 +2679,13 @@ h4 {
 
 .faq-contact-link:hover i {
   transform: translate(3px, -50%);
+}
+
+.faq-quick-links {
+  display: grid;
+  gap: 10px;
+  max-width: 340px;
+  margin-top: 10px;
 }
 
 .faq-list {
@@ -2774,6 +2794,11 @@ h4 {
   .faq-intro h2 {
     max-width: 360px;
     font-size: clamp(2.6rem, 11vw, 3.5rem);
+  }
+
+  .info-page .faq-intro h1 {
+    max-width: 360px;
+    font-size: clamp(2.5rem, 11vw, 3.5rem);
   }
 
   .faq-list {

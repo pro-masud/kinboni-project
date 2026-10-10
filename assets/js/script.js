@@ -169,6 +169,68 @@ const renderSocialLinks = () => {
     });
 };
 
+const renderSiteFooter = () => {
+  if (document.querySelector(".site-footer")) return;
+  document.querySelector("main")?.insertAdjacentHTML(
+    "afterend",
+    `
+      <footer class="site-footer">
+        <div class="container footer-grid">
+          <div class="footer-brand">
+            <a href="index.html" class="brand" aria-label="Kinboni home">
+              <span class="brand-mark">K</span><span class="brand-name">KINBONI</span>
+            </a>
+            <p>Bags for the way you carry your day.</p>
+            <div class="socials" data-social-container aria-label="Social media links"></div>
+          </div>
+          <div>
+            <h4>Shop</h4>
+            <ul>
+              <li><a href="shop.html#products">All Bags</a></li>
+              <li><a href="new-arrivals.html">New Arrivals</a></li>
+              <li><a href="coming-soon.html">Coming Soon</a></li>
+              <li><a href="totes.html">Totes</a></li>
+              <li><a href="shoulder-bags.html">Shoulder Bags</a></li>
+              <li><a href="crossbody.html">Crossbody Bags</a></li>
+              <li><a href="mini-bags.html">Mini Bags</a></li>
+              <li><a href="work-bags.html">Work Bags</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Customer Care</h4>
+            <ul>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="faq.html">FAQ</a></li>
+              <li><a href="delivery-payment.html">Delivery &amp; Payment</a></li>
+              <li><a href="returns-exchange.html">Returns &amp; Exchange</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Contact</h4>
+            <ul class="footer-contact-list"></ul>
+          </div>
+          <div>
+            <h4>About</h4>
+            <ul>
+              <li><a href="about.html#our-story">Our Story</a></li>
+              <li><a href="privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="terms.html">Terms &amp; Conditions</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="container footer-bottom">
+          <p>© <span data-current-year></span> Kinboni. All rights reserved.</p>
+          <div class="footer-legal">
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms</a>
+            <a href="returns-exchange.html">Returns</a>
+          </div>
+        </div>
+      </footer>
+    `,
+  );
+};
+
 const normalizeFooterLinks = () => {
   document.querySelectorAll(".site-footer").forEach((footer) => {
     footer
@@ -377,6 +439,7 @@ const applyConfigBindings = () => {
     }
   });
 
+  renderSiteFooter();
   renderSocialLinks();
   normalizeFooterLinks();
   renderPaymentBadges();

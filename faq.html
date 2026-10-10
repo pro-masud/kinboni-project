@@ -12,16 +12,41 @@
   </head>
   <body>
     <div data-site-shell></div>
-    <main id="main-content" class="info-page section-spacing"><div class="container info-narrow">
-      <nav class="shop-breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">›</span><span aria-current="page">FAQ</span></nav>
-      <div class="section-heading"><span class="eyebrow">Helpful details</span><h1>Frequently Asked Questions</h1><p>Only confirmed product and order details should be treated as final.</p></div>
-      <section class="info-card faq-list">
-        <details><summary>How do I confirm a product's price?</summary><p>Prices currently shown in the catalog are draft estimates and may change. Please confirm the final price with Kinboni before placing an order.</p></details>
-        <details><summary>What delivery charge applies to my address?</summary><p>Delivery charges and timing will be shown when configured. See <a href="delivery-payment.html">Delivery &amp; Payment</a> for current placeholders.</p></details>
-        <details><summary>Which payment options are available?</summary><p>Payment availability is controlled in the site configuration. Methods remain disabled until Kinboni confirms them and, where required, supplies merchant details.</p></details>
-        <details><summary>What is the return or exchange policy?</summary><p>Final return and exchange terms have not yet been supplied. Review the <a href="returns-exchange.html">policy placeholder</a> or contact Kinboni.</p></details>
-      </section>
-    </div></main>
+    <main id="main-content" class="info-page section-spacing">
+      <div class="container">
+        <nav class="shop-breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">›</span><span aria-current="page">FAQ</span></nav>
+        <div class="faq-shell faq-layout">
+          <section class="faq-intro" aria-labelledby="faq-title">
+            <span class="eyebrow">Helpful details</span>
+            <h1 id="faq-title">Frequently Asked Questions</h1>
+            <p>Find answers about product prices, delivery, payment and returns. Final details should always be confirmed with Kinboni before ordering.</p>
+            <a class="faq-contact-link" href="contact.html">
+              <span>Still need a hand?</span>
+              <strong>Contact Kinboni</strong>
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </a>
+            <div class="faq-quick-links" aria-label="More customer information">
+              <a class="faq-contact-link" href="delivery-payment.html">
+                <span>Order information</span>
+                <strong>Delivery &amp; Payment</strong>
+                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              </a>
+              <a class="faq-contact-link" href="returns-exchange.html">
+                <span>Customer care</span>
+                <strong>Returns &amp; Exchange</strong>
+                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </section>
+          <section class="info-card faq-list" aria-label="Common questions">
+            <details><summary>How do I confirm a product's price?</summary><p>Prices currently shown in the catalog are draft estimates and may change. Please confirm the final price with Kinboni before placing an order.</p></details>
+            <details><summary>What delivery charge applies to my address?</summary><p>Delivery charges and timing will be shown when configured. See <a href="delivery-payment.html">Delivery &amp; Payment</a> for current placeholders.</p></details>
+            <details><summary>Which payment options are available?</summary><p>Payment availability is controlled in the site configuration. Methods remain disabled until Kinboni confirms them and, where required, supplies merchant details.</p></details>
+            <details><summary>What is the return or exchange policy?</summary><p>Final return and exchange terms have not yet been supplied. Review the <a href="returns-exchange.html">policy placeholder</a> or contact Kinboni.</p></details>
+          </section>
+        </div>
+      </div>
+    </main>
     <script defer src="assets/js/config.js"></script><script defer src="assets/js/products.js"></script><script defer src="assets/js/info-shell.js"></script><script defer src="assets/js/script.js"></script>
   </body>
 </html>

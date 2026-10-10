@@ -84,41 +84,6 @@ if (siteShell) {
   document.querySelector("main")?.insertAdjacentHTML(
     "afterend",
     `
-      <footer class="site-footer">
-        <div class="container footer-grid">
-          <div class="footer-brand">
-            <a href="index.html" class="brand" aria-label="Kinboni home">
-              <span class="brand-mark">K</span><span class="brand-name">KINBONI</span>
-            </a>
-            <p>Bags for the way you carry your day.</p>
-            <div class="socials" data-social-container aria-label="Social media links"></div>
-          </div>
-          <div><h4>Shop</h4><ul>
-            <li><a href="shop.html">All Bags</a></li><li><a href="new-arrivals.html">New Arrivals</a></li>
-            <li><a href="totes.html">Totes</a></li><li><a href="shoulder-bags.html">Shoulder Bags</a></li>
-            <li><a href="crossbody.html">Crossbody</a></li><li><a href="mini-bags.html">Mini Bags</a></li>
-            <li><a href="work-bags.html">Work Bags</a></li>
-          </ul></div>
-          <div><h4>Customer Care</h4><ul>
-            <li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li>
-            <li><a href="delivery-payment.html">Delivery &amp; Payment</a></li>
-            <li><a href="returns-exchange.html">Returns &amp; Exchange</a></li>
-          </ul></div>
-          <div><h4>Contact</h4><ul>
-            <li><a data-config-href="contact.phone" data-config-prefix="tel:" data-config-empty="Phone details to be added"></a></li>
-            <li><a data-config-href="contact.email" data-config-prefix="mailto:" data-config-empty="Email details to be added"></a></li>
-            <li><a href="privacy-policy.html">Privacy Policy</a></li><li><a href="terms.html">Terms</a></li>
-          </ul></div>
-        </div>
-        <div class="container footer-bottom">
-          <p>© <span data-current-year></span> Kinboni.</p>
-          <div class="footer-legal">
-            <a href="privacy-policy.html">Privacy Policy</a>
-            <a href="terms.html">Terms</a>
-            <a href="returns-exchange.html">Returns</a>
-          </div>
-        </div>
-      </footer>
       <aside class="cart-drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="cart-title" inert>
         <div class="cart-drawer-head"><h2 id="cart-title">Your Bag</h2>
           <button class="cart-close" type="button" aria-label="Close bag"><i class="fa-solid fa-xmark"></i></button>
@@ -136,8 +101,5 @@ if (siteShell) {
       </aside>
     `,
   );
-
-  const year = siteShell.parentElement.querySelector("[data-current-year]");
-  if (year) year.textContent = String(new Date().getFullYear());
   siteShell.remove();
 }
