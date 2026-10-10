@@ -90,6 +90,7 @@ if (siteShell) {
         </div>
         <div class="cart-items" aria-live="polite"></div>
         <p class="cart-empty">Your bag is empty.</p>
+        <a class="cart-view-page" href="cart.html">View full bag</a>
         <button class="button button-primary cart-checkout" type="button">Checkout</button>
       </aside>
       <aside class="wishlist-drawer cart-drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="wishlist-title" inert>

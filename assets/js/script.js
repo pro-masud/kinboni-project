@@ -16,8 +16,12 @@ const cartDrawer = document.querySelector(".cart-drawer");
 const wishlistDrawer = document.querySelector(".wishlist-drawer");
 const wishlistItemsElement = document.querySelector(".wishlist-items");
 const wishlistEmpty = document.querySelector(".wishlist-empty");
-const cartItemsElement = document.querySelector(".cart-items");
-const cartEmpty = document.querySelector(".cart-empty");
+const cartItemsElements = document.querySelectorAll(
+  ".cart-drawer:not(.wishlist-drawer) .cart-items, .cart-page-items",
+);
+const cartEmptyElements = document.querySelectorAll(
+  ".cart-drawer:not(.wishlist-drawer) .cart-empty, .cart-page-empty",
+);
 const overlayFocusTargets = new WeakMap();
 const siteConfig = window.KINBONI_CONFIG || {};
 const configuredWhatsAppNumber = () => {
@@ -1357,6 +1361,9 @@ const updateCartCount = () => {
       count ? `Shopping bag, ${count} items` : "Shopping bag",
     );
   });
+  document.querySelectorAll("[data-cart-page-count]").forEach((element) => {
+    element.textContent = `${count} ${count === 1 ? "item" : "items"}`;
+  });
 };
 
 const updateCartQuantity = (productId, variant, change) => {
@@ -1378,83 +1385,99 @@ const removeCartItem = (productId, variant) => {
 };
 
 const renderCart = () => {
-  if (!cartItemsElement || !cartEmpty) {
+  if (!cartItemsElements.length) {
     updateCartCount();
     return;
   }
-  cartItemsElement.replaceChildren();
   let subtotal = 0;
   let hasUnpricedItems = false;
   cartItems.forEach((cartItem) => {
     const product = productsById.get(cartItem.productId);
     if (!product) return;
-    const row = document.createElement("article");
-    row.className = "cart-item";
-    const image = productImageElement(product);
-    if (image) row.append(image);
-    const detail = document.createElement("div");
-    detail.className = "cart-item-details";
-    const name = document.createElement("strong");
-    name.textContent = product.name;
-    const variant = document.createElement("span");
-    variant.textContent = cartItem.variant
-      ? `Option: ${cartItem.variant}`
-      : "Standard";
-    const unitPrice = document.createElement("span");
-    unitPrice.textContent = productPriceText(product);
-    const controls = document.createElement("div");
-    controls.className = "cart-quantity-controls";
-    const decrease = document.createElement("button");
-    decrease.type = "button";
-    decrease.textContent = "−";
-    decrease.setAttribute("aria-label", `Decrease ${product.name} quantity`);
-    decrease.addEventListener("click", () =>
-      updateCartQuantity(cartItem.productId, cartItem.variant, -1),
-    );
-    const quantity = document.createElement("span");
-    quantity.className = "cart-quantity";
-    quantity.textContent = String(cartItem.quantity);
-    const increase = document.createElement("button");
-    increase.type = "button";
-    increase.textContent = "+";
-    increase.setAttribute("aria-label", `Increase ${product.name} quantity`);
-    increase.disabled = cartItem.quantity >= 99;
-    increase.addEventListener("click", () =>
-      updateCartQuantity(cartItem.productId, cartItem.variant, 1),
-    );
-    controls.append(decrease, quantity, increase);
-    const lineTotal = document.createElement("span");
-    lineTotal.className = "cart-line-total";
     if (typeof product.price === "number" && Number.isFinite(product.price)) {
-      const lineValue = product.price * cartItem.quantity;
-      subtotal += lineValue;
-      lineTotal.textContent = productPriceText({
-        ...product,
-        price: lineValue,
-      });
+      subtotal += product.price * cartItem.quantity;
     } else {
       hasUnpricedItems = true;
-      lineTotal.textContent = "Line total to be confirmed";
     }
-    detail.append(name, variant, unitPrice, controls, lineTotal);
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "cart-item-remove";
-    remove.textContent = "Remove";
-    remove.setAttribute("aria-label", `Remove ${product.name} from bag`);
-    remove.addEventListener("click", () =>
-      removeCartItem(cartItem.productId, cartItem.variant),
-    );
-    row.append(detail, remove);
-    cartItemsElement.append(row);
   });
-  cartEmpty.hidden = cartItems.length > 0;
-  cartEmpty.textContent = "Your bag is empty.";
-  cartItemsElement.setAttribute("aria-live", "polite");
+  cartItemsElements.forEach((container) => {
+    container.replaceChildren();
+    cartItems.forEach((cartItem) => {
+      const product = productsById.get(cartItem.productId);
+      if (!product) return;
+      const row = document.createElement("article");
+      row.className = "cart-item";
+      const image = productImageElement(product);
+      if (image) row.append(image);
+      const detail = document.createElement("div");
+      detail.className = "cart-item-details";
+      const name = document.createElement("strong");
+      name.textContent = product.name;
+      const variant = document.createElement("span");
+      variant.textContent = cartItem.variant
+        ? `Option: ${cartItem.variant}`
+        : "Standard";
+      const unitPrice = document.createElement("span");
+      unitPrice.textContent = productPriceText(product);
+      const controls = document.createElement("div");
+      controls.className = "cart-quantity-controls";
+      const decrease = document.createElement("button");
+      decrease.type = "button";
+      decrease.textContent = "−";
+      decrease.setAttribute("aria-label", `Decrease ${product.name} quantity`);
+      decrease.addEventListener("click", () =>
+        updateCartQuantity(cartItem.productId, cartItem.variant, -1),
+      );
+      const quantity = document.createElement("span");
+      quantity.className = "cart-quantity";
+      quantity.textContent = String(cartItem.quantity);
+      const increase = document.createElement("button");
+      increase.type = "button";
+      increase.textContent = "+";
+      increase.setAttribute("aria-label", `Increase ${product.name} quantity`);
+      increase.disabled = cartItem.quantity >= 99;
+      increase.addEventListener("click", () =>
+        updateCartQuantity(cartItem.productId, cartItem.variant, 1),
+      );
+      controls.append(decrease, quantity, increase);
+      const lineTotal = document.createElement("span");
+      lineTotal.className = "cart-line-total";
+      if (typeof product.price === "number" && Number.isFinite(product.price)) {
+        const lineValue = product.price * cartItem.quantity;
+        lineTotal.textContent = productPriceText({
+          ...product,
+          price: lineValue,
+        });
+      } else lineTotal.textContent = "Line total to be confirmed";
+      detail.append(name, variant, unitPrice, controls, lineTotal);
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "cart-item-remove";
+      remove.textContent = "Remove";
+      remove.setAttribute("aria-label", `Remove ${product.name} from bag`);
+      remove.addEventListener("click", () =>
+        removeCartItem(cartItem.productId, cartItem.variant),
+      );
+      row.append(detail, remove);
+      container.append(row);
+    });
+    container.setAttribute("aria-live", "polite");
+  });
+  cartEmptyElements.forEach((emptyState) => {
+    emptyState.hidden = cartItems.length > 0;
+  });
   if (cartSubtotalValue)
     cartSubtotalValue.textContent = hasUnpricedItems
       ? "To be confirmed"
       : productPriceText({ price: subtotal });
+  document.querySelectorAll("[data-cart-page-subtotal]").forEach((element) => {
+    element.textContent = hasUnpricedItems
+      ? "To be confirmed"
+      : productPriceText({ price: subtotal });
+  });
+  document.querySelectorAll(".cart-page-checkout").forEach((button) => {
+    button.disabled = cartItems.length === 0 || hasUnpricedItems;
+  });
   if (cartDeliveryNote)
     cartDeliveryNote.textContent = hasUnpricedItems
       ? "Final price and delivery are confirmed before checkout."
@@ -1517,12 +1540,15 @@ const openCart = (trigger) => {
 
 const closeCart = () => setOverlayState(cartDrawer, false);
 
-document.querySelector(".cart-button")?.addEventListener("click", (event) => {
-  openCart(event.currentTarget);
+document.querySelector(".cart-button")?.addEventListener("click", () => {
+  window.location.href = "cart.html";
 });
 document.querySelector(".cart-close")?.addEventListener("click", closeCart);
 cartCheckout?.addEventListener("click", () => {
   if (!cartCheckout.disabled) window.location.href = "checkout.html";
+});
+document.querySelector(".cart-page-checkout")?.addEventListener("click", () => {
+  window.location.href = "checkout.html";
 });
 stickyCart?.querySelector("button")?.addEventListener("click", (event) => {
   openCart(document.querySelector(".cart-button") || event.currentTarget);

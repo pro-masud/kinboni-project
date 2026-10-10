@@ -14,7 +14,7 @@ Open `index.html` through VS Code Live Server or another local HTTP server. Serv
 - `shop-page-2.html` — compatibility redirect to Shop page 2
 - `totes.html`, `shoulder-bags.html`, `crossbody.html`, `mini-bags.html`, `work-bags.html`, and `new-arrivals.html` — collection pages
 - `coming-soon.html` — upcoming products
-- `checkout.html`, `order-success.html`, and the customer-care pages — order preparation and support information
+- `cart.html`, `checkout.html`, `order-success.html`, and the customer-care pages — shopping bag, order preparation, and support information
 
 ## Catalog and business configuration
 

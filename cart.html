@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Bag | Kinboni</title>
+    <meta name="description" content="Review the bags in your Kinboni shopping bag before checkout." />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <div data-site-shell></div>
+    <main id="main-content" class="info-page section-spacing cart-page">
+      <div class="container">
+        <nav class="shop-breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a><span aria-hidden="true">›</span><span aria-current="page">Your bag</span>
+        </nav>
+        <header class="cart-page-heading">
+          <div>
+            <span class="eyebrow">A little closer to yours</span>
+            <h1>Your bag</h1>
+            <p>Take a final look at your selected pieces before checkout.</p>
+          </div>
+          <span class="cart-page-count" data-cart-page-count>0 items</span>
+        </header>
+        <div class="cart-page-layout">
+          <section class="cart-page-list info-card" aria-labelledby="cart-items-title">
+            <div class="cart-page-list-heading">
+              <h2 id="cart-items-title">Selected for you</h2>
+              <a href="shop.html">Continue shopping <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
+            <div class="cart-page-items" aria-live="polite"></div>
+            <div class="cart-page-empty">
+              <span class="cart-empty-icon"><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i></span>
+              <h3>Your bag is waiting for something lovely.</h3>
+              <p>Explore the collection and find a bag made for your everyday.</p>
+              <a class="button button-primary" href="shop.html">Explore the collection</a>
+            </div>
+          </section>
+          <aside class="cart-page-summary info-card" aria-labelledby="cart-summary-title">
+            <span class="eyebrow">Your order</span>
+            <h2 id="cart-summary-title">Order summary</h2>
+            <div class="cart-page-total-row">
+              <span>Subtotal</span>
+              <strong data-cart-page-subtotal>৳0</strong>
+            </div>
+            <div class="cart-page-total-row">
+              <span>Delivery</span>
+              <span>Calculated at checkout</span>
+            </div>
+            <p class="cart-page-summary-note">Delivery fees and final order details are confirmed before your order is placed.</p>
+            <button class="button button-primary cart-page-checkout" type="button" disabled>Continue to checkout</button>
+            <a class="cart-page-secure-link" href="delivery-payment.html"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Delivery &amp; payment information</a>
+          </aside>
+        </div>
+      </div>
+    </main>
+    <script defer src="assets/js/config.js"></script>
+    <script defer src="assets/js/products.js"></script>
+    <script defer src="assets/js/info-shell.js"></script>
+    <script defer src="assets/js/script.js"></script>
+  </body>
+</html>
