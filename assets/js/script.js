@@ -143,7 +143,17 @@ const renderSocialLinks = () => {
     container.replaceChildren();
     socialChannels.forEach(([key, label, icon]) => {
       const url = siteConfig.social?.[key];
-      if (!url) return;
+      if (!url) {
+        const placeholder = document.createElement("span");
+        placeholder.setAttribute("aria-label", `${label} profile coming soon`);
+        placeholder.title = `${label} profile coming soon`;
+        const mark = document.createElement("i");
+        mark.className = `fa-brands ${icon}`;
+        mark.setAttribute("aria-hidden", "true");
+        placeholder.append(mark);
+        container.append(placeholder);
+        return;
+      }
       let parsedUrl;
       try {
         parsedUrl = new URL(url);
@@ -180,7 +190,7 @@ const renderSiteFooter = () => {
             <a href="index.html" class="brand" aria-label="Kinboni home">
               <span class="brand-mark">K</span><span class="brand-name">KINBONI</span>
             </a>
-            <p>Bags for the way you carry your day.</p>
+            <p>Thoughtfully designed bags to carry your everyday essentials with ease.</p>
             <div class="socials" data-social-container aria-label="Social media links"></div>
           </div>
           <div>

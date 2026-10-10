@@ -4047,9 +4047,11 @@ h4 {
 }
 
 .footer-brand p {
-  max-width: 360px;
+  max-width: 320px;
   color: var(--muted);
-  margin: 20px 0 24px;
+  margin: 18px 0 20px;
+  font-size: 1.04rem;
+  line-height: 1.75;
 }
 
 .footer-contact-list {
@@ -4152,8 +4154,13 @@ h4 {
   color: rgba(247, 238, 232, 0.68);
 }
 
+.site-footer .footer-brand .socials {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .site-footer .brand::before {
-  filter: brightness(0) invert(1);
+  background-image: url("../img/kinboni-logo-light.svg");
 }
 
 .site-footer .brand-mark,
@@ -4161,6 +4168,29 @@ h4 {
 .site-footer .socials span {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.12);
+}
+
+.site-footer .footer-brand .socials a,
+.site-footer .footer-brand .socials span {
+  width: 36px;
+  height: 36px;
+  color: rgba(247, 238, 232, 0.82);
+  font-size: 0.95rem;
+}
+
+.site-footer .footer-brand .socials a {
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.site-footer .footer-brand .socials a:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
 }
 
 .payment-note {

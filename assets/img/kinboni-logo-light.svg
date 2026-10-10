@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 72" fill="none">
+  <rect x="3" y="4" width="64" height="64" rx="22" fill="#F7EEE8" fill-opacity=".08"/>
+  <rect x="3.7" y="4.7" width="62.6" height="62.6" rx="21.3" stroke="#F7EEE8" stroke-opacity=".32" stroke-width="1.4"/>
+  <path d="M23 29v-5.2a12 12 0 0 1 24 0V29" stroke="#D7B7A4" stroke-linecap="round" stroke-width="2.2"/>
+  <path d="M17 29h36l-3.2 27H20.2L17 29Z" fill="#F7EEE8"/>
+  <path d="M17 29h36l-3.2 27H20.2L17 29Z" stroke="#D7B7A4" stroke-linejoin="round" stroke-width="1.2"/>
+  <text x="35" y="48" fill="#332522" font-family="Georgia, 'Times New Roman', serif" font-size="23" font-weight="400" text-anchor="middle">K</text>
+  <text x="82" y="47" fill="#F7EEE8" font-family="Cormorant Garamond, Georgia, serif" font-size="32" font-weight="600" letter-spacing="5.2">KINBONI</text>
+  <path d="M84 57h174" stroke="#D7B7A4" stroke-opacity=".64" stroke-width="1.2"/>
+  <circle cx="270" cy="57" r="1.7" fill="#D7B7A4"/>
+</svg>

@@ -1,6 +1,7 @@
 window.KINBONI_CONFIG = Object.freeze({
   brandName: "Kinboni",
-  tagline: "Bags for the way you carry your day.",
+  tagline:
+    "Thoughtfully designed bags to carry your everyday essentials with ease.",
   siteUrl: "https://kinboni.store",
   logoPath: "assets/img/kinboni-logo.svg",
   faviconPath: "assets/img/favicon.svg",
