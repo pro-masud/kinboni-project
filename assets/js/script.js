@@ -2199,12 +2199,57 @@ if (checkoutForm) {
   const transactionInput = transactionField?.querySelector("input");
   const status = checkoutForm.querySelector(".form-status");
   const paymentConfig = siteConfig.payment || {};
+  const districtOptions = {
+    Barishal: [
+      "Barguna", "Barishal", "Bhola", "Jhalokati", "Patuakhali", "Pirojpur",
+    ],
+    Chattogram: [
+      "Bandarban", "Brahmanbaria", "Chandpur", "Chattogram", "Cox's Bazar",
+      "Cumilla", "Feni", "Khagrachhari", "Lakshmipur", "Noakhali", "Rangamati",
+    ],
+    Dhaka: [
+      "Dhaka", "Faridpur", "Gazipur", "Gopalganj", "Kishoreganj", "Madaripur",
+      "Manikganj", "Munshiganj", "Narayanganj", "Narsingdi", "Rajbari",
+      "Shariatpur", "Tangail",
+    ],
+    Khulna: [
+      "Bagerhat", "Chuadanga", "Jashore", "Jhenaidah", "Khulna", "Kushtia",
+      "Magura", "Meherpur", "Narail", "Satkhira",
+    ],
+    Mymensingh: ["Jamalpur", "Mymensingh", "Netrokona", "Sherpur"],
+    Rajshahi: [
+      "Bogura", "Chapainawabganj", "Joypurhat", "Naogaon", "Natore", "Pabna",
+      "Rajshahi", "Sirajganj",
+    ],
+    Rangpur: [
+      "Dinajpur", "Gaibandha", "Kurigram", "Lalmonirhat", "Nilphamari",
+      "Panchagarh", "Rangpur", "Thakurgaon",
+    ],
+    Sylhet: ["Habiganj", "Moulvibazar", "Sunamganj", "Sylhet"],
+  };
 
   const bkashInput = checkoutForm.querySelector('[value="bkash"]');
   const nagadInput = checkoutForm.querySelector('[value="nagad"]');
   const codInput = checkoutForm.querySelector('[value="cod"]');
   const cardInput = checkoutForm.querySelector('[value="card"]');
   const codPaymentNote = checkoutForm.querySelector("[data-cod-payment-note]");
+  const divisionSelect = checkoutForm.querySelector('[name="division"]');
+  const districtSelect = checkoutForm.querySelector('[name="district"]');
+  const updateDistrictOptions = () => {
+    if (!divisionSelect || !districtSelect) return;
+    const districts = districtOptions[divisionSelect.value] || [];
+    districtSelect.replaceChildren(new Option(
+      divisionSelect.value ? "Choose district" : "Choose division first",
+      "",
+    ));
+    districts.forEach((district) => {
+      districtSelect.add(new Option(district, district));
+    });
+    districtSelect.disabled = districts.length === 0;
+    districtSelect.value = "";
+  };
+  updateDistrictOptions();
+  divisionSelect?.addEventListener("change", () => updateDistrictOptions());
   if (bkashInput)
     bkashInput.disabled =
       !paymentConfig.bkashEnabled || !paymentConfig.bkashMerchantNumber;
@@ -2284,19 +2329,28 @@ if (checkoutForm) {
       totals.items.forEach(({ item, product }) => {
         if (!product) return;
         const row = document.createElement("div");
-        row.className = "checkout-line";
-        const name = document.createElement("span");
-        name.textContent = `${product.name} × ${item.quantity}`;
+        row.className = "checkout-line checkout-line-with-image";
+        const image = productImageElement(product);
+        if (image) row.append(image);
+        const details = document.createElement("div");
+        details.className = "checkout-line-details";
+        const name = document.createElement("strong");
+        name.textContent = product.name;
+        const quantity = document.createElement("span");
+        quantity.textContent = `${item.variant ? `${item.variant} · ` : ""}Qty ${item.quantity}`;
         const price = document.createElement("strong");
         price.textContent =
           typeof product.price === "number"
             ? productPriceText({ price: product.price * item.quantity })
             : "To be confirmed";
-        row.append(name, price);
+        details.append(name, quantity);
+        row.append(details, price);
         checkoutItems.append(row);
       });
     }
     if (checkoutEmpty) checkoutEmpty.hidden = cartItems.length > 0;
+    const submitButton = checkoutForm.querySelector('[type="submit"]');
+    if (submitButton) submitButton.disabled = cartItems.length === 0;
     if (checkoutSubtotal)
       checkoutSubtotal.textContent =
         totals.subtotal === null
@@ -2353,10 +2407,15 @@ if (checkoutForm) {
   const validateBangladeshPhone = () => {
     if (!phoneInput) return true;
     const phone = phoneInput.value.trim();
-    const valid = /^(?:01[3-9]\d{8}|\+8801[3-9]\d{8})$/.test(phone);
+    const normalizedPhone = phone.replace(/[\s()-]/g, "");
+    const valid = /^(?:01[3-9]\d{8}|\+8801[3-9]\d{8})$/.test(
+      normalizedPhone,
+    );
     phoneInput.setCustomValidity(
       phone && !valid ? "Enter a valid Bangladesh mobile number." : "",
     );
+    if (phone && !valid) phoneInput.setAttribute("aria-invalid", "true");
+    else phoneInput.removeAttribute("aria-invalid");
     if (phoneError)
       phoneError.textContent =
         phone && !valid ? "Enter a valid Bangladesh mobile number." : "";
@@ -2364,6 +2423,7 @@ if (checkoutForm) {
   };
 
   phoneInput?.addEventListener("input", validateBangladeshPhone);
+  phoneInput?.addEventListener("blur", validateBangladeshPhone);
   checkoutForm
     .querySelectorAll('[name="paymentMethod"]')
     .forEach((input) =>

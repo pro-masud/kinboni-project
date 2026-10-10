@@ -15,66 +15,108 @@
   </head>
   <body>
     <div data-site-shell></div>
-    <main id="main-content" class="info-page section-spacing">
+    <main id="main-content" class="info-page section-spacing checkout-page">
       <div class="container">
         <nav class="shop-breadcrumb" aria-label="Breadcrumb">
           <a href="index.html">Home</a><span aria-hidden="true">›</span><span aria-current="page">Checkout</span>
         </nav>
-        <div class="section-heading">
+        <div class="section-heading checkout-heading">
           <span class="eyebrow">Your Kinboni order</span>
           <h1>Checkout</h1>
-          <p>Review your bag and enter delivery details. Your order is not placed until you confirm it.</p>
+          <p>Enter your delivery details and review your bag. Your order is only sent after you confirm.</p>
         </div>
         <div class="delivery-payment-strip">
-          <strong>Delivery &amp; Payment</strong>
+          <strong><i class="fa-solid fa-truck-fast" aria-hidden="true"></i> Delivery &amp; Payment</strong>
           <p data-delivery-payment-copy></p>
           <div class="payment-badge-list" data-payment-badges></div>
         </div>
         <div class="checkout-layout">
           <form class="checkout-form" id="checkout-form" novalidate>
             <section class="info-card">
-              <h2>Delivery details</h2>
+              <h2><span class="checkout-step">01</span> Delivery details</h2>
               <div class="form-grid">
-                <label>Full name<input name="name" autocomplete="name" required /></label>
-                <label>Phone number<input name="phone" type="tel" autocomplete="tel" placeholder="01XXXXXXXXX" required aria-describedby="phone-hint phone-error" /><small id="phone-hint">Use a Bangladesh mobile number, e.g. 01XXXXXXXXX or +8801XXXXXXXXX.</small><span class="field-error" id="phone-error"></span></label>
-                <label>Email address (optional)<input name="email" type="email" autocomplete="email" /></label>
-                <label>Division<select name="division" required><option value="">Choose division</option><option>Barishal</option><option>Chattogram</option><option>Dhaka</option><option>Khulna</option><option>Mymensingh</option><option>Rajshahi</option><option>Rangpur</option><option>Sylhet</option></select></label>
-                <label>District<select name="district" required><option value="">Choose district</option><option>Dhaka</option><option>Gazipur</option><option>Narayanganj</option><option>Chattogram</option><option>Cumilla</option><option>Sylhet</option><option>Khulna</option><option>Rajshahi</option><option>Barishal</option><option>Rangpur</option><option>Mymensingh</option></select></label>
-                <label>Area / thana<input name="area" autocomplete="address-level3" required /></label>
-                <label class="form-field-wide">Full address<textarea name="address" autocomplete="street-address" rows="3" required></textarea></label>
-                <label class="form-field-wide">Delivery note (optional)<textarea name="deliveryNote" rows="2"></textarea></label>
+                <label for="checkout-name"><span class="checkout-field-title">Full name <span class="field-required">Required</span></span>
+                  <input id="checkout-name" name="name" autocomplete="name" placeholder="Name of the person receiving the order" required />
+                </label>
+                <label for="checkout-phone"><span class="checkout-field-title">Phone number <span class="field-required">Required</span></span>
+                  <input id="checkout-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="01XXXXXXXXX" required aria-describedby="phone-hint phone-error" />
+                  <small id="phone-hint">Bangladesh mobile number, e.g. 01XXXXXXXXX or +8801XXXXXXXXX.</small>
+                  <span class="field-error" id="phone-error"></span>
+                </label>
+                <label for="checkout-email"><span class="checkout-field-title">Email address <span class="field-optional">Optional</span></span>
+                  <input id="checkout-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
+                </label>
+                <label for="checkout-division"><span class="checkout-field-title">Division <span class="field-required">Required</span></span>
+                  <select id="checkout-division" name="division" autocomplete="address-level1" required>
+                    <option value="">Choose division</option><option>Barishal</option><option>Chattogram</option><option>Dhaka</option><option>Khulna</option><option>Mymensingh</option><option>Rajshahi</option><option>Rangpur</option><option>Sylhet</option>
+                  </select>
+                </label>
+                <label for="checkout-district"><span class="checkout-field-title">District <span class="field-required">Required</span></span>
+                  <select id="checkout-district" name="district" autocomplete="address-level2" required>
+                    <option value="">Choose division first</option>
+                  </select>
+                </label>
+                <label for="checkout-area"><span class="checkout-field-title">Area / thana <span class="field-required">Required</span></span>
+                  <input id="checkout-area" name="area" autocomplete="address-level3" placeholder="Area or thana" required />
+                </label>
+                <label class="form-field-wide" for="checkout-address"><span class="checkout-field-title">Full delivery address <span class="field-required">Required</span></span>
+                  <textarea id="checkout-address" name="address" autocomplete="street-address" placeholder="House, road, building, and any helpful directions" rows="3" required></textarea>
+                </label>
+                <label class="form-field-wide" for="checkout-delivery-note"><span class="checkout-field-title">Delivery note <span class="field-optional">Optional</span></span>
+                  <textarea id="checkout-delivery-note" name="deliveryNote" placeholder="Anything that will help us deliver your order" rows="2"></textarea>
+                </label>
               </div>
             </section>
             <section class="info-card">
-              <h2>Delivery zone</h2>
-              <label>Delivery area<select name="deliveryZone" required><option value="">Choose delivery area</option><option value="insideDhaka">Inside Dhaka</option><option value="outsideDhaka">Outside Dhaka</option></select></label>
-              <p class="form-helper" data-delivery-charge></p>
+              <h2><span class="checkout-step">02</span> Delivery area</h2>
+              <label for="checkout-delivery-zone"><span class="checkout-field-title">Choose your delivery zone <span class="field-required">Required</span></span>
+                <select id="checkout-delivery-zone" name="deliveryZone" required>
+                  <option value="">Choose delivery area</option><option value="insideDhaka">Inside Dhaka</option><option value="outsideDhaka">Outside Dhaka</option>
+                </select>
+              </label>
+              <p class="form-helper checkout-delivery-helper" data-delivery-charge>Select a zone to see its delivery charge.</p>
             </section>
             <section class="info-card">
-              <h2>Payment method</h2>
+              <h2><span class="checkout-step">03</span> Payment method</h2>
               <fieldset class="payment-options">
                 <legend>Select a payment method</legend>
-                <label><input type="radio" name="paymentMethod" value="cod" /> <span>Cash on Delivery</span><small data-cod-payment-note></small></label>
-                <label><input type="radio" name="paymentMethod" value="bkash" disabled /> bKash (configure merchant details to enable)</label>
-                <label><input type="radio" name="paymentMethod" value="nagad" disabled /> Nagad (configure merchant details to enable)</label>
-                <label><input type="radio" name="paymentMethod" value="card" disabled /> Card / online payment — coming later</label>
+                <label>
+                  <input type="radio" name="paymentMethod" value="cod" />
+                  <span><strong>Cash on Delivery</strong><small data-cod-payment-note></small></span>
+                </label>
+                <label>
+                  <input type="radio" name="paymentMethod" value="bkash" disabled />
+                  <span><strong>bKash</strong><small>Available when merchant details are configured.</small></span>
+                </label>
+                <label>
+                  <input type="radio" name="paymentMethod" value="nagad" disabled />
+                  <span><strong>Nagad</strong><small>Available when merchant details are configured.</small></span>
+                </label>
+                <label>
+                  <input type="radio" name="paymentMethod" value="card" disabled />
+                  <span><strong>Card / online payment</strong><small>Coming soon.</small></span>
+                </label>
               </fieldset>
               <p class="merchant-number" data-payment-instructions hidden></p>
-              <label class="transaction-field" hidden>Transaction ID or last 4 digits<input name="transactionId" autocomplete="off" /></label>
+              <label class="transaction-field" for="checkout-transaction" hidden><span>Transaction ID or last 4 digits</span>
+                <input id="checkout-transaction" name="transactionId" autocomplete="off" />
+              </label>
             </section>
-            <label class="consent-check"><input type="checkbox" name="termsAccepted" required /> I have reviewed the <a href="terms.html">order terms</a> and <a href="privacy-policy.html">privacy notice</a>.</label>
+            <label class="consent-check"><input type="checkbox" name="termsAccepted" required /> <span>I have reviewed and agree to the <a href="terms.html">order terms</a> and <a href="privacy-policy.html">privacy notice</a>.</span></label>
             <p class="form-status" role="status" aria-live="polite"></p>
-            <button class="button button-primary" type="submit">Place order</button>
+            <button class="button button-primary checkout-submit" type="submit">Place order <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
           </form>
           <aside class="checkout-summary-panel info-card" aria-labelledby="order-summary-title">
+            <span class="eyebrow">Your order</span>
             <h2 id="order-summary-title">Order summary</h2>
             <div class="checkout-items" aria-live="polite"></div>
-            <p class="checkout-empty">Your bag is empty. <a href="shop.html">Explore the collection</a>.</p>
+            <p class="checkout-empty">Your bag is empty. <a href="cart.html">Return to your bag</a> or <a href="shop.html">explore the collection</a>.</p>
             <dl class="checkout-totals">
               <div><dt>Subtotal</dt><dd data-checkout-subtotal>—</dd></div>
-              <div><dt>Delivery</dt><dd data-checkout-delivery>—</dd></div>
+              <div><dt>Delivery</dt><dd data-checkout-delivery>Choose an area</dd></div>
               <div class="checkout-grand-total"><dt>Total</dt><dd data-checkout-total>—</dd></div>
             </dl>
+            <p class="checkout-summary-note"><i class="fa-solid fa-lock" aria-hidden="true"></i> Your order details are only shared when you place your order.</p>
           </aside>
         </div>
       </div>
